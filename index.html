@@ -71,7 +71,7 @@ a,button,[role="button"],input,textarea,select{transition:color var(--transition
 .sidebar{width:232px;flex-shrink:0;background:var(--color-surface);border-right:1px solid var(--color-border);display:flex;flex-direction:column;overflow-y:auto;transition:width var(--transition)}
 .sidebar-header{padding:var(--space-5) var(--space-3);display:flex;align-items:center;gap:var(--space-3);border-bottom:1px solid var(--color-border);min-width:0;background:var(--color-surface)}
 .logo-wrap{display:flex;flex-direction:column;gap:var(--space-2);min-width:0;flex:1;width:100%}
-.logo-wordmark{display:block;width:auto;max-width:200px;height:40px;background:transparent}
+.logo-wordmark{display:block;height:48px;width:auto;max-width:100%;aspect-ratio:360/52;background:transparent}
 .logo-wordmark .logo-mid{fill:#0D1B4D}
 [data-theme="dark"] .logo-wordmark .logo-mid{fill:#e4ebf5}
 .logo-sub{font-size:var(--text-xs);color:var(--color-text-muted);padding-left:1px;line-height:1.2}
@@ -1225,15 +1225,15 @@ html.narrow-drawer.mobile-modal-open .topbar{
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header" id="sidebar-header" onclick="onSidebarHeaderClick(event)" role="button" tabindex="0" aria-label="Меню profconq">
       <div class="logo-wrap">
-        <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 205 52" fill="none" role="img" aria-label="profconq">
-          <text y="36" font-family="'Nunito','Varela Round','Segoe UI Rounded','Arial Rounded MT Bold',sans-serif" font-size="38" font-weight="700" letter-spacing="-0.5">
+        <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 52" fill="none" role="img" aria-label="profconq">
+          <text y="36" font-family="'Nunito','Varela Round','Segoe UI Rounded','Helvetica Rounded','Arial Rounded MT Bold',sans-serif" font-size="38" font-weight="700" letter-spacing="-0.5">
             <tspan fill="#00C2D1">p</tspan><tspan class="logo-mid">rofcon</tspan><tspan fill="#86E04A">q</tspan>
           </text>
-          <circle cx="9" cy="44" r="2.8" fill="#00C2D1"/>
-          <path d="M14 44 H190" stroke="url(#profconq-arrow)" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M190 41.2 L197 44 L190 46.8 Z" fill="#86E04A"/>
+          <circle cx="16" cy="44" r="2.8" fill="#00C2D1"/>
+          <path d="M21 44 H328" stroke="url(#profconq-arrow)" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M328 41.2 L334.5 44 L328 46.8 Z" fill="#86E04A"/>
           <defs>
-            <linearGradient id="profconq-arrow" x1="9" y1="44" x2="197" y2="44" gradientUnits="userSpaceOnUse">
+            <linearGradient id="profconq-arrow" x1="21" y1="44" x2="328" y2="44" gradientUnits="userSpaceOnUse">
               <stop stop-color="#00C2D1"/>
               <stop offset="1" stop-color="#86E04A"/>
             </linearGradient>

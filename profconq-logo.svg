@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 52" fill="none" role="img" aria-label="profconq">
+  <text y="36" font-family="'Nunito','Varela Round','Segoe UI Rounded','Helvetica Rounded','Arial Rounded MT Bold',sans-serif" font-size="38" font-weight="700" letter-spacing="-0.5">
+    <tspan fill="#00C2D1">p</tspan><tspan class="logo-mid" fill="#0D1B4D">rofcon</tspan><tspan fill="#86E04A">q</tspan>
+  </text>
+  <circle cx="16" cy="44" r="2.8" fill="#00C2D1"/>
+  <path d="M21 44 H328" stroke="url(#profconq-arrow)" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M328 41.2 L334.5 44 L328 46.8 Z" fill="#86E04A"/>
+  <defs>
+    <linearGradient id="profconq-arrow" x1="21" y1="44" x2="328" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00C2D1"/>
+      <stop offset="1" stop-color="#86E04A"/>
+    </linearGradient>
+  </defs>
+</svg>
