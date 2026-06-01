@@ -1242,9 +1242,114 @@ html.narrow-drawer.mobile-modal-open .topbar{
 .difficulty-jump-btn{font-size:10px;margin-top:4px;padding:4px 8px!important;min-height:auto!important}
 .difficulty-feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;font-size:10px;color:var(--color-text-muted);margin-top:var(--space-2)}
 .difficulty-feature-grid span{background:var(--color-bg);padding:4px 6px;border-radius:var(--radius-md);border:1px solid var(--color-border)}
+/* ─── Auth screen ─── */
+body.auth-active .app-shell{display:none!important}
+.auth-screen{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:var(--space-4);background:var(--color-bg);overflow:auto}
+.auth-card{width:100%;max-width:380px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.auth-brand{text-align:center;margin-bottom:var(--space-5)}
+.auth-brand-title{font-family:'Nunito','Varela Round',sans-serif;font-size:32px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.auth-brand-title .b-p{color:#00C2D1}
+.auth-brand-title .b-q{color:#86E04A}
+.auth-brand-sub{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px}
+.auth-form h2{font-size:var(--text-lg);font-weight:700;margin:0 0 var(--space-4);text-align:center}
+.auth-form label{display:block;font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);margin:var(--space-3) 0 4px}
+.auth-form input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);font-size:var(--text-sm)}
+.auth-form input:focus{outline:none;border-color:var(--color-primary)}
+.auth-submit{width:100%;justify-content:center;margin-top:var(--space-5)}
+.auth-hint{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px}
+.auth-links{margin-top:var(--space-4);display:flex;flex-direction:column;gap:6px;text-align:center;font-size:var(--text-sm)}
+.auth-links a{color:var(--color-primary);cursor:pointer;text-decoration:none}
+.auth-links a:hover{text-decoration:underline}
+.auth-msg{margin-bottom:var(--space-4);padding:10px 12px;border-radius:var(--radius-md);font-size:var(--text-sm);text-align:center}
+.auth-msg.is-error{background:color-mix(in oklch,#e5484d 14%,var(--color-surface));color:#e5484d;border:1px solid color-mix(in oklch,#e5484d 40%,transparent)}
+.auth-msg.is-ok{background:color-mix(in oklch,#30a46c 14%,var(--color-surface));color:#30a46c;border:1px solid color-mix(in oklch,#30a46c 40%,transparent)}
+.profile-account-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}
+.profile-account-email{font-weight:600;word-break:break-all}
+.profile-account-plan{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+.sync-mirror-card{display:flex;flex-direction:column;gap:var(--space-3)}
+.sync-primary-toggle{display:flex;width:100%;border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;background:var(--color-surface-offset)}
+.sync-primary-btn{flex:1;padding:10px 8px;border:0;background:transparent;color:var(--color-text-muted);font-size:var(--text-xs);font-weight:500;cursor:pointer;transition:background .15s,color .15s}
+.sync-primary-btn.is-active{background:color-mix(in oklch,var(--color-primary) 18%,var(--color-surface));color:var(--color-primary);font-weight:600}
+.sync-primary-hint{margin:0;min-height:2.5em}
+.sync-mirror-btn{width:100%;justify-content:center}
+
+
+.vocab-quick-add-row td{background:color-mix(in oklch,var(--color-primary) 8%,var(--color-surface));border-top:2px solid color-mix(in oklch,var(--color-primary) 35%,var(--color-border))}
+.vocab-quick-add-row input,.vocab-quick-add-row select{font-size:var(--vocab-ui-font-size, var(--text-sm))}
+.vocab-add-inline-bar{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-4);width:100%}
+
+
+
 </style>
 </head>
 <body>
+
+<div id="auth-screen" class="auth-screen" style="display:none">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="auth-brand-title"><span class="b-p">p</span>rofcon<span class="b-q">q</span></div>
+      <div class="auth-brand-sub" data-i18n="logo.sub">proficiência conquistada</div>
+    </div>
+    <div class="auth-msg" id="auth-msg" hidden></div>
+
+    <form class="auth-form" id="auth-form-login" onsubmit="return authSubmitLogin(event)">
+      <h2 data-i18n="auth.loginTitle">Sign in</h2>
+      <label data-i18n="auth.email">Email</label>
+      <input type="email" id="auth-login-email" autocomplete="email" required>
+      <label data-i18n="auth.password">Password</label>
+      <input type="password" id="auth-login-password" autocomplete="current-password" required>
+      <button type="submit" class="btn btn-primary auth-submit" data-i18n="auth.loginBtn">Sign in</button>
+      <div class="auth-links">
+        <a onclick="authShow('forgot');return false" data-i18n="auth.forgotLink">Forgot password?</a>
+        <span><span data-i18n="auth.noAccount">No account?</span> <a onclick="authShow('register');return false" data-i18n="auth.registerLink">Create one</a></span>
+      </div>
+    </form>
+
+    <form class="auth-form" id="auth-form-register" style="display:none" onsubmit="return authSubmitRegister(event)">
+      <h2 data-i18n="auth.registerTitle">Create account</h2>
+      <label data-i18n="auth.email">Email</label>
+      <input type="email" id="auth-reg-email" autocomplete="email" required>
+      <label data-i18n="auth.password">Password</label>
+      <input type="password" id="auth-reg-password" autocomplete="new-password" minlength="8" required>
+      <div class="auth-hint" data-i18n="auth.passwordHint">At least 8 characters.</div>
+      <button type="submit" class="btn btn-primary auth-submit" data-i18n="auth.registerBtn">Create account</button>
+      <div class="auth-links">
+        <span><span data-i18n="auth.haveAccount">Already registered?</span> <a onclick="authShow('login');return false" data-i18n="auth.loginLink">Sign in</a></span>
+      </div>
+    </form>
+
+    <form class="auth-form" id="auth-form-forgot" style="display:none" onsubmit="return authSubmitForgot(event)">
+      <h2 data-i18n="auth.forgotTitle">Reset password</h2>
+      <label data-i18n="auth.email">Email</label>
+      <input type="email" id="auth-forgot-email" autocomplete="email" required>
+      <button type="submit" class="btn btn-primary auth-submit" data-i18n="auth.forgotBtn">Send reset link</button>
+      <div class="auth-links">
+        <a onclick="authShow('login');return false" data-i18n="auth.backToLogin">Back to sign in</a>
+      </div>
+    </form>
+
+    <form class="auth-form" id="auth-form-reset" style="display:none" onsubmit="return authSubmitReset(event)">
+      <h2 data-i18n="auth.resetTitle">New password</h2>
+      <label data-i18n="auth.passwordNew">New password</label>
+      <input type="password" id="auth-reset-password" autocomplete="new-password" minlength="8" required>
+      <div class="auth-hint" data-i18n="auth.passwordHint">At least 8 characters.</div>
+      <button type="submit" class="btn btn-primary auth-submit" data-i18n="auth.resetBtn">Set password</button>
+      <div class="auth-links">
+        <a onclick="authShow('login');return false" data-i18n="auth.backToLogin">Back to sign in</a>
+      </div>
+    </form>
+
+    <div class="auth-form" id="auth-panel-pending" style="display:none">
+      <h2 data-i18n="auth.pendingTitle">Check your email</h2>
+      <p class="auth-hint" id="auth-pending-text" data-i18n="auth.pendingText">We sent you a verification link. Open it to activate your account.</p>
+      <button type="button" class="btn btn-ghost auth-submit" onclick="authResendFromPending()" data-i18n="auth.resendBtn">Resend email</button>
+      <div class="auth-links">
+        <a onclick="authShow('login');return false" data-i18n="auth.backToLogin">Back to sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="app-shell">
   <!-- SIDEBAR -->
@@ -1351,15 +1456,15 @@ html.narrow-drawer.mobile-modal-open .topbar{
       <button type="button" class="btn btn-ghost btn-sm mobile-nav-toggle" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Меню" aria-expanded="false">
         <i data-lucide="menu"></i>
       </button>
-      <button type="button" class="btn btn-ghost btn-sm" id="undo-delete-btn" hidden onclick="undoDeleteWord()" title="Вернуть удалённое слово">
+      <button type="button" class="btn btn-ghost btn-sm" id="undo-delete-btn" hidden onclick="undoDeleteWord()" title="Вернуть удалённое слово" data-i18n-title="ui.title.undoDelete">
         <i data-lucide="undo-2"></i> Отменить
       </button>
       <div class="topbar-title" id="page-title">Vocabulary</div>
       <div class="topbar-actions">
         <div class="vocab-topbar-tools" id="vocab-topbar-tools" style="display:none">
           <span class="vocab-topbar-tools-label">Список словаря</span>
-          <select class="form-input vocab-topbar-select" id="vocab-font-size-select" title="Размер шрифта в таблице и карточках" aria-label="Размер шрифта словаря"></select>
-          <select class="form-input vocab-topbar-select" id="vocab-font-family-select" title="Начертание" aria-label="Шрифт словаря"></select>
+          <select class="form-input vocab-topbar-select" id="vocab-font-size-select" title="Размер шрифта в таблице и карточках" aria-label="Размер шрифта словаря" data-i18n-title="ui.title.vocabFontSize"></select>
+          <select class="form-input vocab-topbar-select" id="vocab-font-family-select" title="Начертание" aria-label="Шрифт словаря" data-i18n-title="ui.title.vocabFont"></select>
         </div>
         <button class="btn btn-primary btn-sm" id="add-word-btn" onclick="openAddWord()">
           <i data-lucide="plus"></i> <span data-i18n="vocab.addWord">Добавить слово</span>
@@ -1437,11 +1542,12 @@ html.narrow-drawer.mobile-modal-open .topbar{
             <button type="button" id="vocab-mode-cards" class="active" onclick="vocabSetViewMode('cards')" data-i18n="vocab.modeCards">Карточки</button>
             <button type="button" id="vocab-mode-table" onclick="vocabSetViewMode('table')" data-i18n="vocab.modeTable">Таблица</button>
           </div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="openAddWord()"><i data-lucide="plus"></i> <span data-i18n="vocab.addWord">Добавить слово</span></button>
           <button type="button" class="btn btn-secondary btn-sm" id="vocab-import-btn" onclick="vocabOpenImportPicker()"><i data-lucide="upload"></i> <span data-i18n="vocab.import">Import</span></button>
           <input type="file" id="vocab-import-file" accept=".csv,.txt,.tsv,.xlsx,.xls" hidden onchange="vocabImportFileChange(this)">
           <button type="button" class="btn btn-secondary btn-sm" id="vocab-export-btn" onclick="vocabExportExcel()" style="display:none"><i data-lucide="download"></i> <span data-i18n="vocab.export">Export CSV</span></button>
-          <button type="button" class="btn btn-secondary btn-sm" id="vocab-table-speak-btn" onclick="vocabTableSpeakSelected()" style="display:none" title="Сначала отметьте строки галочкой в колонке №"><i data-lucide="volume-2"></i> Озвучить выбранные</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="vocab-table-stop-tts-btn" onclick="vocabTableStopTts()" style="display:none" title="Остановить озвучку"><i data-lucide="square"></i> Стоп</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="vocab-table-speak-btn" onclick="vocabTableSpeakSelected()" style="display:none" title="Сначала отметьте строки галочкой в колонке №" data-i18n-title="ui.title.speakSelected"><i data-lucide="volume-2"></i> Озвучить выбранные</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="vocab-table-stop-tts-btn" onclick="vocabTableStopTts()" style="display:none" title="Остановить озвучку" data-i18n-title="ui.title.stopTts"><i data-lucide="square"></i> Стоп</button>
           <span id="vocab-table-col-hint" style="display:none;font-size:10px;color:var(--color-text-faint);max-width:min(280px,40vw);line-height:1.35" title="Настройки сохраняются в этом браузере">Ширину столбцов: потяните разделитель у правого края заголовка.</span>
         </div>
         <details class="vocab-dictaphone" id="vocab-dictaphone" open>
@@ -1545,14 +1651,13 @@ html.narrow-drawer.mobile-modal-open .topbar{
             <div class="transcript-panel">
               <div class="transcript-header">
                 <span style="font-size:var(--text-sm);font-weight:600">Субтитры</span>
-                <select id="yt-lang" class="form-input" style="max-width:110px;padding:6px 8px;font-size:11px;margin-right:auto" title="Предпочитаемый язык дорожки" aria-label="Язык субтитров" onchange="onYtLangChange()">
+                <select id="yt-lang" class="form-input" style="max-width:110px;padding:6px 8px;font-size:11px;margin-right:auto" title="Предпочитаемый язык дорожки" aria-label="Язык субтитров" onchange="onYtLangChange()" data-i18n-title="ui.title.ytLang">
                   <option value="">Авто</option>
                   <option value="pt">Português</option>
                   <option value="en">English</option>
                   <option value="ru">Русский</option>
-                  <option value="es">Español</option>
-                </select>
-                <select id="hover-translate-source" class="form-input" style="max-width:210px;padding:6px 8px;font-size:11px" title="Источник перевода слова по наведению" aria-label="Источник перевода слова по наведению" onchange="onHoverTranslateSourceChange()">
+</select>
+                <select id="hover-translate-source" class="form-input" style="max-width:210px;padding:6px 8px;font-size:11px" title="Источник перевода слова по наведению" aria-label="Источник перевода слова по наведению" onchange="onHoverTranslateSourceChange()" data-i18n-title="ui.title.hoverTranslate">
                   <option value="big-dict">Hover: Большой словарь (офлайн)</option>
                   <option value="chatgpt">Hover: онлайн-перевод</option>
                 </select>
@@ -1662,8 +1767,8 @@ html.narrow-drawer.mobile-modal-open .topbar{
                 </div>
                 <div class="flashcard-face fc-back">
                   <div class="fc-back-tts">
-                    <button type="button" class="fc-tts-btn fc-tts-wide" title="Португальский: пример или слово" onclick="event.stopPropagation(); speakFlashcardPortuguese('example')"><i data-lucide="volume-2"></i> PT</button>
-                    <button type="button" class="fc-tts-btn fc-tts-wide" title="Перевод по-русски" onclick="event.stopPropagation(); speakFlashcardRussian()"><i data-lucide="volume-2"></i> RU</button>
+                    <button type="button" class="fc-tts-btn fc-tts-wide" id="fc-tts-source" title="TTS source" onclick="event.stopPropagation(); speakFlashcardPortuguese('example')"><i data-lucide="volume-2"></i> <span data-study-lang="sourceShort">PT</span></button>
+                    <button type="button" class="fc-tts-btn fc-tts-wide" id="fc-tts-target" title="TTS target" onclick="event.stopPropagation(); speakFlashcardRussian()"><i data-lucide="volume-2"></i> <span data-study-lang="targetShort">RU</span></button>
                   </div>
                   <div class="fc-back-scroll">
                     <div class="fc-translation" id="fc-translation"></div>
@@ -1913,13 +2018,13 @@ html.narrow-drawer.mobile-modal-open .topbar{
               </div>
             </div>
             <div class="textgen-out-block">
-              <div class="textgen-out-head"><span>Португальский</span>
+              <div class="textgen-out-head"><span data-study-lang="sourceCol">Portuguese</span>
                 <button type="button" class="btn btn-ghost btn-sm" onclick="copyTextgenPt()">Копировать</button>
               </div>
               <div class="textgen-out-body textgen-pt" id="textgen-out-pt"></div>
             </div>
             <div class="textgen-out-block">
-              <div class="textgen-out-head"><span>Перевод (RU)</span>
+              <div class="textgen-out-head"><span data-study-lang="translationCol">Translation</span>
                 <button type="button" class="btn btn-ghost btn-sm" onclick="copyTextgenRu()">Копировать</button>
               </div>
               <div class="textgen-out-body" id="textgen-out-ru"></div>
@@ -1998,7 +2103,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
               <button type="button" class="btn btn-primary btn-sm" onclick="booksAddCheckedToVocab()"><i data-lucide="bookmark-plus"></i> В словарь выбранные</button>
               <button type="button" class="btn btn-ghost btn-sm" onclick="booksHistoryClear()">Очистить список</button>
             </div>
-            <div class="books-panel-h">Перевод (RU)</div>
+            <div class="books-panel-h" data-study-lang="translationCol">Translation</div>
             <div class="books-trans-out" id="books-trans-out"></div>
             <p class="books-hint" style="margin-top:var(--space-3);font-size:10px;line-height:1.4">С ключом OpenAI в .env используется модель; иначе — MyMemory по частям (лимит по длине).</p>
           </aside>
@@ -2023,15 +2128,49 @@ html.narrow-drawer.mobile-modal-open .topbar{
           </div>
         </div>
       </div>
-
-      <div class="view" id="view-profile">
+<div class="view" id="view-profile">
         <div class="profile-page">
           <div class="profile-brand">
             <div class="profile-brand-title"><span class="profile-brand-p">p</span>rofcon<span class="profile-brand-q">q</span></div>
             <div class="profile-brand-tagline" data-i18n="logo.sub">proficiência conquistada</div>
           </div>
 
-          <div class="profile-section-title" data-i18n="profile.statsSection">Statistics</div>
+          <div class="profile-section-title" data-i18n="auth.account">Account</div>
+          <div class="profile-card">
+            <div class="profile-account-row">
+              <div>
+                <div class="profile-account-email" id="profile-account-email">—</div>
+                <div class="profile-account-plan" id="profile-account-plan"></div>
+              </div>
+              <button type="button" class="btn btn-ghost btn-sm" onclick="authLogout()"><i data-lucide="log-out"></i> <span data-i18n="auth.logout">Sign out</span></button>
+            </div>
+            <div class="profile-promo-block" id="profile-promo-block" style="margin-top:14px">
+              <div class="profile-setting-label" data-i18n="promo.section">Promo code</div>
+              <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+                <input type="text" id="profile-promo-code" class="input" placeholder="FRIEND100" style="flex:1;min-width:120px;text-transform:uppercase" data-i18n-placeholder="promo.placeholder">
+                <button type="button" class="btn btn-primary btn-sm" onclick="redeemPromoCode()" data-i18n="promo.redeem">Apply</button>
+              </div>
+              <p class="profile-setting-desc" id="profile-promo-msg" style="margin-top:6px"></p>
+            </div>
+          </div>
+
+
+          
+          
+          
+          <div class="profile-section-title" data-i18n="sync.section">Sync</div>
+          <div class="profile-card sync-mirror-card">
+            <p class="profile-setting-desc" style="margin:0" data-i18n="sync.mirrorHint">Mirror: vocabulary and programs copy from the selected source.</p>
+            <div class="sync-primary-toggle" role="group" data-i18n-aria="sync.primaryAria" aria-label="Sync source">
+              <button type="button" class="sync-primary-btn is-active" id="sync-primary-app" onclick="syncSetPrimary('app')" data-i18n="sync.primaryApp">Source: app</button>
+              <button type="button" class="sync-primary-btn" id="sync-primary-site" onclick="syncSetPrimary('site')" data-i18n="sync.primarySite">Source: website</button>
+            </div>
+            <p class="profile-setting-desc sync-primary-hint" id="sync-primary-hint"></p>
+            <button type="button" class="btn btn-primary btn-sm sync-mirror-btn" onclick="syncMirrorNow()">
+              <i data-lucide="refresh-cw"></i> <span data-i18n="sync.mirrorBtn">Sync</span>
+            </button>
+          </div>
+<div class="profile-section-title" data-i18n="profile.statsSection">Statistics</div>
           <div class="profile-card">
             <div class="profile-stats-row">
               <div class="profile-stat"><div class="profile-stat-val" id="profile-stat-dict">0</div><div class="profile-stat-label" data-i18n="profile.inDictionary">in dictionary</div></div>
@@ -2068,16 +2207,21 @@ html.narrow-drawer.mobile-modal-open .topbar{
               </div>
             </div>
             <div class="profile-setting-divider"></div>
-            <div class="profile-setting-block">
-              <div class="profile-setting-label" data-i18n="profile.subtitleLang">YouTube subtitle language</div>
-              <div class="profile-chip-row profile-chip-row--compact" id="profile-subtitle-lang-chips" role="group">
-                <button type="button" class="profile-chip" data-value="0" onclick="profileSetSubtitleLang(0)">PT</button>
-                <button type="button" class="profile-chip" data-value="1" onclick="profileSetSubtitleLang(1)">EN</button>
-                <button type="button" class="profile-chip" data-value="2" onclick="profileSetSubtitleLang(2)">RU</button>
-                <button type="button" class="profile-chip" data-value="3" onclick="profileSetSubtitleLang(3)">ES</button>
+                                                <div class="profile-setting-block">
+              <div class="profile-setting-label" data-i18n="profile.translationLangs">Card &amp; subtitle languages</div>
+              <p class="profile-setting-desc" data-i18n="profile.translationLangsHint">Choose 2 languages.</p>
+              <div class="profile-chip-row profile-chip-row--compact" id="profile-translation-from-chips" role="group">
+                <button type="button" class="profile-chip" data-value="0" onclick="profileSetTranslationFromLang(0)">PT</button>
+                <button type="button" class="profile-chip" data-value="1" onclick="profileSetTranslationFromLang(1)">EN</button>
+                <button type="button" class="profile-chip" data-value="2" onclick="profileSetTranslationFromLang(2)">RU</button>
+              </div>
+              <div class="profile-chip-row profile-chip-row--compact" id="profile-translation-to-chips" role="group" style="margin-top:8px">
+                <button type="button" class="profile-chip" data-value="0" onclick="profileSetTranslationTargetLang(0)">PT</button>
+                <button type="button" class="profile-chip" data-value="1" onclick="profileSetTranslationTargetLang(1)">EN</button>
+                <button type="button" class="profile-chip" data-value="2" onclick="profileSetTranslationTargetLang(2)">RU</button>
               </div>
             </div>
-            <div class="profile-setting-divider"></div>
+<div class="profile-setting-divider"></div>
             <div class="profile-setting-block">
               <div class="profile-toggle-row">
                 <div class="profile-toggle-copy">
@@ -2302,15 +2446,15 @@ html.narrow-drawer.mobile-modal-open .topbar{
         <label class="form-label" id="input-word-label" data-i18n="vocab.fieldWord">Слово или фраза (PT)</label>
         <div class="form-input-with-mic">
           <input class="form-input" id="input-word" placeholder="ex: falar или целое выражение" type="text" autocomplete="off">
-          <button type="button" class="voice-mic-btn" id="voice-mic-pt" onclick="startVoiceField('pt', event)" title="Голосом (португальский)"><i data-lucide="mic"></i></button>
+          <button type="button" class="voice-mic-btn" id="voice-mic-source" onclick="startVoiceField('source', event)" title="Voice"><i data-lucide="mic"></i></button>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label" data-i18n="vocab.fieldTranslation">Перевод (RU)</label>
+        <label class="form-label" data-study-lang="translation" data-i18n="vocab.fieldTranslation">Перевод (RU)</label>
         <div class="form-input-with-mic">
           <input class="form-input" id="input-translation" placeholder="говорить" type="text" autocomplete="off">
-          <button type="button" class="btn btn-secondary btn-sm" id="addword-auto-translation-btn" onclick="autoTranslateAddWord(event)" style="flex-shrink:0;white-space:nowrap;align-self:stretch" title="Подставить перевод через API (как субтитры)">Авто</button>
-          <button type="button" class="voice-mic-btn" id="voice-mic-ru" onclick="startVoiceField('ru', event)" title="Голосом (русский)"><i data-lucide="mic"></i></button>
+          <button type="button" class="btn btn-secondary btn-sm" id="addword-auto-translation-btn" onclick="autoTranslateAddWord(event)" style="flex-shrink:0;white-space:nowrap;align-self:stretch" title="Подставить перевод через API (как субтитры)" data-i18n-title="ui.title.autoTranslate">Авто</button>
+          <button type="button" class="voice-mic-btn" id="voice-mic-target" onclick="startVoiceField('target', event)" title="Voice"><i data-lucide="mic"></i></button>
         </div>
       </div>
     </div>
@@ -2346,7 +2490,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
       </div>
     </div>
     <div class="form-group" id="input-infinitivo-wrap" style="display:none">
-      <label class="form-label" data-i18n="vocab.fieldInf">Инфинитив (PT)</label>
+      <label class="form-label" data-study-lang="inf" data-i18n="vocab.fieldInf">Инфинитив (PT)</label>
       <input class="form-input" id="input-infinitivo" type="text" placeholder="напр. falar" autocomplete="off">
       <p style="font-size:var(--text-xs);color:var(--color-text-faint);margin:var(--space-1) 0 0;line-height:1.4">Для глаголов: укажи словарную форму. Если в карточке уже инфинитив (falar, comer…), можно повторить его или оставить автоподстановку.</p>
     </div>
@@ -2377,7 +2521,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
     </div>
     <div style="padding:0 var(--space-5) var(--space-5)">
       <p class="vocab-import-stats" id="vocab-import-stats">—</p>
-      <p class="profile-setting-desc" style="margin:var(--space-2) 0" data-i18n="vocab.importHint">Columns: word (PT), translation (RU). Optional: example, type, infinitive. Tab, comma or semicolon delimiters.</p>
+      <p class="profile-setting-desc" style="margin:var(--space-2) 0" data-study-lang="importHint" data-i18n="vocab.importHint">Columns: word (PT), translation (RU). Optional: example, type, infinitive. Tab, comma or semicolon delimiters.</p>
       <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--color-text);margin:var(--space-3) 0;cursor:pointer">
         <input type="checkbox" id="vocab-import-skip-dup" checked>
         <span data-i18n="vocab.importSkipDup">Skip duplicates (same word)</span>
@@ -2428,21 +2572,242 @@ html.narrow-drawer.mobile-modal-open .topbar{
 </div>
 
 <script>
-window.__PROFICONQ_BUILD = 'picker-v6-overlay-fix';
+window.__PROFICONQ_BUILD = 'auth-sync-v1';
+// ═══════════════════════════════════════════════════════
+// AUTH + SYNC — аккаунты и пер-пользовательская синхронизация (/api/auth, /api/sync)
+// ═══════════════════════════════════════════════════════
+window.__authUser = null;
+var __authResetToken = null;
+
+function authApi(path, opts) {
+  opts = opts || {};
+  opts.credentials = 'include';
+  if (opts.body && !(opts.headers && opts.headers['Content-Type'])) {
+    opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+  }
+  return fetch(path, opts);
+}
+
+function authSetMsg(text, kind) {
+  var el = document.getElementById('auth-msg');
+  if (!el) return;
+  if (!text) { el.hidden = true; el.textContent = ''; el.className = 'auth-msg'; return; }
+  el.hidden = false;
+  el.textContent = text;
+  el.className = 'auth-msg ' + (kind === 'ok' ? 'is-ok' : 'is-error');
+}
+
+var __AUTH_PANELS = ['login', 'register', 'forgot', 'reset', 'pending'];
+function authShow(panel) {
+  authSetMsg('');
+  __AUTH_PANELS.forEach(function (p) {
+    var el = document.getElementById(p === 'pending' ? 'auth-panel-pending' : 'auth-form-' + p);
+    if (el) el.style.display = (p === panel) ? '' : 'none';
+  });
+}
+
+function showAuthScreen(panel) {
+  document.body.classList.add('auth-active');
+  var scr = document.getElementById('auth-screen');
+  if (scr) scr.style.display = 'flex';
+  authShow(panel || 'login');
+}
+
+function hideAuthScreen() {
+  document.body.classList.remove('auth-active');
+  var scr = document.getElementById('auth-screen');
+  if (scr) scr.style.display = 'none';
+}
+
+async function authMe() {
+  try {
+    var r = await authApi('/api/auth/me');
+    if (r.ok) {
+      var d = await r.json();
+      var u = d.user || null;
+      if (u && typeof u.wordCount !== 'number' && typeof words !== 'undefined') {
+        u.wordCount = words.length;
+      }
+      return u;
+    }
+  } catch (e) {}
+  return null;
+}
+
+async function authSubmitLogin(ev) {
+  ev.preventDefault();
+  var email = document.getElementById('auth-login-email').value.trim();
+  var password = document.getElementById('auth-login-password').value;
+  authSetMsg('');
+  try {
+    var r = await authApi('/api/auth/login', { method: 'POST', body: JSON.stringify({ email: email, password: password }) });
+    if (r.ok) {
+      var d = await r.json();
+      window.__authUser = d.user;
+      hideAuthScreen();
+      await startAppAfterAuth();
+      return false;
+    }
+    var err = await r.json().catch(function () { return {}; });
+    if (r.status === 403 || err.error === 'not_verified') { authSetMsg(t('auth.msgNotVerified'), 'error'); authShow('pending'); }
+    else authSetMsg(t('auth.msgInvalid'), 'error');
+  } catch (e) { authSetMsg(t('auth.msgError'), 'error'); }
+  return false;
+}
+
+async function authSubmitRegister(ev) {
+  ev.preventDefault();
+  var email = document.getElementById('auth-reg-email').value.trim();
+  var password = document.getElementById('auth-reg-password').value;
+  if (password.length < 8) { authSetMsg(t('auth.msgWeakPassword'), 'error'); return false; }
+  try {
+    var r = await authApi('/api/auth/register', { method: 'POST', body: JSON.stringify({ email: email, password: password }) });
+    if (r.ok) { authShow('pending'); authSetMsg(t('auth.msgRegistered'), 'ok'); window.__authPendingEmail = email; return false; }
+    var err = await r.json().catch(function () { return {}; });
+    if (err.error === 'email_already_registered') authSetMsg(t('auth.msgEmailAlreadyRegistered'), 'error');
+    else if (err.error === 'email_pending_verification') authSetMsg(t('auth.msgEmailPendingVerification'), 'error');
+    else if (err.error === 'weak_password') authSetMsg(t('auth.msgWeakPassword'), 'error');
+    else if (err.error === 'invalid_email') authSetMsg(t('auth.msgInvalidEmail'), 'error');
+    else authSetMsg(t('auth.msgError'), 'error');
+  } catch (e) { authSetMsg(t('auth.msgError'), 'error'); }
+  return false;
+}
+
+async function authSubmitForgot(ev) {
+  ev.preventDefault();
+  var email = document.getElementById('auth-forgot-email').value.trim();
+  try { await authApi('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email: email }) }); } catch (e) {}
+  authShow('login');
+  authSetMsg(t('auth.msgForgotSent'), 'ok');
+  return false;
+}
+
+async function authSubmitReset(ev) {
+  ev.preventDefault();
+  var password = document.getElementById('auth-reset-password').value;
+  if (password.length < 8) { authSetMsg(t('auth.msgWeakPassword'), 'error'); return false; }
+  try {
+    var r = await authApi('/api/auth/reset-password', { method: 'POST', body: JSON.stringify({ token: __authResetToken, password: password }) });
+    if (r.ok) { authShow('login'); authSetMsg(t('auth.msgResetDone'), 'ok'); try { history.replaceState({}, '', '/login'); } catch (e) {} }
+    else authSetMsg(t('auth.msgVerifyFail'), 'error');
+  } catch (e) { authSetMsg(t('auth.msgError'), 'error'); }
+  return false;
+}
+
+async function authResendFromPending() {
+  var email = window.__authPendingEmail || (document.getElementById('auth-login-email') && document.getElementById('auth-login-email').value.trim());
+  if (!email) { authShow('login'); return; }
+  try { await authApi('/api/auth/resend-verification', { method: 'POST', body: JSON.stringify({ email: email }) }); } catch (e) {}
+  authSetMsg(t('auth.msgRegistered'), 'ok');
+}
+
+async function authLogout() {
+  try { await authApi('/api/auth/logout', { method: 'POST' }); } catch (e) {}
+  window.location.href = '/login';
+}
+
+// ─── Sync layer ───
+var __SETTINGS_KEYS = [
+  'profconq_ui_lang_v1', 'profconq_ui_theme_v1', 'profconq_subtitle_lang_v1', 'profconq_translation_target_lang_v1', 'profconq_phrase_copy_v1',
+  'profconq_word_context_v1', 'profconq_subtitle_font_v1', 'proficonq_hover_translate_source_v1',
+  'proficonq_fc_dir_v1', 'proficonq_vocab_view_mode_v1', 'proficonq_vocab_table_col_pct_v1',
+  'proficonq_vocab_ui_font_size_v1', 'proficonq_vocab_ui_font_family_v1', 'proficonq_vocab_collapsed_groups_v1',
+  'proficonq_big_dict_source_v1', 'proficonq_yt_playback_source_v1', 'proficonq_fle_plan_selected_v1'
+];
+var __origSetItem = null;
+var __syncTimers = {};
+
+function __syncServerKeyFor(lsKey) {
+  if (lsKey === PROGRAMS_KEY) return 'programs';
+  if (lsKey === PROGRAM_PROGRESS_KEY) return 'program_progress';
+  if (lsKey === ACTIVITY_KEY) return 'activity';
+  if (lsKey === FLE_PLAN_TRACK_KEY) return 'fle_plan_track';
+  return null;
+}
+function __lsKeyForServer(sk) {
+  if (sk === 'programs') return PROGRAMS_KEY;
+  if (sk === 'program_progress') return PROGRAM_PROGRESS_KEY;
+  if (sk === 'activity') return ACTIVITY_KEY;
+  if (sk === 'fle_plan_track') return FLE_PLAN_TRACK_KEY;
+  return null;
+}
+
+function installSyncInterceptor() {
+  if (__origSetItem) return;
+  __origSetItem = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function (k, v) {
+    __origSetItem(k, v);
+    try {
+      if (!window.__authUser) return;
+      var sk = __syncServerKeyFor(k);
+      if (sk) __syncScheduleKey(sk);
+      else if (__SETTINGS_KEYS.indexOf(k) >= 0) __syncScheduleKey('settings');
+    } catch (e) {}
+  };
+}
+
+function __syncBuildPayload(serverKey) {
+  if (serverKey === 'settings') {
+    var obj = {};
+    __SETTINGS_KEYS.forEach(function (k) { var v = localStorage.getItem(k); if (v !== null) obj[k] = v; });
+    return obj;
+  }
+  var lsKey = __lsKeyForServer(serverKey);
+  var raw = lsKey ? localStorage.getItem(lsKey) : null;
+  if (raw == null) return null;
+  try { return JSON.parse(raw); } catch (e) { return raw; }
+}
+
+function __syncPut(serverKey, jsonVal) {
+  return authApi('/api/sync/' + serverKey, { method: 'PUT', body: JSON.stringify({ json: jsonVal }) }).catch(function () {});
+}
+
+function __syncScheduleKey(serverKey) {
+  if (__syncTimers[serverKey]) clearTimeout(__syncTimers[serverKey]);
+  __syncTimers[serverKey] = setTimeout(function () {
+    __syncTimers[serverKey] = null;
+    var payload = __syncBuildPayload(serverKey);
+    if (payload == null) return;
+    __syncPut(serverKey, payload);
+  }, 700);
+}
+
+function __syncHydrate(serverKey, json) {
+  var put = __origSetItem || localStorage.setItem.bind(localStorage);
+  if (serverKey === 'settings') {
+    if (json && typeof json === 'object') {
+      Object.keys(json).forEach(function (k) { try { put(k, json[k]); } catch (e) {} });
+      try { loadUiThemePref(); loadUiLangPref(); document.documentElement.setAttribute('data-theme', __uiTheme); applyUiLanguage(); } catch (e) {}
+    }
+    return;
+  }
+  var lsKey = __lsKeyForServer(serverKey);
+  if (!lsKey) return;
+  try { put(lsKey, JSON.stringify(json)); } catch (e) {}
+}
+
+async function syncPullAll() {
+  var serverKeys = ['settings', 'programs', 'program_progress', 'activity', 'fle_plan_track'];
+  var keys = {};
+  try {
+    var r = await authApi('/api/sync');
+    if (r.ok) { var d = await r.json(); keys = (d && d.keys) || {}; }
+  } catch (e) {}
+  // Hydrate server -> local
+  serverKeys.forEach(function (sk) { if (keys[sk]) __syncHydrate(sk, keys[sk].json); });
+  // Seed: push local-only data up so this browser's existing data is not lost
+  serverKeys.forEach(function (sk) {
+    if (keys[sk]) return;
+    var payload = __syncBuildPayload(sk);
+    if (payload == null) return;
+    var hasData = Array.isArray(payload) ? payload.length : (typeof payload === 'object' ? Object.keys(payload).length : true);
+    if (hasData) __syncPut(sk, payload);
+  });
+}
 // ═══════════════════════════════════════════════════════
 // DATA STORE — словарь: файл tutor-app/vocabulary/words.json (через GET/PUT /api/vocabulary)
 // ═══════════════════════════════════════════════════════
-const DEFAULT_VOCAB_SEED = [
-  {id:1,word:'falar',translation:'говорить',example:'Eu falo português todos os dias.',tag:'verbo',infinitivo:'falar',img:'',interval:1,easeFactor:2.5,nextReview:0,reps:0},
-  {id:2,word:'casa',translation:'дом',example:'A minha casa é grande.',tag:'substantivo',img:'',interval:1,easeFactor:2.5,nextReview:0,reps:2},
-  {id:3,word:'trabalhar',translation:'работать',example:'Ela trabalha muito.',tag:'verbo',infinitivo:'trabalhar',img:'',interval:3,easeFactor:2.5,nextReview:Date.now()+86400000,reps:1},
-  {id:4,word:'bonito',translation:'красивый',example:'O Brasil é muito bonito.',tag:'adjetivo',img:'',interval:1,easeFactor:2.5,nextReview:0,reps:0},
-  {id:5,word:'obrigado',translation:'спасибо',example:'Obrigado pela ajuda!',tag:'expressão',img:'',interval:2,easeFactor:2.5,nextReview:0,reps:1},
-  {id:6,word:'cidade',translation:'город',example:'São Paulo é uma cidade grande.',tag:'substantivo',img:'',interval:1,easeFactor:2.5,nextReview:Date.now()+2*86400000,reps:0},
-  {id:7,word:'comer',translation:'есть, кушать',example:'Vamos comer juntos.',tag:'verbo',infinitivo:'comer',img:'',interval:1,easeFactor:2.5,nextReview:0,reps:0},
-  {id:8,word:'água',translation:'вода',example:'Posso tomar água?',tag:'substantivo',img:'',interval:1,easeFactor:2.5,nextReview:0,reps:3},
-  {id:9,word:'por favor',translation:'пожалуйста',example:'Um café, por favor.',tag:'frase',img:'',interval:1,easeFactor:2.5,nextReview:0,reps:0},
-];
+const DEFAULT_VOCAB_SEED = [];
 let words = [];
 let nextId = 1;
 
@@ -2460,10 +2825,11 @@ function schedulePersistVocabulary() {
   if (__vocabSaveTimer) clearTimeout(__vocabSaveTimer);
   __vocabSaveTimer = setTimeout(function () {
     __vocabSaveTimer = null;
-    fetch('/api/vocabulary', {
+    fetch('/api/sync/vocabulary', {
       method: 'PUT',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ words: words }),
+      body: JSON.stringify({ json: { words: words } }),
     })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -2477,19 +2843,115 @@ function schedulePersistVocabulary() {
 
 async function loadVocabularyFromServer() {
   try {
-    var r = await fetch('/api/vocabulary');
+    var r = await fetch('/api/sync/vocabulary', { credentials: 'include' });
+    if (r.status === 204) { words = []; recomputeNextIdFromWords(); return; }
     if (!r.ok) throw new Error('HTTP ' + r.status);
     var data = await r.json();
-    if (Array.isArray(data.words) && data.words.length) {
-      words = data.words;
+    var w = data && data.json && data.json.words;
+    if (Array.isArray(w) && w.length) {
+      words = w;
       recomputeNextIdFromWords();
       return;
     }
   } catch (e) {
     console.warn('loadVocabularyFromServer', e);
   }
-  words = DEFAULT_VOCAB_SEED.slice();
+  words = [];
   recomputeNextIdFromWords();
+}
+
+
+
+var SYNC_PRIMARY_KEY = 'profconq_sync_primary_v1';
+
+function syncGetPrimary() {
+  try {
+    var v = localStorage.getItem(SYNC_PRIMARY_KEY);
+    if (v === 'site') return 'site';
+  } catch (e) {}
+  return 'app';
+}
+
+function syncSetPrimary(mode) {
+  if (mode !== 'app' && mode !== 'site') return;
+  try { localStorage.setItem(SYNC_PRIMARY_KEY, mode); } catch (e) {}
+  syncUpdatePrimaryUi();
+}
+
+function syncUpdatePrimaryUi() {
+  var mode = syncGetPrimary();
+  var appBtn = document.getElementById('sync-primary-app');
+  var siteBtn = document.getElementById('sync-primary-site');
+  var hint = document.getElementById('sync-primary-hint');
+  if (appBtn) appBtn.classList.toggle('is-active', mode === 'app');
+  if (siteBtn) siteBtn.classList.toggle('is-active', mode === 'site');
+  if (hint) {
+    hint.textContent = mode === 'app' ? t('sync.primaryAppHint') : t('sync.primarySiteHint');
+  }
+}
+
+async function syncMirrorPushToCloud() {
+  await fetch('/api/sync/vocabulary', {
+    method: 'PUT',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ json: { words: words } }),
+  });
+  await __syncPut('programs', __programs);
+  await __syncPut('program_progress', __programProgress);
+}
+
+async function syncMirrorPullFromCloud() {
+  var r = await fetch('/api/sync/vocabulary', { credentials: 'include' });
+  if (r.status === 204) {
+    words = [];
+  } else if (r.ok) {
+    var data = await r.json();
+    var w = data && data.json && data.json.words;
+    words = Array.isArray(w) ? w : [];
+  } else {
+    throw new Error('vocabulary HTTP ' + r.status);
+  }
+  recomputeNextIdFromWords();
+  var pr = await authApi('/api/sync/programs');
+  if (pr.ok && pr.status !== 204) {
+    var pd = await pr.json();
+    var pj = pd && pd.json;
+    if (Array.isArray(pj)) {
+      __programs = pj.map(function (p) { return programsNormalizeProgram(p); });
+      programsSave();
+    }
+  }
+  var pp = await authApi('/api/sync/program_progress');
+  if (pp.ok && pp.status !== 204) {
+    var ppd = await pp.json();
+    if (ppd && ppd.json && typeof ppd.json === 'object') {
+      __programProgress = ppd.json;
+      programsProgressSave();
+    }
+  }
+  renderVocab();
+  updateSidebarCounts();
+  try { programsLoad(); renderProgramsList(); } catch (e) {}
+  try { ytRefreshTranscriptWordClasses(); } catch (e) {}
+}
+
+async function syncMirrorNow() {
+  if (!window.__authUser) { showToast(t('sync.signInFirst')); return; }
+  var mode = syncGetPrimary();
+  try {
+    if (mode === 'site') {
+      await syncMirrorPushToCloud();
+      showToast(tf('sync.mirrorPush', { words: words.length, programs: __programs.length }));
+    } else {
+      await syncMirrorPullFromCloud();
+      schedulePersistVocabulary();
+      showToast(tf('sync.mirrorPull', { words: words.length, programs: __programs.length }));
+    }
+  } catch (e) {
+    console.warn('syncMirrorNow', e);
+    showToast(t('sync.error'));
+  }
 }
 let videoCards = [];
 let nextVcId = 1;
@@ -2561,7 +3023,7 @@ function vocabRenameGroupPrompt(gk, currentTitle) {
     words.forEach(function(w) {
       if (!w.videoId) { w.videoId = newId; w.videoTitle = name; count++; }
     });
-    if (count) { schedulePersistVocabulary(); renderVocab(); showToast('Папка создана: ' + name); }
+    if (count) { schedulePersistVocabulary(); renderVocab(); showToast(tf('toast.folderCreated', { name: name })); }
     return;
   }
   var newTitle = prompt('Переименовать папку:', currentTitle || '');
@@ -2571,7 +3033,7 @@ function vocabRenameGroupPrompt(gk, currentTitle) {
   words.forEach(function(w) { if (w.videoId === gk) w.videoTitle = newTitle; });
   schedulePersistVocabulary();
   renderVocab();
-  showToast('Переименовано: ' + newTitle);
+  showToast(tf('toast.renamed', { title: newTitle }));
 }
 
 var __vocabMovePanel = null;
@@ -2658,7 +3120,7 @@ function vocabMoveWordTo(wordId, newVideoId, newVideoTitle) {
   schedulePersistVocabulary();
   renderVocab();
   vocabCloseMovePanel();
-  showToast('Слово перемещено в «' + (newVideoTitle || t('vocab.noFolder')) + '»');
+  showToast(tf('toast.wordMoved', { folder: newVideoTitle || t('vocab.noFolder') }));
 }
 
 function vocabNormalizeLearnMark(m) {
@@ -3033,7 +3495,7 @@ function requestChatGptLazyIfMissing(clean, el, tip) {
   fetch('/api/transcript-translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ words: [clean] }),
+    body: JSON.stringify(profileTranslationLangPairBody({ words: [clean] })),
   })
     .then(function (r) {
       return r.json().then(function (j) {
@@ -3122,7 +3584,7 @@ async function prefetchChatGptGloss(wordList, st) {
       var r = await fetch('/api/transcript-translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ words: batch }),
+        body: JSON.stringify(profileTranslationLangPairBody({ words: batch })),
       });
       var data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Ошибка перевода');
@@ -3571,15 +4033,7 @@ function booksGetPdfjs() {
 }
 
 function booksDefaultCatalog() {
-  return [
-    {
-      id: 'bundled-capitaes',
-      title: 'Capitães da Areia (Jorge Amado)',
-      kind: 'bundled',
-      type: 'pdf',
-      url: '/books/capitaes.de.areia.pdf',
-    },
-  ];
+  return [];
 }
 
 function booksReadCatalog() {
@@ -3587,12 +4041,8 @@ function booksReadCatalog() {
     var raw = localStorage.getItem(BOOKS_CATALOG_KEY);
     if (!raw) return booksDefaultCatalog();
     var arr = JSON.parse(raw);
-    if (!Array.isArray(arr) || !arr.length) return booksDefaultCatalog();
-    var hasBundled = arr.some(function (b) {
-      return b.id === 'bundled-capitaes';
-    });
-    if (!hasBundled) arr = booksDefaultCatalog().concat(arr);
-    return arr;
+    if (!Array.isArray(arr)) return booksDefaultCatalog();
+    return arr.filter(function (b) { return b && b.id !== 'bundled-capitaes'; });
   } catch (e) {
     return booksDefaultCatalog();
   }
@@ -4292,7 +4742,7 @@ function booksAddCheckedToVocab() {
     });
     booksHistorySyncSelectAll();
   } else if (skippedDup) {
-    showToast('Уже есть в словаре (' + skippedDup + ')');
+    showToast(tf('toast.alreadyInDictionaryCount', { count: skippedDup }));
   }
 }
 
@@ -4652,7 +5102,7 @@ async function booksTranslateMyMemory(text) {
     var chunk = text.slice(i, i + maxChunk);
     if (!chunk.trim()) continue;
     var u =
-      'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(chunk) + '&langpair=pt|ru';
+      'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(chunk) + '&langpair=' + profileMyMemoryLangPair();
     var res = await fetch(u);
     var data = await res.json();
     var seg =
@@ -4673,7 +5123,7 @@ async function booksTranslatePtRu(text) {
   var r = await fetch('/api/book-translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: text.slice(0, 12000) }),
+    body: JSON.stringify(profileTranslationLangPairBody({ text: text.slice(0, 12000) })),
   });
   var j = await r.json().catch(function () {
     return {};
@@ -5052,6 +5502,19 @@ var __uiLang = 'en';
 var __uiTheme = 'dark';
 var UI_STRINGS = {
   ru: {
+    'auth.loginTitle': 'Вход', 'auth.registerTitle': 'Регистрация', 'auth.forgotTitle': 'Сброс пароля', 'auth.resetTitle': 'Новый пароль', 'auth.pendingTitle': 'Проверьте почту',
+    'auth.email': 'Email', 'auth.password': 'Пароль', 'auth.passwordNew': 'Новый пароль', 'auth.passwordHint': 'Минимум 8 символов.',
+    'auth.loginBtn': 'Войти', 'auth.registerBtn': 'Создать аккаунт', 'auth.forgotBtn': 'Отправить ссылку', 'auth.resetBtn': 'Сохранить пароль', 'auth.resendBtn': 'Отправить письмо повторно', 'auth.backToLogin': 'Назад ко входу',
+    'auth.forgotLink': 'Забыли пароль?', 'auth.noAccount': 'Нет аккаунта?', 'auth.registerLink': 'Создать', 'auth.haveAccount': 'Уже есть аккаунт?', 'auth.loginLink': 'Войти',
+    'auth.pendingText': 'Мы отправили ссылку для подтверждения. Откройте её, чтобы активировать аккаунт.',
+    'auth.logout': 'Выйти', 'auth.account': 'Аккаунт', 'auth.verifyPending': 'Email не подтверждён',
+    'auth.msgVerified': 'Email подтверждён — войдите в аккаунт.', 'auth.msgVerifyFail': 'Ссылка недействительна или истекла.',
+    'auth.msgRegistered': 'Письмо отправлено. Подтвердите email, чтобы войти.', 'auth.msgInvalid': 'Неверный email или пароль.',
+    'auth.msgNotVerified': 'Сначала подтвердите email (проверьте почту).', 'auth.msgForgotSent': 'Если такой аккаунт есть — мы отправили ссылку для сброса.',
+    'auth.msgResetDone': 'Пароль изменён. Войдите с новым паролем.', 'auth.msgError': 'Что-то пошло не так. Попробуйте ещё раз.', 'auth.msgWeakPassword': 'Пароль слишком короткий (мин. 8 символов).',
+'auth.msgEmailAlreadyRegistered': 'Этот email уже зарегистрирован. Войдите в аккаунт.',
+    'auth.msgEmailPendingVerification': 'Этот email уже зарегистрирован. Подтвердите почту — мы отправили письмо повторно.',
+    'auth.msgInvalidEmail': 'Некорректный email.',
     'nav.vocabulary': 'Словарь', 'nav.reader': 'Читалка', 'nav.programs': 'Программы', 'nav.review': 'Повторение',
     'nav.progress': 'Прогресс', 'nav.dictionary': 'Большой словарь', 'nav.profile': 'Профиль', 'nav.other': 'Прочее',
     'nav.youtube': 'YouTube', 'nav.verbos': 'Глаголы', 'nav.grammar': 'Грамматика', 'nav.textgen': 'Текст по словам', 'nav.activity': 'Занятия',
@@ -5136,6 +5599,19 @@ var UI_STRINGS = {
     'review.fle-errors.title': 'FLE · ошибки', 'review.fle-errors.desc': 'Журнал ошибок и повтор проблемных тем.',
   },
   en: {
+    'auth.loginTitle': 'Sign in', 'auth.registerTitle': 'Create account', 'auth.forgotTitle': 'Reset password', 'auth.resetTitle': 'New password', 'auth.pendingTitle': 'Check your email',
+    'auth.email': 'Email', 'auth.password': 'Password', 'auth.passwordNew': 'New password', 'auth.passwordHint': 'At least 8 characters.',
+    'auth.loginBtn': 'Sign in', 'auth.registerBtn': 'Create account', 'auth.forgotBtn': 'Send reset link', 'auth.resetBtn': 'Set password', 'auth.resendBtn': 'Resend email', 'auth.backToLogin': 'Back to sign in',
+    'auth.forgotLink': 'Forgot password?', 'auth.noAccount': 'No account?', 'auth.registerLink': 'Create one', 'auth.haveAccount': 'Already registered?', 'auth.loginLink': 'Sign in',
+    'auth.pendingText': 'We sent you a verification link. Open it to activate your account.',
+    'auth.logout': 'Sign out', 'auth.account': 'Account', 'auth.verifyPending': 'Email not verified',
+    'auth.msgVerified': 'Email verified — please sign in.', 'auth.msgVerifyFail': 'This link is invalid or has expired.',
+    'auth.msgRegistered': 'Email sent. Verify your address to sign in.', 'auth.msgInvalid': 'Invalid email or password.',
+    'auth.msgNotVerified': 'Please verify your email first (check your inbox).', 'auth.msgForgotSent': 'If that account exists, we sent a reset link.',
+    'auth.msgResetDone': 'Password changed. Sign in with your new password.', 'auth.msgError': 'Something went wrong. Please try again.', 'auth.msgWeakPassword': 'Password too short (min 8 characters).',
+'auth.msgEmailAlreadyRegistered': 'This email is already registered. Sign in to your account.',
+    'auth.msgEmailPendingVerification': 'This email is already registered. Check your inbox — we sent the verification email again.',
+    'auth.msgInvalidEmail': 'Invalid email address.',
     'nav.vocabulary': 'Vocabulary', 'nav.reader': 'Reader', 'nav.programs': 'Programs', 'nav.review': 'Review',
     'nav.progress': 'Progress', 'nav.dictionary': 'Dictionary', 'nav.profile': 'Profile', 'nav.other': 'Other',
     'nav.youtube': 'YouTube', 'nav.verbos': 'Verbs', 'nav.grammar': 'Grammar', 'nav.textgen': 'Text from words', 'nav.activity': 'Activity',
@@ -5220,6 +5696,19 @@ var UI_STRINGS = {
     'review.fle-errors.title': 'FLE · errors', 'review.fle-errors.desc': 'Error log and review of problem topics.',
   },
   pt: {
+    'auth.loginTitle': 'Entrar', 'auth.registerTitle': 'Criar conta', 'auth.forgotTitle': 'Repor palavra-passe', 'auth.resetTitle': 'Nova palavra-passe', 'auth.pendingTitle': 'Verifique o seu email',
+    'auth.email': 'Email', 'auth.password': 'Palavra-passe', 'auth.passwordNew': 'Nova palavra-passe', 'auth.passwordHint': 'Pelo menos 8 caracteres.',
+    'auth.loginBtn': 'Entrar', 'auth.registerBtn': 'Criar conta', 'auth.forgotBtn': 'Enviar link', 'auth.resetBtn': 'Guardar palavra-passe', 'auth.resendBtn': 'Reenviar email', 'auth.backToLogin': 'Voltar ao início de sessão',
+    'auth.forgotLink': 'Esqueceu a palavra-passe?', 'auth.noAccount': 'Sem conta?', 'auth.registerLink': 'Criar', 'auth.haveAccount': 'Já tem conta?', 'auth.loginLink': 'Entrar',
+    'auth.pendingText': 'Enviámos um link de verificação. Abra-o para ativar a sua conta.',
+    'auth.logout': 'Terminar sessão', 'auth.account': 'Conta', 'auth.verifyPending': 'Email não verificado',
+    'auth.msgVerified': 'Email verificado — inicie sessão.', 'auth.msgVerifyFail': 'Este link é inválido ou expirou.',
+    'auth.msgRegistered': 'Email enviado. Verifique o seu endereço para entrar.', 'auth.msgInvalid': 'Email ou palavra-passe inválidos.',
+    'auth.msgNotVerified': 'Verifique primeiro o seu email (veja a caixa de entrada).', 'auth.msgForgotSent': 'Se essa conta existir, enviámos um link de reposição.',
+    'auth.msgResetDone': 'Palavra-passe alterada. Inicie sessão com a nova.', 'auth.msgError': 'Algo correu mal. Tente novamente.', 'auth.msgWeakPassword': 'Palavra-passe demasiado curta (mín. 8 caracteres).',
+'auth.msgEmailAlreadyRegistered': 'Este email já está registado. Entre na sua conta.',
+    'auth.msgEmailPendingVerification': 'Este email já está registado. Verifique a caixa de entrada — reenviámos o email de confirmação.',
+    'auth.msgInvalidEmail': 'Email inválido.',
     'nav.vocabulary': 'Vocabulário', 'nav.reader': 'Leitor', 'nav.programs': 'Programas', 'nav.review': 'Revisão',
     'nav.progress': 'Progresso', 'nav.dictionary': 'Dicionário', 'nav.profile': 'Perfil', 'nav.other': 'Outros',
     'nav.youtube': 'YouTube', 'nav.verbos': 'Verbos', 'nav.grammar': 'Gramática', 'nav.textgen': 'Texto com palavras', 'nav.activity': 'Atividade',
@@ -5304,6 +5793,418 @@ var UI_STRINGS = {
     'review.fle-errors.title': 'FLE · erros', 'review.fle-errors.desc': 'Registro de erros e revisão de tópicos.',
   },
 };
+
+function tf(key, params) {
+  var s = t(key);
+  if (params) {
+    Object.keys(params).forEach(function (k) {
+      s = s.split('{' + k + '}').join(String(params[k]));
+    });
+  }
+  return s;
+}
+
+
+
+// Injected into UI_STRINGS (ru / en / pt) — sync mirror + vocab limit
+(function () {
+  var extra = {
+    ru: {
+      'sync.section': 'Синхронизация',
+      'sync.mirrorHint': 'Зеркало: словарь и программы копируются с выбранного источника.',
+      'sync.primaryApp': 'Источник: приложение',
+      'sync.primarySite': 'Источник: сайт',
+      'sync.primaryAria': 'Источник синхронизации',
+      'sync.mirrorBtn': 'Синхронизировать',
+      'sync.primaryAppHint': 'Телефон → облако. На сайте выберите «Источник: приложение» и нажмите «Синхронизировать».',
+      'sync.primarySiteHint': 'Сайт → облако. В приложении выберите «Источник: сайт» и нажмите «Синхронизировать».',
+      'sync.signInFirst': 'Войдите в аккаунт',
+      'sync.error': 'Ошибка синхронизации',
+      'sync.mirrorPush': 'Зеркало: {words} слов, {programs} программ → облако',
+      'sync.mirrorPull': 'Зеркало: {words} слов, {programs} программ ← облако',
+      'vocab.wordLimitToast': 'Лимит {limit} слов. Удалите лишние или введите промокод.',
+      'promo.section': 'Промокод',
+      'promo.placeholder': 'FRIEND100',
+      'promo.redeem': 'Применить',
+      'promo.enterCode': 'Введите промокод',
+      'promo.applying': 'Применяем…',
+      'promo.success': 'Лимит увеличен до {limit} слов',
+      'promo.unlimited': 'Premium — без лимита слов',
+      'promo.wordUsage': 'Слов в словаре: {count} / {limit}',
+      'promo.error.generic': 'Не удалось применить промокод',
+      'promo.error.invalid_code': 'Промокод не найден',
+      'promo.error.already_redeemed': 'Вы уже использовали этот промокод',
+      'promo.error.code_exhausted': 'Промокод больше недоступен',
+      'promo.error.already_premium': 'У вас уже Premium',
+      'promo.error.missing_code': 'Введите промокод',
+      'nav.admin': 'Админ',
+      'admin.subtitle': 'Промокоды',
+      'admin.forbidden': 'Нет доступа',
+      'admin.promo.createSection': 'Создать промокод',
+      'admin.promo.listSection': 'Все промокоды',
+      'admin.promo.generate': 'Сгенерировать случайный код',
+      'admin.promo.prefix': 'Префикс',
+      'admin.promo.code': 'Код',
+      'admin.promo.wordLimit': 'Лимит слов',
+      'admin.promo.maxRedemptions': 'Макс. активаций (необяз.)',
+      'admin.promo.label': 'Заметка (необяз.)',
+      'admin.promo.createBtn': 'Создать',
+      'admin.promo.refresh': 'Обновить',
+      'admin.promo.empty': 'Промокодов пока нет',
+      'admin.promo.loading': 'Загрузка…',
+      'admin.promo.creating': 'Создаём…',
+      'admin.promo.created': 'Создан код {code}',
+      'admin.promo.createError': 'Не удалось создать промокод',
+      'admin.promo.loadError': 'Не удалось загрузить список',
+      'admin.promo.toggleError': 'Не удалось изменить статус',
+      'admin.promo.invalidLimit': 'Укажите лимит слов',
+      'admin.promo.enterCode': 'Введите код или включите генерацию',
+      'admin.promo.active': 'Активен',
+      'admin.promo.inactive': 'Выключен',
+      'admin.promo.activate': 'Включить',
+      'admin.promo.deactivate': 'Выключить',
+      'admin.promo.colCode': 'Код',
+      'admin.promo.colLimit': 'Лимит',
+      'admin.promo.colMax': 'Макс.',
+      'admin.promo.colUsed': 'Исп.',
+      'admin.promo.colStatus': 'Статус',
+      'sync.pullAdded': 'С телефона добавлено {added} слов (на сайте: {total})',
+      'sync.pullNoNew': 'Новых слов с телефона нет',
+      'sync.pullFailed': 'Не удалось загрузить слова с сервера',
+      'sync.pushAdded': 'В облако добавлено {added} слов для приложения (всего: {total})',
+      'sync.pushAllInCloud': 'Все слова с сайта уже в облаке ({total})',
+      'sync.pushFailed': 'Не удалось отправить словарь в облако',
+      'vocab.emptyTitle': 'Словарь пуст',
+      'vocab.emptyHint': 'Добавьте первое слово — кнопкой ниже или через «Добавить слово» в шапке.',
+      'vocab.emptyAddBtn': 'Добавить слово',
+      'vocab.noWordsFound': 'Слов не найдено',
+      'vocab.tryOtherQuery': 'Попробуй другой запрос или добавь новое слово.',
+      'vocab.pickWordType': 'Выберите тип слова',
+      'textgen.maxWords': 'Не больше {max} слов за раз',
+      'toast.addedToDictionary': 'В словарь: {added}{skipped}',
+      'toast.skippedDup': ' (пропущено дублей: {n})',
+    },
+    en: {
+      'sync.section': 'Sync',
+      'sync.mirrorHint': 'Mirror: vocabulary and programs copy from the selected source.',
+      'sync.primaryApp': 'Source: app',
+      'sync.primarySite': 'Source: website',
+      'sync.primaryAria': 'Sync source',
+      'sync.mirrorBtn': 'Sync',
+      'sync.primaryAppHint': 'Phone → cloud. On the site choose Source: app and tap Sync.',
+      'sync.primarySiteHint': 'Site → cloud. In the app choose Source: website and tap Sync.',
+      'sync.signInFirst': 'Sign in to your account',
+      'sync.error': 'Sync failed',
+      'sync.mirrorPush': 'Mirror: {words} words, {programs} programs → cloud',
+      'sync.mirrorPull': 'Mirror: {words} words, {programs} programs ← cloud',
+      'vocab.wordLimitToast': 'Limit of {limit} words. Remove extras or enter a promo code.',
+      'promo.section': 'Promo code',
+      'promo.placeholder': 'FRIEND100',
+      'promo.redeem': 'Apply',
+      'promo.enterCode': 'Enter a promo code',
+      'promo.applying': 'Applying…',
+      'promo.success': 'Word limit increased to {limit}',
+      'promo.unlimited': 'Premium — unlimited words',
+      'promo.wordUsage': 'Dictionary words: {count} / {limit}',
+      'promo.error.generic': 'Could not apply promo code',
+      'promo.error.invalid_code': 'Promo code not found',
+      'promo.error.already_redeemed': 'You already used this promo code',
+      'promo.error.code_exhausted': 'This promo code is no longer available',
+      'promo.error.already_premium': 'You already have Premium',
+      'promo.error.missing_code': 'Enter a promo code',
+      'nav.admin': 'Admin',
+      'admin.subtitle': 'Promo codes',
+      'admin.forbidden': 'Access denied',
+      'admin.promo.createSection': 'Create promo code',
+      'admin.promo.listSection': 'All promo codes',
+      'admin.promo.generate': 'Generate random code',
+      'admin.promo.prefix': 'Prefix',
+      'admin.promo.code': 'Code',
+      'admin.promo.wordLimit': 'Word limit',
+      'admin.promo.maxRedemptions': 'Max uses (optional)',
+      'admin.promo.label': 'Note (optional)',
+      'admin.promo.createBtn': 'Create',
+      'admin.promo.refresh': 'Refresh',
+      'admin.promo.empty': 'No promo codes yet',
+      'admin.promo.loading': 'Loading…',
+      'admin.promo.creating': 'Creating…',
+      'admin.promo.created': 'Created code {code}',
+      'admin.promo.createError': 'Could not create promo code',
+      'admin.promo.loadError': 'Could not load promo codes',
+      'admin.promo.toggleError': 'Could not update status',
+      'admin.promo.invalidLimit': 'Enter a word limit',
+      'admin.promo.enterCode': 'Enter a code or enable generation',
+      'admin.promo.active': 'Active',
+      'admin.promo.inactive': 'Inactive',
+      'admin.promo.activate': 'Activate',
+      'admin.promo.deactivate': 'Deactivate',
+      'admin.promo.colCode': 'Code',
+      'admin.promo.colLimit': 'Limit',
+      'admin.promo.colMax': 'Max',
+      'admin.promo.colUsed': 'Used',
+      'admin.promo.colStatus': 'Status',
+      'sync.pullAdded': 'Added {added} words from phone (on site: {total})',
+      'sync.pullNoNew': 'No new words from phone',
+      'sync.pullFailed': 'Could not load words from server',
+      'sync.pushAdded': 'Added {added} words to cloud for app (total: {total})',
+      'sync.pushAllInCloud': 'All site words already in cloud ({total})',
+      'sync.pushFailed': 'Could not upload dictionary to cloud',
+      'vocab.emptyTitle': 'Dictionary is empty',
+      'vocab.emptyHint': 'Add your first word below or via Add word in the header.',
+      'vocab.emptyAddBtn': 'Add word',
+      'vocab.noWordsFound': 'No words found',
+      'vocab.tryOtherQuery': 'Try another search or add a new word.',
+      'vocab.pickWordType': 'Select word type',
+      'textgen.maxWords': 'At most {max} words at a time',
+      'toast.addedToDictionary': 'To dictionary: {added}{skipped}',
+      'toast.skippedDup': ' (skipped duplicates: {n})',
+    },
+    pt: {
+      'sync.section': 'Sincronização',
+      'sync.mirrorHint': 'Espelho: vocabulário e programas copiam da fonte escolhida.',
+      'sync.primaryApp': 'Fonte: app',
+      'sync.primarySite': 'Fonte: site',
+      'sync.primaryAria': 'Fonte de sincronização',
+      'sync.mirrorBtn': 'Sincronizar',
+      'sync.primaryAppHint': 'Telefone → nuvem. No site escolha Fonte: app e toque em Sincronizar.',
+      'sync.primarySiteHint': 'Site → nuvem. No app escolha Fonte: site e toque em Sincronizar.',
+      'sync.signInFirst': 'Entre na sua conta',
+      'sync.error': 'Falha na sincronização',
+      'sync.mirrorPush': 'Espelho: {words} palavras, {programs} programas → nuvem',
+      'sync.mirrorPull': 'Espelho: {words} palavras, {programs} programas ← nuvem',
+      'vocab.wordLimitToast': 'Limite de {limit} palavras. Remova extras ou use um código promocional.',
+      'promo.section': 'Código promocional',
+      'promo.placeholder': 'FRIEND100',
+      'promo.redeem': 'Aplicar',
+      'promo.enterCode': 'Digite o código',
+      'promo.applying': 'Aplicando…',
+      'promo.success': 'Limite aumentado para {limit} palavras',
+      'promo.unlimited': 'Premium — palavras ilimitadas',
+      'promo.wordUsage': 'Palavras no dicionário: {count} / {limit}',
+      'promo.error.generic': 'Não foi possível aplicar o código',
+      'promo.error.invalid_code': 'Código não encontrado',
+      'promo.error.already_redeemed': 'Você já usou este código',
+      'promo.error.code_exhausted': 'Este código não está mais disponível',
+      'promo.error.already_premium': 'Você já tem Premium',
+      'promo.error.missing_code': 'Digite o código',
+      'nav.admin': 'Admin',
+      'admin.subtitle': 'Códigos promocionais',
+      'admin.forbidden': 'Acesso negado',
+      'admin.promo.createSection': 'Criar código',
+      'admin.promo.listSection': 'Todos os códigos',
+      'admin.promo.generate': 'Gerar código aleatório',
+      'admin.promo.prefix': 'Prefixo',
+      'admin.promo.code': 'Código',
+      'admin.promo.wordLimit': 'Limite de palavras',
+      'admin.promo.maxRedemptions': 'Máx. usos (opcional)',
+      'admin.promo.label': 'Nota (opcional)',
+      'admin.promo.createBtn': 'Criar',
+      'admin.promo.refresh': 'Atualizar',
+      'admin.promo.empty': 'Nenhum código ainda',
+      'admin.promo.loading': 'Carregando…',
+      'admin.promo.creating': 'Criando…',
+      'admin.promo.created': 'Código criado: {code}',
+      'admin.promo.createError': 'Não foi possível criar o código',
+      'admin.promo.loadError': 'Não foi possível carregar a lista',
+      'admin.promo.toggleError': 'Não foi possível alterar o status',
+      'admin.promo.invalidLimit': 'Informe o limite de palavras',
+      'admin.promo.enterCode': 'Digite o código ou ative a geração',
+      'admin.promo.active': 'Ativo',
+      'admin.promo.inactive': 'Inativo',
+      'admin.promo.activate': 'Ativar',
+      'admin.promo.deactivate': 'Desativar',
+      'admin.promo.colCode': 'Código',
+      'admin.promo.colLimit': 'Limite',
+      'admin.promo.colMax': 'Máx.',
+      'admin.promo.colUsed': 'Usos',
+      'admin.promo.colStatus': 'Status',
+      'sync.pullAdded': 'Adicionadas {added} palavras do telefone (no site: {total})',
+      'sync.pullNoNew': 'Nenhuma palavra nova do telefone',
+      'sync.pullFailed': 'Não foi possível carregar palavras do servidor',
+      'sync.pushAdded': 'Adicionadas {added} palavras à nuvem para o app (total: {total})',
+      'sync.pushAllInCloud': 'Todas as palavras do site já estão na nuvem ({total})',
+      'sync.pushFailed': 'Não foi possível enviar o dicionário à nuvem',
+      'vocab.emptyTitle': 'Dicionário vazio',
+      'vocab.emptyHint': 'Adicione a primeira palavra abaixo ou em Adicionar palavra no cabeçalho.',
+      'vocab.emptyAddBtn': 'Adicionar palavra',
+      'vocab.noWordsFound': 'Nenhuma palavra encontrada',
+      'vocab.tryOtherQuery': 'Tente outra busca ou adicione uma palavra nova.',
+      'vocab.pickWordType': 'Selecione o tipo da palavra',
+      'textgen.maxWords': 'No máximo {max} palavras por vez',
+      'toast.addedToDictionary': 'No dicionário: {added}{skipped}',
+      'toast.skippedDup': ' (duplicatas ignoradas: {n})',
+    },
+  };
+  ['ru', 'en', 'pt'].forEach(function (lang) {
+    if (UI_STRINGS[lang]) Object.assign(UI_STRINGS[lang], extra[lang]);
+  });
+})();
+
+
+// Card / subtitle translation language labels
+(function () {
+  if (typeof UI_STRINGS === 'undefined') return;
+  var extra = {
+    ru: {
+      'profile.translationLangs': 'Языки карточек и субтитров',
+      'profile.translationLangsHint': 'Выберите 2 языка.',
+    },
+    en: {
+      'profile.translationLangs': 'Card & subtitle languages',
+      'profile.translationLangsHint': 'Choose 2 languages.',
+    },
+    pt: {
+      'profile.translationLangs': 'Idiomas dos cartões e legendas',
+      'profile.translationLangsHint': 'Escolha 2 idiomas.',
+    },
+  };
+  ['ru', 'en', 'pt'].forEach(function (lang) {
+    if (UI_STRINGS[lang]) Object.assign(UI_STRINGS[lang], extra[lang]);
+  });
+})();
+
+
+// Card / subtitle — two language pickers
+(function () {
+  if (typeof UI_STRINGS === 'undefined') return;
+  var extra = {
+    ru: {
+      'profile.translationLangsHint': 'Выберите 2 языка.',
+    },
+    en: {
+      'profile.translationLangsHint': 'Choose 2 languages.',
+    },
+    pt: {
+      'profile.translationLangsHint': 'Escolha 2 idiomas.',
+    },
+  };
+  ['ru', 'en', 'pt'].forEach(function (lang) {
+    if (UI_STRINGS[lang]) Object.assign(UI_STRINGS[lang], extra[lang]);
+  });
+})();
+
+(function () {
+  if (typeof UI_STRINGS === 'undefined') return;
+  var extra = {
+    ru: {
+      'study.lang.pt': 'Português',
+      'study.lang.en': 'English',
+      'study.lang.ru': 'Русский',
+      'study.fieldWord': 'Слово или фраза ({short})',
+      'study.fieldTranslation': 'Перевод ({short})',
+      'study.fieldInf': 'Инфинитив ({short})',
+      'study.placeholderWord': 'Слово ({short})',
+      'study.placeholderTranslation': 'Перевод ({short})',
+      'study.importHint': 'Столбцы: слово ({fromShort}), перевод ({toShort}). Дополнительно: пример, тип, инфинитив. Разделители: таб, запятая или точка с запятой.',
+      'toast.enterWordOrPhraseFirst': 'Сначала введите слово или фразу ({short})',
+      'study.voiceSource': 'Голосом ({lang})',
+      'study.voiceTarget': 'Голосом ({lang})',
+      'study.ttsSource': '{short}: слово или пример',
+      'study.ttsTarget': '{short}: перевод',
+      'voice.unavailable': 'Голосовой ввод недоступен. Используй Chrome или Edge и разреши доступ к микрофону.',
+      'voice.listening': 'Слушаю…',
+      'voice.done': 'Готово. Проверь и нажми «Добавить».',
+      'voice.micDenied': 'Микрофон запрещён — разреши доступ в настройках сайта.',
+      'voice.error': 'Ошибка: ',
+      'voice.startFailed': 'Не удалось запустить голосовой ввод.',
+      'toast.copied': 'Скопировано',
+    },
+    en: {
+      'study.lang.pt': 'Portuguese',
+      'study.lang.en': 'English',
+      'study.lang.ru': 'Russian',
+      'study.fieldWord': 'Word or phrase ({short})',
+      'study.fieldTranslation': 'Translation ({short})',
+      'study.fieldInf': 'Infinitive ({short})',
+      'study.placeholderWord': 'Word ({short})',
+      'study.placeholderTranslation': 'Translation ({short})',
+      'study.importHint': 'Columns: word ({fromShort}), translation ({toShort}). Optional: example, type, infinitive. Tab, comma or semicolon delimiters.',
+      'toast.enterWordOrPhraseFirst': 'Enter a word or phrase ({short}) first',
+      'study.voiceSource': 'Voice ({lang})',
+      'study.voiceTarget': 'Voice ({lang})',
+      'study.ttsSource': '{short}: word or example',
+      'study.ttsTarget': '{short}: translation',
+      'voice.unavailable': 'Voice input unavailable. Use Chrome or Edge and allow microphone access.',
+      'voice.listening': 'Listening…',
+      'voice.done': 'Done. Check and tap Add.',
+      'voice.micDenied': 'Microphone denied — allow access in site settings.',
+      'voice.error': 'Error: ',
+      'voice.startFailed': 'Could not start voice input.',
+      'toast.copied': 'Copied',
+    },
+    pt: {
+      'study.lang.pt': 'Português',
+      'study.lang.en': 'English',
+      'study.lang.ru': 'Russo',
+      'study.fieldWord': 'Palavra ou frase ({short})',
+      'study.fieldTranslation': 'Tradução ({short})',
+      'study.fieldInf': 'Infinitivo ({short})',
+      'study.placeholderWord': 'Palavra ({short})',
+      'study.placeholderTranslation': 'Tradução ({short})',
+      'study.importHint': 'Colunas: palavra ({fromShort}), tradução ({toShort}). Opcional: exemplo, tipo, infinitivo. Separadores: tab, vírgula ou ponto e vírgula.',
+      'toast.enterWordOrPhraseFirst': 'Digite uma palavra ou frase ({short}) primeiro',
+      'study.voiceSource': 'Por voz ({lang})',
+      'study.voiceTarget': 'Por voz ({lang})',
+      'study.ttsSource': '{short}: palavra ou exemplo',
+      'study.ttsTarget': '{short}: tradução',
+      'voice.unavailable': 'Entrada por voz indisponível. Use Chrome ou Edge e permita o microfone.',
+      'voice.listening': 'Ouvindo…',
+      'voice.done': 'Pronto. Confira e toque em Adicionar.',
+      'voice.micDenied': 'Microfone negado — permita o acesso nas configurações do site.',
+      'voice.error': 'Erro: ',
+      'voice.startFailed': 'Não foi possível iniciar a entrada por voz.',
+      'toast.copied': 'Copiado',
+    },
+  };
+  ['ru', 'en', 'pt'].forEach(function (lang) {
+    Object.keys(extra[lang]).forEach(function (key) {
+      UI_STRINGS[lang][key] = extra[lang][key];
+    });
+  });
+})();
+
+
+(function () {
+  if (typeof UI_STRINGS === 'undefined') return;
+  var extra = {
+    ru: {
+      'ui.title.undoDelete': 'Вернуть удалённое слово',
+      'ui.title.vocabFontSize': 'Размер шрифта в таблице и карточках',
+      'ui.title.vocabFont': 'Начертание',
+      'ui.title.speakSelected': 'Сначала отметьте строки галочкой в колонке №',
+      'ui.title.stopTts': 'Остановить озвучку',
+      'ui.title.ytLang': 'Предпочитаемый язык дорожки',
+      'ui.title.hoverTranslate': 'Источник перевода слова по наведению',
+      'ui.title.autoTranslate': 'Подставить перевод через API (как субтитры)',
+    },
+    en: {
+      'ui.title.undoDelete': 'Restore deleted word',
+      'ui.title.vocabFontSize': 'Font size in table and cards',
+      'ui.title.vocabFont': 'Typeface',
+      'ui.title.speakSelected': 'Select rows with the checkbox in the # column first',
+      'ui.title.stopTts': 'Stop speech',
+      'ui.title.ytLang': 'Preferred subtitle track language',
+      'ui.title.hoverTranslate': 'Hover word translation source',
+      'ui.title.autoTranslate': 'Fill translation via API (like subtitles)',
+    },
+    pt: {
+      'ui.title.undoDelete': 'Restaurar palavra excluída',
+      'ui.title.vocabFontSize': 'Tamanho da fonte na tabela e cartões',
+      'ui.title.vocabFont': 'Fonte',
+      'ui.title.speakSelected': 'Marque as linhas com a caixa na coluna №',
+      'ui.title.stopTts': 'Parar áudio',
+      'ui.title.ytLang': 'Idioma preferido da faixa de legendas',
+      'ui.title.hoverTranslate': 'Fonte da tradução ao passar o mouse',
+      'ui.title.autoTranslate': 'Preencher tradução via API (como legendas)',
+    },
+  };
+  ['ru', 'en', 'pt'].forEach(function (lang) {
+    Object.keys(extra[lang]).forEach(function (key) {
+      UI_STRINGS[lang][key] = extra[lang][key];
+    });
+  });
+})();
+
 function t(key) {
   var pack = UI_STRINGS[__uiLang] || UI_STRINGS.en;
   return (pack && pack[key]) || (UI_STRINGS.en && UI_STRINGS.en[key]) || key;
@@ -5331,8 +6232,129 @@ var __profileSubtitleLang = 0;
 var __profilePhraseCopy = true;
 var __profileWordContext = true;
 var __profileSubtitleFont = 0;
-var PROFILE_SUBTITLE_LANG_CODES = ['pt', 'en', 'ru', 'es'];
+var PROFILE_SUBTITLE_LANG_CODES = ['pt', 'en', 'ru'];
 var PROFILE_SUBTITLE_FONT_SCALES = { '-2': 0.85, '-1': 0.92, '0': 1, '1': 1.12, '2': 1.25 };
+
+
+
+function studyLangShort(code) {
+  var c = String(code || 'pt').toLowerCase();
+  if (c === 'en') return 'EN';
+  if (c === 'ru') return 'RU';
+  return 'PT';
+}
+
+function studyLangDisplayName(code) {
+  var c = String(code || 'pt').toLowerCase();
+  var key = 'study.lang.' + c;
+  var name = t(key);
+  return name && name !== key ? name : studyLangShort(c);
+}
+
+function studyDirLabel(fromCode, toCode) {
+  return studyLangShort(fromCode) + ' \u2192 ' + studyLangShort(toCode);
+}
+
+function studyDirLabelForward() {
+  return studyDirLabel(profileTranslationFromCode(), profileTranslationToCode());
+}
+
+function studyDirLabelReversed() {
+  return studyDirLabel(profileTranslationToCode(), profileTranslationFromCode());
+}
+
+function studyFieldLabel(kind) {
+  var from = profileTranslationFromCode();
+  var to = profileTranslationToCode();
+  var lang = kind === 'translation' ? studyLangDisplayName(to) : studyLangDisplayName(from);
+  var short = kind === 'translation' ? studyLangShort(to) : studyLangShort(from);
+  var patternKey = kind === 'translation' ? 'study.fieldTranslation' : (kind === 'inf' ? 'study.fieldInf' : 'study.fieldWord');
+  var pattern = t(patternKey);
+  if (!pattern || pattern === patternKey) {
+    if (kind === 'translation') return (t('vocab.colTranslation') || 'Translation') + ' (' + short + ')';
+    return studyLangDisplayName(from) + ' (' + short + ')';
+  }
+  return pattern.replace(/\{lang\}/g, lang).replace(/\{short\}/g, short);
+}
+
+function studyPlaceholderWord() {
+  var pattern = t('study.placeholderWord');
+  var short = studyLangShort(profileTranslationFromCode());
+  if (!pattern || pattern === 'study.placeholderWord') return t('vocab.placeholderWord') || short;
+  return pattern.replace(/\{short\}/g, short);
+}
+
+function studyPlaceholderTranslation() {
+  var pattern = t('study.placeholderTranslation');
+  var short = studyLangShort(profileTranslationToCode());
+  if (!pattern || pattern === 'study.placeholderTranslation') return t('vocab.placeholderTranslation') || short;
+  return pattern.replace(/\{short\}/g, short);
+}
+
+function vocabColWordLabel() {
+  return studyLangDisplayName(profileTranslationFromCode());
+}
+
+function vocabColTranslationLabel() {
+  return studyLangDisplayName(profileTranslationToCode());
+}
+
+function programsRefreshDirLabel() {
+  var span = document.querySelector('.fc-dir-toggle span');
+  if (!span) return;
+  var reversed = window.__fcDir === 'ru2pt';
+  span.textContent = reversed ? studyDirLabelReversed() : studyDirLabelForward();
+}
+
+function profileRefreshStudyLangUi() {
+  var fromCode = profileTranslationFromCode();
+  var toCode = profileTranslationToCode();
+  var el = document.getElementById('input-word-label');
+  if (el) el.textContent = studyFieldLabel('word');
+  document.querySelectorAll('[data-study-lang="translation"]').forEach(function (node) {
+    node.textContent = studyFieldLabel('translation');
+  });
+  document.querySelectorAll('[data-study-lang="translationCol"]').forEach(function (node) {
+    node.textContent = studyFieldLabel('translation');
+  });
+  document.querySelectorAll('[data-study-lang="sourceCol"]').forEach(function (node) {
+    node.textContent = studyLangDisplayName(fromCode);
+  });
+  document.querySelectorAll('[data-study-lang="sourceShort"]').forEach(function (node) {
+    node.textContent = studyLangShort(fromCode);
+  });
+  document.querySelectorAll('[data-study-lang="targetShort"]').forEach(function (node) {
+    node.textContent = studyLangShort(toCode);
+  });
+  var hint = document.querySelector('[data-study-lang="importHint"]');
+  if (hint) {
+    var fromName = studyLangDisplayName(fromCode);
+    var toName = studyLangDisplayName(toCode);
+    var fromShort = studyLangShort(fromCode);
+    var toShort = studyLangShort(toCode);
+    var p = t('study.importHint');
+    if (p && p !== 'study.importHint') {
+      hint.textContent = p
+        .replace(/\{from\}/g, fromName)
+        .replace(/\{to\}/g, toName)
+        .replace(/\{fromShort\}/g, fromShort)
+        .replace(/\{toShort\}/g, toShort);
+    }
+  }
+  document.querySelectorAll('[data-study-lang="inf"]').forEach(function (node) {
+    node.textContent = studyFieldLabel('inf');
+  });
+  ['source', 'target'].forEach(function (kind) {
+    var mic = document.getElementById(kind === 'source' ? 'voice-mic-source' : 'voice-mic-target');
+    if (mic) mic.title = studyVoiceTitle(kind);
+    var tts = document.getElementById(kind === 'source' ? 'fc-tts-source' : 'fc-tts-target');
+    if (tts) tts.title = studyTtsTitle(kind);
+  });
+  try { programsRefreshDirLabel(); } catch (e) {}
+  var activeView = document.querySelector('.view.active');
+  if (activeView && activeView.id === 'view-vocab' && typeof renderVocab === 'function') renderVocab();
+}
+
 
 function profileSubtitleLangToCode(n) {
   return PROFILE_SUBTITLE_LANG_CODES[n] || 'pt';
@@ -5343,6 +6365,65 @@ function profileSubtitleCodeToLang(code) {
   var i = PROFILE_SUBTITLE_LANG_CODES.indexOf(c);
   return i >= 0 ? i : 0;
 }
+
+var TRANSLATION_TARGET_LANG_KEY = 'profconq_translation_target_lang_v1';
+var __profileTranslationTargetLang = 2;
+
+function profileTranslationTargetLangToCode(n) {
+  return PROFILE_SUBTITLE_LANG_CODES[n] || 'ru';
+}
+
+function profileTranslationTargetCodeToLang(code) {
+  var c = String(code || 'ru').toLowerCase();
+  var i = PROFILE_SUBTITLE_LANG_CODES.indexOf(c);
+  return i >= 0 ? i : 2;
+}
+
+function profileTranslationFromCode() {
+  return profileSubtitleLangToCode(__profileSubtitleLang);
+}
+
+function profileTranslationToCode() {
+  return profileTranslationTargetLangToCode(__profileTranslationTargetLang);
+}
+
+function profileTranslationLangPairBody(extra) {
+  var body = { fromLang: profileTranslationFromCode(), toLang: profileTranslationToCode() };
+  if (extra && typeof extra === 'object') {
+    Object.keys(extra).forEach(function (k) { body[k] = extra[k]; });
+  }
+  return body;
+}
+
+function profileMyMemoryLangPair() {
+  return profileTranslationFromCode() + '|' + profileTranslationToCode();
+}
+
+function profileSaveTranslationTargetLang() {
+  try { localStorage.setItem(TRANSLATION_TARGET_LANG_KEY, String(__profileTranslationTargetLang)); } catch (e) {}
+}
+
+function profileSetTranslationFromLang(code) {
+  __profileSubtitleLang = Math.max(0, Math.min(2, code | 0));
+  profileSaveSubtitleLang();
+  profileSyncChipRow('profile-translation-from-chips', __profileSubtitleLang);
+  profileSyncYtLangSelect();
+  try { profileRefreshStudyLangUi(); } catch (e) {}
+  if (__ytCurrentVid) void fetchAndRenderTranscript(__ytCurrentVid);
+}
+
+function profileSetTranslationTargetLang(code) {
+  __profileTranslationTargetLang = Math.max(0, Math.min(2, code | 0));
+  profileSaveTranslationTargetLang();
+  profileSyncChipRow('profile-translation-to-chips', __profileTranslationTargetLang);
+  try { profileRefreshStudyLangUi(); } catch (e) {}
+  if (__transcriptTimedLines && __transcriptTimedLines.length) void prefetchTranscriptGloss(__transcriptTimedLines);
+}
+
+function profileSetSubtitleLang(code) {
+  profileSetTranslationFromLang(code);
+}
+
 
 function profileSubtitleFontLabel(level) {
   level = Math.max(-2, Math.min(2, level | 0));
@@ -5360,7 +6441,7 @@ function profileWordContextEnabled() {
 function loadProfilePrefs() {
   try {
     var raw = localStorage.getItem(SUBTITLE_LANG_KEY);
-    if (raw === '0' || raw === '1' || raw === '2' || raw === '3') __profileSubtitleLang = parseInt(raw, 10);
+    if (raw === '0' || raw === '1' || raw === '2') __profileSubtitleLang = parseInt(raw, 10);
     else if (raw && PROFILE_SUBTITLE_LANG_CODES.indexOf(String(raw).toLowerCase()) >= 0) __profileSubtitleLang = profileSubtitleCodeToLang(raw);
   } catch (e) {}
   try {
@@ -5373,6 +6454,13 @@ function loadProfilePrefs() {
     if (wc === '0') __profileWordContext = false;
     else if (wc === '1') __profileWordContext = true;
   } catch (e4) {}
+  try {
+    var tgt = localStorage.getItem(TRANSLATION_TARGET_LANG_KEY);
+    if (tgt === '0' || tgt === '1' || tgt === '2') __profileTranslationTargetLang = parseInt(tgt, 10);
+    else if (tgt && PROFILE_SUBTITLE_LANG_CODES.indexOf(String(tgt).toLowerCase()) >= 0) __profileTranslationTargetLang = profileTranslationTargetCodeToLang(tgt);
+  } catch (eTgt) {}
+  __profileSubtitleLang = Math.max(0, Math.min(2, __profileSubtitleLang | 0));
+  __profileTranslationTargetLang = Math.max(0, Math.min(2, __profileTranslationTargetLang | 0));
   try {
     var sf = parseInt(localStorage.getItem(SUBTITLE_FONT_KEY), 10);
     if (!isNaN(sf)) __profileSubtitleFont = Math.max(-2, Math.min(2, sf));
@@ -5408,7 +6496,8 @@ function profileSyncChipRow(rowId, value) {
 function profileSyncSettingsUi() {
   profileSyncChipRow('profile-theme-chips', __uiTheme);
   profileSyncChipRow('profile-lang-chips', __uiLang);
-  profileSyncChipRow('profile-subtitle-lang-chips', __profileSubtitleLang);
+  profileSyncChipRow('profile-translation-from-chips', __profileSubtitleLang);
+  profileSyncChipRow('profile-translation-to-chips', __profileTranslationTargetLang);
   var cg = document.getElementById('profile-chatgpt-toggle');
   if (cg) cg.checked = hoverTranslateSource() === 'chatgpt';
   var pc = document.getElementById('profile-phrase-copy-toggle');
@@ -5449,11 +6538,7 @@ function profileSetUiLang(lang) {
 }
 
 function profileSetSubtitleLang(code) {
-  __profileSubtitleLang = Math.max(0, Math.min(3, code | 0));
-  profileSaveSubtitleLang();
-  profileSyncChipRow('profile-subtitle-lang-chips', __profileSubtitleLang);
-  profileSyncYtLangSelect();
-  if (__ytCurrentVid) void fetchAndRenderTranscript(__ytCurrentVid);
+  profileSetTranslationFromLang(code);
 }
 
 function profileSetChatGpt(on) {
@@ -5507,12 +6592,20 @@ function setUiTheme(theme) {
 function applyUiLanguage() {
   document.documentElement.lang = __uiLang === 'pt' ? 'pt' : __uiLang === 'en' ? 'en' : 'ru';
   document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    if (el.hasAttribute('data-study-lang')) return;
     var key = el.getAttribute('data-i18n');
     if (!key) return;
     el.textContent = t(key);
   });
+
+  document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+    var key = el.getAttribute('data-i18n-title');
+    if (key) el.title = t(key);
+  });
+  try { profileRefreshStudyLangUi(); } catch (eStudy) {}
   syncProfileLangSelect();
   profileSyncSettingsUi();
+  try { syncUpdatePrimaryUi(); } catch (e) {}
   profileRenderStats();
   var activeView = document.querySelector('.view.active');
   if (activeView && activeView.id) {
@@ -5527,8 +6620,77 @@ function onProfileUiLangChange() {
 function onProfileThemeChange() {
   profileSetTheme((document.getElementById('profile-theme') && document.getElementById('profile-theme').value) || __uiTheme);
 }
+
+async function redeemPromoCode() {
+  var input = document.getElementById('profile-promo-code');
+  var msgEl = document.getElementById('profile-promo-msg');
+  var code = input && input.value ? input.value.trim() : '';
+  if (!code) {
+    if (msgEl) msgEl.textContent = t('promo.enterCode');
+    return;
+  }
+  if (!window.__authUser) {
+    showToast(t('sync.signInFirst'));
+    return;
+  }
+  if (msgEl) msgEl.textContent = t('promo.applying');
+  try {
+    var r = await authApi('/api/promo/redeem', {
+      method: 'POST',
+      body: JSON.stringify({ code: code }),
+    });
+    var data = await r.json().catch(function () { return {}; });
+    if (r.ok && data.user) {
+      window.__authUser = data.user;
+      if (input) input.value = '';
+      if (msgEl) msgEl.textContent = tf('promo.success', { limit: data.user.wordLimit || data.wordLimit });
+      profileRenderAccount();
+      showToast(tf('promo.success', { limit: data.user.wordLimit || data.wordLimit }));
+      return;
+    }
+    var errKey = 'promo.error.' + (data.error || 'generic');
+    var msg = t(errKey);
+    if (msg === errKey) msg = t('promo.error.generic');
+    if (msgEl) msgEl.textContent = msg;
+    showToast(msg);
+  } catch (e) {
+    if (msgEl) msgEl.textContent = t('promo.error.generic');
+    showToast(t('promo.error.generic'));
+  }
+}
+
+function profileRenderWordLimit() {
+  var el = document.getElementById('profile-word-limit-row');
+  if (!el) return;
+  var u = window.__authUser;
+  if (!u) { el.textContent = ''; return; }
+  if (u.plan === 'premium') {
+    el.textContent = t('promo.unlimited');
+    return;
+  }
+  var limit = (typeof u.wordLimit === 'number' && u.wordLimit > 0) ? u.wordLimit : FREE_VOCAB_WORD_LIMIT;
+  var count = typeof u.wordCount === 'number' ? u.wordCount : (typeof words !== 'undefined' ? words.length : 0);
+  el.textContent = tf('promo.wordUsage', { count: count, limit: limit });
+}
+
+function profileRenderAccount() {
+  var emailEl = document.getElementById('profile-account-email');
+  var planEl = document.getElementById('profile-account-plan');
+  var u = window.__authUser;
+  if (emailEl) emailEl.textContent = u && u.email ? u.email : '—';
+  if (planEl) {
+    if (!u) { planEl.textContent = ''; return; }
+    var label = (u.plan === 'free' || !u.plan) ? 'Free' : u.plan;
+    if (u.emailVerified === false) label += ' · ' + t('auth.verifyPending');
+    planEl.textContent = label;
+  }
+  profileRenderWordLimit();
+}
+
+
 function initProfileView() {
   profileRenderStats();
+  profileRenderAccount();
   profileSyncSettingsUi();
   applyUiLanguage();
   try { lucide.createIcons(); } catch (e) {}
@@ -6668,9 +7830,7 @@ function programsStudySyncUi() {
     var st = window.__programStudy;
     var prog = programsFind(st.progId);
     var reversed = window.__fcDir === 'ru2pt';
-    var dirLabel = reversed
-      ? (t('programs.dirRuPt') || 'RU → PT')
-      : (t('programs.dirPtRu') || 'PT → RU');
+    var dirLabel = reversed ? studyDirLabelReversed() : studyDirLabelForward();
     banner.style.display = 'flex';
     banner.innerHTML =
       '<span class="fc-program-info"><strong>' + escapeHtml(prog ? prog.name : '') + '</strong> · ' +
@@ -7015,7 +8175,7 @@ function programsPickerToggle(id, on) {
     programsPickerSyncDom();
   } catch (e) {
     console.error('programsPickerToggle', e);
-    showToast('Ошибка выбора карточки: ' + e.message);
+    showToast(tf('toast.cardPickError', { message: e.message || '' }));
   }
 }
 
@@ -7030,7 +8190,7 @@ function programsPickerSelectAll(on) {
     programsPickerSyncDom();
   } catch (e) {
     console.error('programsPickerSelectAll', e);
-    showToast('Ошибка: ' + e.message);
+    showToast(tf('toast.errorWithMessage', { message: e.message || '' }));
   }
 }
 
@@ -7168,7 +8328,7 @@ function navigate(viewId, el, fromRouter) {
   document.getElementById('page-title').textContent = pageTitleFor(viewId);
   document.documentElement.classList.toggle('active-view-youtube', viewId === 'youtube');
   const addBtn = document.getElementById('add-word-btn');
-  addBtn.style.display = viewId === 'vocab' ? 'inline-flex' : 'none';
+  if (addBtn) addBtn.style.display = viewId === 'vocab' ? 'inline-flex' : 'none';
   if (viewId === 'flashcards') initFlashcards();
   if (viewId === 'tests') initTestsView();
   if (viewId === 'grammar') initGrammar();
@@ -7494,7 +8654,7 @@ function onTextgenCheckboxChange(cb) {
     var n = document.querySelectorAll('#textgen-word-list input[type=checkbox]:checked').length;
     if (n > TEXTGEN_MAX) {
       cb.checked = false;
-      showToast('Не больше ' + TEXTGEN_MAX + ' слов за раз');
+      showToast(tf('textgen.maxWords', { max: TEXTGEN_MAX }));
     }
   }
   updateTextgenSelCount();
@@ -7602,13 +8762,13 @@ function runTextgenStory() {
 function copyTextgenPt() {
   var t = document.getElementById('textgen-out-pt');
   if (!t || !t.textContent) return;
-  navigator.clipboard.writeText(t.textContent).then(function () { showToast('Скопировано'); }).catch(function () {});
+  navigator.clipboard.writeText(t.textContent).then(function () { showToast(t('toast.copied') || 'Copied'); }).catch(function () {});
 }
 
 function copyTextgenRu() {
   var t = document.getElementById('textgen-out-ru');
   if (!t || !t.textContent) return;
-  navigator.clipboard.writeText(t.textContent).then(function () { showToast('Скопировано'); }).catch(function () {});
+  navigator.clipboard.writeText(t.textContent).then(function () { showToast(t('toast.copied') || 'Copied'); }).catch(function () {});
 }
 
 // ═══════════════════════════════════════════════════════
@@ -8148,7 +9308,7 @@ function vocabTableColgroupHtml() {
 }
 
 function vocabTableTheadHtml() {
-  var labels = ['\u2116', t('vocab.colWord'), t('vocab.colTranslation'), t('vocab.colType'), t('vocab.colInf'), t('vocab.colExample'), ''];
+  var labels = ['\u2116', vocabColWordLabel(), vocabColTranslationLabel(), t('vocab.colType'), t('vocab.colInf'), t('vocab.colExample'), ''];
   var parts = '<thead><tr>';
   var lastResize = VOCAB_TABLE_COL_COUNT - 2;
   for (var i = 0; i < VOCAB_TABLE_COL_COUNT; i++) {
@@ -9093,7 +10253,7 @@ async function vocabExportExcel() {
       var writable = await fh.createWritable();
       await writable.write(csvText);
       await writable.close();
-      showToast(toastMsg + ' (откройте в Excel)');
+      showToast(tf('toast.exportExcel', { msg: toastMsg }));
     } catch (e) {
       if (e && e.name !== 'AbortError') showToast('Ошибка сохранения файла');
     }
@@ -9104,7 +10264,7 @@ async function vocabExportExcel() {
     a.download = suggestedName;
     a.click();
     URL.revokeObjectURL(a.href);
-    showToast(toastMsg + ' (откройте в Excel)');
+    showToast(tf('toast.exportExcel', { msg: toastMsg }));
   }
 }
 
@@ -9644,7 +10804,7 @@ function renderVocab() {
   vocabSyncToolbar();
   if (!filtered.length) {
     grid.className = vocabViewMode === 'table' ? 'vocab-table-wrap' : 'vocab-grid';
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i data-lucide="search-x"></i><h3>Слов не найдено</h3><p>Попробуй другой запрос или добавь новое слово.</p></div>`;
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i data-lucide="book-open"></i><h3>${t('vocab.emptyTitle')}</h3><p>${t('vocab.emptyHint')}</p><button type="button" class="btn btn-primary" onclick="openAddWord()"><i data-lucide="plus"></i> ${t('vocab.emptyAddBtn')}</button></div>`;
     lucide.createIcons();
     syncTextgenListIfActive();
     return;
@@ -9696,6 +10856,7 @@ function renderVocab() {
     }
     parts.push('</div>');
   }
+  parts.push('<div class="vocab-add-inline-bar"><button type="button" class="btn btn-primary btn-sm" onclick="openAddWord()"><i data-lucide="plus"></i> ' + t('vocab.emptyAddBtn') + '</button></div>');
   grid.innerHTML = parts.join('');
   lucide.createIcons();
   syncTextgenListIfActive();
@@ -9899,10 +11060,14 @@ function startVoiceField(langKey, ev) {
   if (ev && ev.preventDefault) ev.preventDefault();
   var C = getSpeechRecognitionCtor();
   if (!C) {
-    alert('Голосовой ввод недоступен. Используй Chrome или Edge и разреши доступ к микрофону.');
+    alert(t('voice.unavailable') || 'Voice input unavailable. Use Chrome or Edge and allow microphone access.');
     return;
   }
-  var btn = document.getElementById(langKey === 'pt' ? 'voice-mic-pt' : 'voice-mic-ru');
+  var kind = studyVoiceFieldKind(langKey);
+  var code = kind === 'source' ? profileTranslationFromCode() : profileTranslationToCode();
+  var btnId = kind === 'source' ? 'voice-mic-source' : 'voice-mic-target';
+  var legacyBtnId = kind === 'source' ? 'voice-mic-pt' : 'voice-mic-ru';
+  var btn = document.getElementById(btnId) || document.getElementById(legacyBtnId);
   if (__speechRec && __voiceActiveBtn === btn) {
     stopVoiceInput();
     setVoiceStatus('');
@@ -9910,38 +11075,43 @@ function startVoiceField(langKey, ev) {
   }
   stopVoiceInput();
   var rec = new C();
-  rec.lang = langKey === 'pt' ? 'pt-BR' : 'ru-RU';
+  rec.lang = studySpeechLocale(code);
   rec.interimResults = false;
   rec.maxAlternatives = 1;
   rec.continuous = false;
   __speechRec = rec;
   __voiceActiveBtn = btn;
   if (btn) btn.classList.add('recording');
-  setVoiceStatus('Слушаю…');
+  setVoiceStatus(t('voice.listening') || 'Listening…');
 
   rec.onresult = function (e) {
     var text = '';
     try {
       text = (e.results[0] && e.results[0][0]) ? e.results[0][0].transcript.trim() : '';
     } catch (err) {}
-    if (langKey === 'pt') document.getElementById('input-word').value = text;
+    if (kind === 'source') document.getElementById('input-word').value = text;
     else document.getElementById('input-translation').value = text;
-    setVoiceStatus('Готово. Проверь и нажми «Добавить».');
+    setVoiceStatus(t('voice.done') || 'Done. Check and tap Add.');
   };
   rec.onerror = function (e) {
     var err = e.error || '';
-    setVoiceStatus(err === 'not-allowed' ? 'Микрофон запрещён — разреши доступ в настройках сайта.' : 'Ошибка: ' + err, true);
+    setVoiceStatus(
+      err === 'not-allowed'
+        ? (t('voice.micDenied') || 'Microphone denied — allow access in site settings.')
+        : (t('voice.error') || 'Error: ') + err,
+      true,
+    );
   };
   rec.onend = function () {
     if (__voiceActiveBtn) __voiceActiveBtn.classList.remove('recording');
     __voiceActiveBtn = null;
     __speechRec = null;
   };
-  try {
-    rec.start();
-  } catch (err) {
-    setVoiceStatus('Не удалось запустить распознавание.', true);
-    stopVoiceInput();
+  try { rec.start(); } catch (err) {
+    setVoiceStatus(t('voice.startFailed') || 'Could not start voice input.', true);
+    if (btn) btn.classList.remove('recording');
+    __voiceActiveBtn = null;
+    __speechRec = null;
   }
 }
 
@@ -10001,12 +11171,136 @@ function startVoicePhraseBoth(ev) {
   }
 }
 
+
+
+
+var FREE_VOCAB_WORD_LIMIT = 10;
+
+function vocabEffectiveLimit() {
+  if (window.__authUser && window.__authUser.plan === 'premium') return Infinity;
+  var custom = window.__authUser && window.__authUser.wordLimit;
+  if (typeof custom === 'number' && custom > 0) return custom;
+  return FREE_VOCAB_WORD_LIMIT;
+}
+
+function vocabCanAddMoreWords() {
+  if (window.__authUser && window.__authUser.plan === 'premium') return true;
+  return words.length < vocabEffectiveLimit();
+}
+
+function vocabShowWordLimitToast() {
+  showToast(tf('vocab.wordLimitToast', { limit: vocabEffectiveLimit() }));
+}
+
+var FREE_VOCAB_WORD_LIMIT = 10;
+
+function vocabCanAddMoreWords() {
+  if (window.__authUser && window.__authUser.plan === 'premium') return true;
+  return words.length < FREE_VOCAB_WORD_LIMIT;
+}
+
+function vocabShowWordLimitToast() {
+  vocabShowWordLimitToast();
+}
+
+function vocabInsertNewWord(payload) {
+  var vidNew = __ytCurrentVid || null;
+  var vtNew = '';
+  if (vidNew) {
+    vtNew = (__ytVideoTitle && String(__ytVideoTitle).trim())
+      ? String(__ytVideoTitle).trim()
+      : ('YouTube · ' + vidNew);
+  }
+  if (!vocabCanAddMoreWords()) {
+    vocabShowWordLimitToast();
+    return;
+  }
+  words.push(Object.assign({
+    id: nextId++,
+    interval: 1,
+    easeFactor: 2.5,
+    nextReview: 0,
+    reps: 0,
+    videoId: vidNew,
+    videoTitle: vtNew,
+  }, payload));
+  renderVocab();
+  updateSidebarCounts();
+  ytRefreshTranscriptWordClasses();
+  refreshVideoDeckChips();
+  schedulePersistVocabulary();
+  try { renderYtHistory(); } catch (e) {}
+}
+
+function vocabQuickAdd() {
+  var wEl = document.getElementById('vocab-quick-word');
+  var tEl = document.getElementById('vocab-quick-translation');
+  if (!wEl || !tEl) return;
+  var w = wEl.value.trim();
+  var t = tEl.value.trim();
+  if (!w || !t) {
+    showToast('Укажите слово и перевод');
+    wEl.focus();
+    return;
+  }
+  var exEl = document.getElementById('vocab-quick-example');
+  var tagEl = document.getElementById('vocab-quick-tag');
+  var tag = tagEl ? tagEl.value.trim() : '';
+  if (!tag) tag = 'geral';
+  var inf = '';
+  if (tag === 'verbo') {
+    inf = guessPtVerbInfinitivo(w) || '';
+  }
+  vocabInsertNewWord({
+    word: w,
+    translation: t,
+    example: exEl ? exEl.value.trim() : '',
+    tag: tag,
+    img: '',
+    infinitivo: inf,
+    learnMark: '',
+  });
+  wEl.value = '';
+  tEl.value = '';
+  if (exEl) exEl.value = '';
+  if (tagEl) tagEl.value = '';
+  showToast('Слово добавлено');
+  wEl.focus();
+}
+
+function vocabQuickAddKeydown(e) {
+  if (e.key !== 'Enter' || e.shiftKey) return;
+  if (e.target && e.target.tagName === 'TEXTAREA') return;
+  e.preventDefault();
+  vocabQuickAdd();
+}
+
+function vocabQuickAddRowHtml() {
+  return (
+    '<tr class="vocab-quick-add-row"><td class="vocab-table-idx" title="Новая строка">+</td>' +
+    '<td class="word-pt"><input type="text" class="form-input" id="vocab-quick-word" placeholder="Слово (PT)" autocomplete="off" onkeydown="vocabQuickAddKeydown(event)" /></td>' +
+    '<td><input type="text" class="form-input" id="vocab-quick-translation" placeholder="Перевод (RU)" autocomplete="off" onkeydown="vocabQuickAddKeydown(event)" /></td>' +
+    '<td class="vocab-table-col-tag"><select class="form-input vocab-table-editable-select" id="vocab-quick-tag">' +
+    '<option value="geral" selected>Общее</option>' +
+    '<option value="substantivo">Сущ.</option><option value="verbo">Глагол</option>' +
+    '<option value="adjetivo">Прил.</option><option value="frase">Фраза</option>' +
+    '</select></td>' +
+    '<td class="vocab-table-col-inf"><span style="font-size:10px;color:var(--color-text-faint)">—</span></td>' +
+    '<td><input type="text" class="form-input" id="vocab-quick-example" placeholder="Пример (опц.)" autocomplete="off" onkeydown="vocabQuickAddKeydown(event)" /></td>' +
+    '<td class="vocab-table-actions"><button type="button" class="btn btn-primary btn-sm" onclick="vocabQuickAdd()"><i data-lucide="plus"></i> Добавить</button></td></tr>'
+  );
+}
+
 function saveWord() {
   const w = document.getElementById('input-word').value.trim();
   const t = document.getElementById('input-translation').value.trim();
-  if (!w || !t) { alert('Заполни слово и перевод!'); return; }
+  if (!vocabCanAddMoreWords() && !editingId) {
+    vocabShowWordLimitToast();
+    return;
+  }
+  if (!w || !t) { alert(t('vocab.needWordTranslation')); return; }
   var tag = document.getElementById('input-tag').value.trim();
-  if (!tag) { alert('Выбери тип слова'); return; }
+  if (!tag) tag = 'geral';
   var infinitivo = '';
   if (tag === 'verbo') {
     infinitivo = (document.getElementById('input-infinitivo') && document.getElementById('input-infinitivo').value.trim()) || '';
@@ -10041,7 +11335,10 @@ function autoTranslateAddWord(ev) {
   var st = document.getElementById('voice-input-status');
   var w = wEl && wEl.value.trim();
   if (!w) {
-    showToast('Сначала введите слово или фразу (PT)');
+    showToast(
+      (t('toast.enterWordOrPhraseFirst') || 'Enter word ({short}) first')
+        .replace(/\{short\}/g, studyLangShort(profileTranslationFromCode()))
+    );
     return;
   }
   if (btn) btn.disabled = true;
@@ -10049,7 +11346,7 @@ function autoTranslateAddWord(ev) {
   fetch('/api/transcript-translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ words: [w] }),
+    body: JSON.stringify(profileTranslationLangPairBody({ words: [w] })),
   })
     .then(function (r) {
       return r.json().then(function (j) {
@@ -10077,7 +11374,7 @@ function autoTranslateAddWord(ev) {
     })
     .catch(function (e) {
       console.warn('autoTranslateAddWord', e);
-      showToast((e && e.message) ? e.message : 'Ошибка перевода');
+      showToast((e && e.message) ? translateToastLiteral(e.message) : t('toast.translationError'));
       if (st) st.textContent = '';
     })
     .finally(function () {
@@ -10916,7 +12213,7 @@ async function downloadCurrentYouTubeOfflineVideo() {
       stage: e && e.message ? e.message : 'Ошибка скачивания',
       isErr: true,
     });
-    showToast(e && e.message ? e.message : 'Не удалось сохранить видео');
+    showToast(e && e.message ? translateToastLiteral(e.message) : t('toast.videoSaveFailed'));
   } finally {
     setYtSaveVideoOfflineBtnEnabled(!!__ytCurrentVid);
   }
@@ -11545,7 +12842,7 @@ function prefetchVocabDetailGloss(w) {
   fetch('/api/transcript-translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ words: uniq }),
+    body: JSON.stringify(profileTranslationLangPairBody({ words: uniq })),
   })
     .then(function (r) {
       return r.json().then(function (j) {
@@ -11945,7 +13242,7 @@ function flePrefetchGlossForFleBody() {
   fetch('/api/transcript-translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ words: need.slice(0, 500) }),
+    body: JSON.stringify(profileTranslationLangPairBody({ words: need.slice(0, 500) })),
   })
     .then(function (r) {
       return r.json().then(function (j) {
@@ -12070,7 +13367,7 @@ function requestConstructionExplain() {
     .catch(function (e) {
       if (btn) btn.disabled = false;
       if (st) st.textContent = '';
-      showToast(e && e.message ? e.message : 'Сеть');
+      showToast(e && e.message ? translateToastLiteral(e.message) : t('toast.networkError'));
     });
 }
 
@@ -12550,7 +13847,7 @@ async function promptAndSaveWebshareProxyPool() {
   __ytWebshareProxyEnabled = !!d.enabled;
   __ytWebshareProxyConfigured = !!d.configured;
   __ytWebshareProxyLocked = !!d.locked;
-  showToast('Сохранено прокси: ' + (d.poolSize || d.count || '?'));
+  showToast(tf('toast.proxySaved', { info: d.poolSize || d.count || '?' }));
   return true;
 }
 
@@ -12590,7 +13887,7 @@ async function toggleYoutubeWebshareProxy() {
     __ytWebshareProxyConfigured = !!d.configured;
     __ytWebshareProxyLocked = !!d.locked;
     updateYoutubeWebshareProxyBtn();
-    showToast(__ytWebshareProxyEnabled ? 'Прокси Webshare включён' : 'Прокси Webshare выключен');
+    showToast(tf('toast.proxyWebshare', { state: __ytWebshareProxyEnabled ? t('toast.proxyOn') : t('toast.proxyOff') }));
     if (typeof __ytCurrentVid === 'string' && __ytCurrentVid) {
       await reloadCurrentTranscript();
     }
@@ -13037,7 +14334,8 @@ function onYtLangChange() {
   if (!val) val = 'pt';
   __profileSubtitleLang = profileSubtitleCodeToLang(val);
   profileSaveSubtitleLang();
-  profileSyncChipRow('profile-subtitle-lang-chips', __profileSubtitleLang);
+  profileSyncChipRow('profile-translation-from-chips', __profileSubtitleLang);
+  profileSyncChipRow('profile-translation-to-chips', __profileTranslationTargetLang);
   if (__ytCurrentVid) void fetchAndRenderTranscript(__ytCurrentVid);
 }
 
@@ -13240,7 +14538,7 @@ function addWordFromPopup() {
   refreshVideoDeckChips();
   schedulePersistVocabulary();
   closePopup();
-  showToast('«' + popupWord + '» добавлено в словарь');
+  showToast(tf('toast.wordAddedToDictionary', { word: popupWord }));
   try { renderYtHistory(); } catch (e) {}
 }
 function addWordFromPanel() { addWordFromPopup(); document.getElementById('yt-word-panel').style.display = 'none'; }
@@ -13301,33 +14599,65 @@ function fcPickVoice(langPrefix) {
   return null;
 }
 
-function speakFlashcardPortuguese(mode) {
+
+function studySpeechLocale(code) {
+  var c = String(code || 'pt').toLowerCase();
+  if (c === 'en') return 'en-US';
+  if (c === 'ru') return 'ru-RU';
+  return 'pt-BR';
+}
+
+function studyVoiceFieldKind(langKey) {
+  if (langKey === 'source' || langKey === 'pt') return 'source';
+  return 'target';
+}
+
+function studyVoiceTitle(kind) {
+  var code = kind === 'source' ? profileTranslationFromCode() : profileTranslationToCode();
+  var lang = studyLangDisplayName(code);
+  var key = kind === 'source' ? 'study.voiceSource' : 'study.voiceTarget';
+  var pattern = t(key);
+  if (!pattern || pattern === key) return lang;
+  return pattern.replace(/\{lang\}/g, lang).replace(/\{short\}/g, studyLangShort(code));
+}
+
+function studyTtsTitle(kind) {
+  var code = kind === 'source' ? profileTranslationFromCode() : profileTranslationToCode();
+  var key = kind === 'source' ? 'study.ttsSource' : 'study.ttsTarget';
+  var pattern = t(key);
+  if (!pattern || pattern === key) return studyLangShort(code);
+  return pattern.replace(/\{short\}/g, studyLangShort(code)).replace(/\{lang\}/g, studyLangDisplayName(code));
+}
+
+function speakFlashcardForSide(side, mode) {
   if (!window.speechSynthesis) return;
   var w = fcQueue[fcIndex];
   if (!w) return;
   speechSynthesis.cancel();
-  var text = (mode === 'example' && w.example && String(w.example).trim()) ? String(w.example).trim() : String(w.word || '').trim();
+  var isSource = side === 'source';
+  var code = isSource ? profileTranslationFromCode() : profileTranslationToCode();
+  var text = isSource
+    ? ((mode === 'example' && w.example && String(w.example).trim()) ? String(w.example).trim() : String(w.word || '').trim())
+    : String(w.translation || '').trim();
   if (!text) return;
   var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'pt-BR';
-  var v = fcPickVoice('pt');
+  u.lang = studySpeechLocale(code);
+  var v = fcPickVoice(String(code).toLowerCase());
   if (v) u.voice = v;
-  u.rate = 0.92;
+  u.rate = isSource ? 0.92 : 0.95;
   speechSynthesis.speak(u);
 }
 
-function speakFlashcardRussian() {
-  if (!window.speechSynthesis) return;
-  var w = fcQueue[fcIndex];
-  if (!w || !String(w.translation || '').trim()) return;
-  speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(String(w.translation).trim());
-  u.lang = 'ru-RU';
-  var v = fcPickVoice('ru');
-  if (v) u.voice = v;
-  u.rate = 0.95;
-  speechSynthesis.speak(u);
+
+
+function speakFlashcardPortuguese(mode) {
+  speakFlashcardForSide('source', mode);
 }
+
+function speakFlashcardRussian() {
+  speakFlashcardForSide('target');
+}
+
 
 if (window.speechSynthesis) {
   speechSynthesis.addEventListener('voiceschanged', function () {}, { once: true });
@@ -13519,7 +14849,7 @@ async function vocabGenerateCardImage(ev, id) {
     vocabRefreshDetailIfOpen(id);
     showToast('Картинка сохранена');
   } catch (e) {
-    showToast(e && e.message ? String(e.message) : 'Не удалось сгенерировать');
+    showToast(e && e.message ? translateToastLiteral(String(e.message)) : t('toast.generateFailed'));
   } finally {
     __vocabImageGenInFlight.delete(id);
     if (btn) {
@@ -16072,7 +17402,380 @@ function updateSidebarCounts() {
   document.getElementById('word-count-sidebar').textContent = words.length;
   document.getElementById('due-sidebar').textContent = getDueWords().length;
 }
+// Toast + error messages — merged into UI_STRINGS at runtime
+(function () {
+  if (typeof UI_STRINGS === 'undefined') return;
+  var extra = { ru: {}, en: {}, pt: {} };
+    extra.ru['sync.signInFirst'] = 'Войдите в аккаунт';
+    extra.en['sync.signInFirst'] = 'Sign in to your account';
+    extra.pt['sync.signInFirst'] = 'Entre na sua conta';
+    extra.ru['toast.alreadyInDictionary'] = 'Уже в словаре';
+    extra.en['toast.alreadyInDictionary'] = 'Already in dictionary';
+    extra.pt['toast.alreadyInDictionary'] = 'Já no dicionário';
+    extra.ru['toast.alreadyInDictionaryCount'] = 'Уже есть в словаре ({count})';
+    extra.en['toast.alreadyInDictionaryCount'] = 'Already in dictionary ({count})';
+    extra.pt['toast.alreadyInDictionaryCount'] = 'Já no dicionário ({count})';
+    extra.ru['toast.audioDownloaded'] = 'Аудиофайл скачан';
+    extra.en['toast.audioDownloaded'] = 'Audio file downloaded';
+    extra.pt['toast.audioDownloaded'] = 'Áudio baixado';
+    extra.ru['toast.cardPickError'] = 'Ошибка выбора карточки: {message}';
+    extra.en['toast.cardPickError'] = 'Card selection error: {message}';
+    extra.pt['toast.cardPickError'] = 'Erro ao escolher cartão: {message}';
+    extra.ru['toast.checkFieldsAndAdd'] = 'Проверь поля и нажми «Добавить»';
+    extra.en['toast.checkFieldsAndAdd'] = 'Check fields and tap «Add»';
+    extra.pt['toast.checkFieldsAndAdd'] = 'Verifique os campos e toque em «Adicionar»';
+    extra.ru['toast.checkFragments'] = 'Отметьте фрагменты галочками';
+    extra.en['toast.checkFragments'] = 'Check fragments with boxes';
+    extra.pt['toast.checkFragments'] = 'Marque os trechos';
+    extra.ru['toast.checkRowsInColumn'] = 'Отметьте строки галочкой в колонке №';
+    extra.en['toast.checkRowsInColumn'] = 'Check rows in the № column';
+    extra.pt['toast.checkRowsInColumn'] = 'Marque as linhas na coluna №';
+    extra.ru['toast.clickEnterLinkOrRefresh'] = 'Нажмите «Ввести ссылку…» или обновите страницу';
+    extra.en['toast.clickEnterLinkOrRefresh'] = 'Tap «Enter link…» or refresh the page';
+    extra.pt['toast.clickEnterLinkOrRefresh'] = 'Toque em «Inserir link…» ou atualize a página';
+    extra.ru['toast.commentEmpty'] = 'Комментарий пуст';
+    extra.en['toast.commentEmpty'] = 'Comment is empty';
+    extra.pt['toast.commentEmpty'] = 'Comentário vazio';
+    extra.ru['toast.copied'] = 'Скопировано';
+    extra.en['toast.copied'] = 'Copied';
+    extra.pt['toast.copied'] = 'Copiado';
+    extra.ru['toast.downloadVideoFirst'] = 'Сначала скачайте видео в Downloads';
+    extra.en['toast.downloadVideoFirst'] = 'Download the video to Downloads first';
+    extra.pt['toast.downloadVideoFirst'] = 'Baixe o vídeo para Downloads primeiro';
+    extra.ru['toast.downloadsOpenFailedYoutube'] = 'Не удалось открыть Downloads-файл — переключено на YouTube';
+    extra.en['toast.downloadsOpenFailedYoutube'] = 'Could not open Downloads file — switched to YouTube';
+    extra.pt['toast.downloadsOpenFailedYoutube'] = 'Falha ao abrir Downloads — mudou para YouTube';
+    extra.ru['toast.emptyTranslationRetry'] = 'Пустой ответ — попробуйте ещё раз';
+    extra.en['toast.emptyTranslationRetry'] = 'Empty response — try again';
+    extra.pt['toast.emptyTranslationRetry'] = 'Resposta vazia — tente de novo';
+    extra.ru['toast.enterWordOrPhrasePt'] = 'Сначала введите слово или фразу (PT)';
+    extra.en['toast.enterWordOrPhrasePt'] = 'Enter a word or phrase (PT) first';
+    extra.pt['toast.enterWordOrPhrasePt'] = 'Digite uma palavra ou frase (PT) primeiro';
+    extra.ru['toast.errorWithMessage'] = 'Ошибка: {message}';
+    extra.en['toast.errorWithMessage'] = 'Error: {message}';
+    extra.pt['toast.errorWithMessage'] = 'Erro: {message}';
+    extra.ru['toast.exportExcel'] = '{msg} (откройте в Excel)';
+    extra.en['toast.exportExcel'] = '{msg} (open in Excel)';
+    extra.pt['toast.exportExcel'] = '{msg} (abra no Excel)';
+    extra.ru['toast.fileSaveError'] = 'Ошибка сохранения файла';
+    extra.en['toast.fileSaveError'] = 'Could not save file';
+    extra.pt['toast.fileSaveError'] = 'Não foi possível salvar o arquivo';
+    extra.ru['toast.folderCreated'] = 'Папка создана: {name}';
+    extra.en['toast.folderCreated'] = 'Folder created: {name}';
+    extra.pt['toast.folderCreated'] = 'Pasta criada: {name}';
+    extra.ru['toast.generateFailed'] = 'Не удалось сгенерировать';
+    extra.en['toast.generateFailed'] = 'Generation failed';
+    extra.pt['toast.generateFailed'] = 'Falha na geração';
+    extra.ru['toast.hideDemoBookHint'] = 'Эту запись можно скрыть, удалив файл из public/books';
+    extra.en['toast.hideDemoBookHint'] = 'Hide this entry by removing the file from public/books';
+    extra.pt['toast.hideDemoBookHint'] = 'Oculte removendo o arquivo de public/books';
+    extra.ru['toast.highlightBrowserColor'] = 'Подчёркнуто (цвет браузера — выберите фрагмент в одном абзаце)';
+    extra.en['toast.highlightBrowserColor'] = 'Highlighted (browser color — select within one paragraph)';
+    extra.pt['toast.highlightBrowserColor'] = 'Destacado (cor do navegador — um parágrafo)';
+    extra.ru['toast.highlightTryOneParagraph'] = 'Не удалось (попробуйте фрагмент внутри одного абзаца)';
+    extra.en['toast.highlightTryOneParagraph'] = 'Failed (try a fragment within one paragraph)';
+    extra.pt['toast.highlightTryOneParagraph'] = 'Falhou (tente um trecho em um parágrafo)';
+    extra.ru['toast.highlighted'] = 'Подчёркнуто';
+    extra.en['toast.highlighted'] = 'Highlighted';
+    extra.pt['toast.highlighted'] = 'Destacado';
+    extra.ru['toast.historyCleared'] = 'История роликов очищена';
+    extra.en['toast.historyCleared'] = 'Watch history cleared';
+    extra.pt['toast.historyCleared'] = 'Histórico de vídeos limpo';
+    extra.ru['toast.holdFieldToPaste'] = 'Удерживайте поле → Вставить';
+    extra.en['toast.holdFieldToPaste'] = 'Hold the field → Paste';
+    extra.pt['toast.holdFieldToPaste'] = 'Segure o campo → Colar';
+    extra.ru['toast.imageSaved'] = 'Картинка сохранена';
+    extra.en['toast.imageSaved'] = 'Image saved';
+    extra.pt['toast.imageSaved'] = 'Imagem salva';
+    extra.ru['toast.importedCount'] = 'Импортировано: {n}';
+    extra.en['toast.importedCount'] = 'Imported: {n}';
+    extra.pt['toast.importedCount'] = 'Importado: {n}';
+    extra.ru['toast.listCleared'] = 'Список очищен';
+    extra.en['toast.listCleared'] = 'List cleared';
+    extra.pt['toast.listCleared'] = 'Lista limpa';
+    extra.ru['toast.loadVideoWithSubtitles'] = 'Сначала загрузите ролик с субтитрами';
+    extra.en['toast.loadVideoWithSubtitles'] = 'Load a video with subtitles first';
+    extra.pt['toast.loadVideoWithSubtitles'] = 'Carregue um vídeo com legendas primeiro';
+    extra.ru['toast.minTwoChars'] = 'Введите не менее 2 символов';
+    extra.en['toast.minTwoChars'] = 'Enter at least 2 characters';
+    extra.pt['toast.minTwoChars'] = 'Digite pelo menos 2 caracteres';
+    extra.ru['toast.mp3FailedUseWebm'] = 'MP3 не получился — скачайте «Как записано» (WebM/M4A)';
+    extra.en['toast.mp3FailedUseWebm'] = 'MP3 failed — download «As recorded» (WebM/M4A)';
+    extra.pt['toast.mp3FailedUseWebm'] = 'MP3 falhou — baixe «Como gravado» (WebM/M4A)';
+    extra.ru['toast.mp3Saved'] = 'MP3 сохранён';
+    extra.en['toast.mp3Saved'] = 'MP3 saved';
+    extra.pt['toast.mp3Saved'] = 'MP3 salvo';
+    extra.ru['toast.networkError'] = 'Сеть';
+    extra.en['toast.networkError'] = 'Network error';
+    extra.pt['toast.networkError'] = 'Erro de rede';
+    extra.ru['toast.networkOfflineSubtitles'] = 'Сеть недоступна: загружена офлайн-копия субтитров';
+    extra.en['toast.networkOfflineSubtitles'] = 'Offline: loaded cached subtitles';
+    extra.pt['toast.networkOfflineSubtitles'] = 'Sem rede: legendas offline carregadas';
+    extra.ru['toast.noDownloadsForVideoYoutube'] = 'Для этого ролика нет Downloads-видео — переключено на YouTube';
+    extra.en['toast.noDownloadsForVideoYoutube'] = 'No Downloads video for this clip — switched to YouTube';
+    extra.pt['toast.noDownloadsForVideoYoutube'] = 'Sem vídeo em Downloads — mudou para YouTube';
+    extra.ru['toast.noRowsToExport'] = 'Нет строк для экспорта';
+    extra.en['toast.noRowsToExport'] = 'No rows to export';
+    extra.pt['toast.noRowsToExport'] = 'Nenhuma linha para exportar';
+    extra.ru['toast.noSubtitlesLoadTrack'] = 'Нет субтитров — загрузите дорожку';
+    extra.en['toast.noSubtitlesLoadTrack'] = 'No subtitles — load a track';
+    extra.pt['toast.noSubtitlesLoadTrack'] = 'Sem legendas — carregue uma faixa';
+    extra.ru['toast.noWordsForFilter'] = 'Нет слов по текущему фильтру';
+    extra.en['toast.noWordsForFilter'] = 'No words for current filter';
+    extra.pt['toast.noWordsForFilter'] = 'Nenhuma palavra neste filtro';
+    extra.ru['toast.noteFileSaved'] = 'Файл заметки сохранён';
+    extra.en['toast.noteFileSaved'] = 'Note file saved';
+    extra.pt['toast.noteFileSaved'] = 'Arquivo de nota salvo';
+    extra.ru['toast.nothingToAdd'] = 'Нечего добавлять';
+    extra.en['toast.nothingToAdd'] = 'Nothing to add';
+    extra.pt['toast.nothingToAdd'] = 'Nada para adicionar';
+    extra.ru['toast.offlineCopySaveFailed'] = 'Не удалось сохранить офлайн-копию';
+    extra.en['toast.offlineCopySaveFailed'] = 'Could not save offline copy';
+    extra.pt['toast.offlineCopySaveFailed'] = 'Não foi possível salvar cópia offline';
+    extra.ru['toast.openBookWaitText'] = 'Откройте книгу и дождитесь текста';
+    extra.en['toast.openBookWaitText'] = 'Open a book and wait for text';
+    extra.pt['toast.openBookWaitText'] = 'Abra um livro e aguarde o texto';
+    extra.ru['toast.openYoutubeVideoFirst'] = 'Сначала откройте ролик YouTube';
+    extra.en['toast.openYoutubeVideoFirst'] = 'Open a YouTube video first';
+    extra.pt['toast.openYoutubeVideoFirst'] = 'Abra um vídeo do YouTube primeiro';
+    extra.ru['toast.pasteYoutubeLink'] = 'Вставьте ссылку YouTube';
+    extra.en['toast.pasteYoutubeLink'] = 'Paste a YouTube link';
+    extra.pt['toast.pasteYoutubeLink'] = 'Cole um link do YouTube';
+    extra.ru['toast.phraseCopyDisabled'] = 'Копирование фраз отключено в профиле';
+    extra.en['toast.phraseCopyDisabled'] = 'Phrase copy disabled in profile';
+    extra.pt['toast.phraseCopyDisabled'] = 'Cópia de frases desativada no perfil';
+    extra.ru['toast.phraseSaved'] = 'Фраза сохранена';
+    extra.en['toast.phraseSaved'] = 'Phrase saved';
+    extra.pt['toast.phraseSaved'] = 'Frase salva';
+    extra.ru['toast.pickAtLeastOneWord'] = 'Выбери хотя бы одно слово';
+    extra.en['toast.pickAtLeastOneWord'] = 'Select at least one word';
+    extra.pt['toast.pickAtLeastOneWord'] = 'Selecione pelo menos uma palavra';
+    extra.ru['toast.proxyBlockedByServer'] = 'Прокси заблокирован настройкой сервера';
+    extra.en['toast.proxyBlockedByServer'] = 'Proxy blocked by server settings';
+    extra.pt['toast.proxyBlockedByServer'] = 'Proxy bloqueado pelo servidor';
+    extra.ru['toast.proxyOff'] = 'выключен';
+    extra.en['toast.proxyOff'] = 'disabled';
+    extra.pt['toast.proxyOff'] = 'desativado';
+    extra.ru['toast.proxyOn'] = 'включён';
+    extra.en['toast.proxyOn'] = 'enabled';
+    extra.pt['toast.proxyOn'] = 'ativado';
+    extra.ru['toast.proxySaved'] = 'Сохранено прокси: {info}';
+    extra.en['toast.proxySaved'] = 'Proxy saved: {info}';
+    extra.pt['toast.proxySaved'] = 'Proxy salvo: {info}';
+    extra.ru['toast.proxyToggleFailed'] = 'Не удалось переключить прокси';
+    extra.en['toast.proxyToggleFailed'] = 'Could not toggle proxy';
+    extra.pt['toast.proxyToggleFailed'] = 'Não foi possível alternar o proxy';
+    extra.ru['toast.proxyWebshare'] = 'Прокси Webshare {state}';
+    extra.en['toast.proxyWebshare'] = 'Webshare proxy {state}';
+    extra.pt['toast.proxyWebshare'] = 'Proxy Webshare {state}';
+    extra.ru['toast.recordButtonError'] = 'Ошибка кнопки записи — обновите страницу';
+    extra.en['toast.recordButtonError'] = 'Record button error — refresh the page';
+    extra.pt['toast.recordButtonError'] = 'Erro no botão de gravação — atualize a página';
+    extra.ru['toast.recordContextFailed'] = 'Не удалось активировать запись (аудио-контекст). Обновите страницу и попробуйте снова.';
+    extra.en['toast.recordContextFailed'] = 'Could not activate recording. Refresh and try again.';
+    extra.pt['toast.recordContextFailed'] = 'Não foi possível ativar gravação. Atualize e tente de novo.';
+    extra.ru['toast.recordError'] = 'Ошибка записи';
+    extra.en['toast.recordError'] = 'Recording error';
+    extra.pt['toast.recordError'] = 'Erro de gravação';
+    extra.ru['toast.recordFileBuildFailed'] = 'Не удалось собрать файл записи';
+    extra.en['toast.recordFileBuildFailed'] = 'Could not build recording file';
+    extra.pt['toast.recordFileBuildFailed'] = 'Não foi possível montar o arquivo';
+    extra.ru['toast.recordSoundFirst'] = 'Сначала запишите звук';
+    extra.en['toast.recordSoundFirst'] = 'Record audio first';
+    extra.pt['toast.recordSoundFirst'] = 'Grave o áudio primeiro';
+    extra.ru['toast.recordStartFailed'] = 'Не удалось начать запись';
+    extra.en['toast.recordStartFailed'] = 'Could not start recording';
+    extra.pt['toast.recordStartFailed'] = 'Não foi possível iniciar a gravação';
+    extra.ru['toast.renamed'] = 'Переименовано: {title}';
+    extra.en['toast.renamed'] = 'Renamed: {title}';
+    extra.pt['toast.renamed'] = 'Renomeado: {title}';
+    extra.ru['toast.selectFragmentInSubtitles'] = 'Выделите фрагмент в субтитрах';
+    extra.en['toast.selectFragmentInSubtitles'] = 'Select a fragment in subtitles';
+    extra.pt['toast.selectFragmentInSubtitles'] = 'Selecione um trecho nas legendas';
+    extra.ru['toast.selectPhraseInSubtitles'] = 'Выделите фразу в субтитрах';
+    extra.en['toast.selectPhraseInSubtitles'] = 'Select a phrase in subtitles';
+    extra.pt['toast.selectPhraseInSubtitles'] = 'Selecione uma frase nas legendas';
+    extra.ru['toast.selectText'] = 'Выделите текст';
+    extra.en['toast.selectText'] = 'Select some text';
+    extra.pt['toast.selectText'] = 'Selecione o texto';
+    extra.ru['toast.selectVerbTypeFirst'] = 'Сначала выберите тип «Глагол»';
+    extra.en['toast.selectVerbTypeFirst'] = 'Select type «Verb» first';
+    extra.pt['toast.selectVerbTypeFirst'] = 'Selecione o tipo «Verbo» primeiro';
+    extra.ru['toast.selectionOutsideBook'] = 'Выделение вне текста книги';
+    extra.en['toast.selectionOutsideBook'] = 'Selection outside book text';
+    extra.pt['toast.selectionOutsideBook'] = 'Seleção fora do texto do livro';
+    extra.ru['toast.subtitlesSavedOffline'] = 'Субтитры сохранены офлайн';
+    extra.en['toast.subtitlesSavedOffline'] = 'Subtitles saved offline';
+    extra.pt['toast.subtitlesSavedOffline'] = 'Legendas salvas offline';
+    extra.ru['toast.textAddedToComment'] = 'Текст добавлен в комментарий';
+    extra.en['toast.textAddedToComment'] = 'Text added to comment';
+    extra.pt['toast.textAddedToComment'] = 'Texto adicionado ao comentário';
+    extra.ru['toast.translationEmpty'] = 'Перевод не может быть пустым';
+    extra.en['toast.translationEmpty'] = 'Translation cannot be empty';
+    extra.pt['toast.translationEmpty'] = 'A tradução não pode estar vazia';
+    extra.ru['toast.translationError'] = 'Ошибка перевода';
+    extra.en['toast.translationError'] = 'Translation error';
+    extra.pt['toast.translationError'] = 'Erro de tradução';
+    extra.ru['toast.translationRequiredExampleLater'] = 'Укажите перевод; пояснение в «Пример» можно добавить позже';
+    extra.en['toast.translationRequiredExampleLater'] = 'Enter translation; you can add notes in «Example» later';
+    extra.pt['toast.translationRequiredExampleLater'] = 'Informe a tradução; exemplo pode vir depois';
+    extra.ru['toast.verbFormHintFailed'] = 'Не удалось подставить: нужна одна форма с окончанием -ar, -er или -ir (или введите инфинитив вручную)';
+    extra.en['toast.verbFormHintFailed'] = 'Could not fill: need -ar, -er or -ir form (or enter infinitive manually)';
+    extra.pt['toast.verbFormHintFailed'] = 'Não foi possível preencher: forma -ar, -er ou -ir';
+    extra.ru['toast.verbNeedsInfinitive'] = 'Для глагола укажите инфинитив';
+    extra.en['toast.verbNeedsInfinitive'] = 'Verb requires infinitive';
+    extra.pt['toast.verbNeedsInfinitive'] = 'Para verbo, informe o infinitivo';
+    extra.ru['toast.videoDurationMismatch'] = 'Внимание: длительность видео не совпадает с субтитрами';
+    extra.en['toast.videoDurationMismatch'] = 'Warning: video duration does not match subtitles';
+    extra.pt['toast.videoDurationMismatch'] = 'Aviso: duração do vídeo não coincide com legendas';
+    extra.ru['toast.videoSaveFailed'] = 'Не удалось сохранить видео';
+    extra.en['toast.videoSaveFailed'] = 'Could not save video';
+    extra.pt['toast.videoSaveFailed'] = 'Não foi possível salvar o vídeo';
+    extra.ru['toast.videoSavedOffline'] = 'Видео скачано и сохранено офлайн';
+    extra.en['toast.videoSavedOffline'] = 'Video downloaded and saved offline';
+    extra.pt['toast.videoSavedOffline'] = 'Vídeo baixado e salvo offline';
+    extra.ru['toast.videoStartedUnmute'] = 'Видео запущено — при необходимости включите звук в плеере';
+    extra.en['toast.videoStartedUnmute'] = 'Video started — unmute in the player if needed';
+    extra.pt['toast.videoStartedUnmute'] = 'Vídeo iniciado — ative o som no player se necessário';
+    extra.ru['toast.vocabServerSaveFailed'] = 'Не удалось сохранить словарь на сервере';
+    extra.en['toast.vocabServerSaveFailed'] = 'Could not save dictionary to server';
+    extra.pt['toast.vocabServerSaveFailed'] = 'Não foi possível salvar o dicionário no servidor';
+    extra.ru['toast.wordAdded'] = 'Слово добавлено';
+    extra.en['toast.wordAdded'] = 'Word added';
+    extra.pt['toast.wordAdded'] = 'Palavra adicionada';
+    extra.ru['toast.wordAddedToDictionary'] = '«{word}» добавлено в словарь';
+    extra.en['toast.wordAddedToDictionary'] = '«{word}» added to dictionary';
+    extra.pt['toast.wordAddedToDictionary'] = '«{word}» adicionado ao dicionário';
+    extra.ru['toast.wordEmpty'] = 'Слово не может быть пустым';
+    extra.en['toast.wordEmpty'] = 'Word cannot be empty';
+    extra.pt['toast.wordEmpty'] = 'A palavra não pode estar vazia';
+    extra.ru['toast.wordMoved'] = 'Слово перемещено в «{folder}»';
+    extra.en['toast.wordMoved'] = 'Word moved to «{folder}»';
+    extra.pt['toast.wordMoved'] = 'Palavra movida para «{folder}»';
+    extra.ru['vocab.needWordTranslation'] = 'Заполни слово и перевод!';
+    extra.en['vocab.needWordTranslation'] = 'Enter word and translation';
+    extra.pt['vocab.needWordTranslation'] = 'Informe palavra e tradução';
+    extra.ru['vocab.placeholderExample'] = 'Пример (опц.)';
+    extra.en['vocab.placeholderExample'] = 'Example (optional)';
+    extra.pt['vocab.placeholderExample'] = 'Exemplo (opc.)';
+    extra.ru['vocab.placeholderTranslation'] = 'Перевод';
+    extra.en['vocab.placeholderTranslation'] = 'Translation';
+    extra.pt['vocab.placeholderTranslation'] = 'Tradução';
+    extra.ru['vocab.placeholderWord'] = 'Слово (PT)';
+    extra.en['vocab.placeholderWord'] = 'Word (source)';
+    extra.pt['vocab.placeholderWord'] = 'Palavra (origem)';
+    extra.ru['vocab.quickAddBtn'] = 'Добавить';
+    extra.en['vocab.quickAddBtn'] = 'Add';
+    extra.pt['vocab.quickAddBtn'] = 'Adicionar';
+    extra.ru['vocab.quickRowTitle'] = 'Новая строка';
+    extra.en['vocab.quickRowTitle'] = 'New row';
+    extra.pt['vocab.quickRowTitle'] = 'Nova linha';
+    extra.ru['vocab.tag.adjetivo'] = 'Прил.';
+    extra.en['vocab.tag.adjetivo'] = 'Adj.';
+    extra.pt['vocab.tag.adjetivo'] = 'Adj.';
+    extra.ru['vocab.tag.frase'] = 'Фраза';
+    extra.en['vocab.tag.frase'] = 'Phrase';
+    extra.pt['vocab.tag.frase'] = 'Frase';
+    extra.ru['vocab.tag.geral'] = 'Общее';
+    extra.en['vocab.tag.geral'] = 'General';
+    extra.pt['vocab.tag.geral'] = 'Geral';
+    extra.ru['vocab.tag.substantivo'] = 'Сущ.';
+    extra.en['vocab.tag.substantivo'] = 'Noun';
+    extra.pt['vocab.tag.substantivo'] = 'Substantivo';
+    extra.ru['vocab.tag.verbo'] = 'Глагол';
+    extra.en['vocab.tag.verbo'] = 'Verb';
+    extra.pt['vocab.tag.verbo'] = 'Verbo';
+  ['ru', 'en', 'pt'].forEach(function (lang) {
+    if (UI_STRINGS[lang]) Object.assign(UI_STRINGS[lang], extra[lang]);
+  });
+})();
+
+(function () {
+  if (typeof UI_STRINGS === 'undefined') return;
+  window.TOAST_BY_RU = {
+    'Не удалось подставить: нужна одна форма с окончанием -ar, -er или -ir (или введите инфинитив вручную)': 'toast.verbFormHintFailed',
+    'Не удалось активировать запись (аудио-контекст). Обновите страницу и попробуйте снова.': 'toast.recordContextFailed',
+    'Подчёркнуто (цвет браузера — выберите фрагмент в одном абзаце)': 'toast.highlightBrowserColor',
+    'Для этого ролика нет Downloads-видео — переключено на YouTube': 'toast.noDownloadsForVideoYoutube',
+    'Укажите перевод; пояснение в «Пример» можно добавить позже': 'toast.translationRequiredExampleLater',
+    'Не удалось открыть Downloads-файл — переключено на YouTube': 'toast.downloadsOpenFailedYoutube',
+    'Видео запущено — при необходимости включите звук в плеере': 'toast.videoStartedUnmute',
+    'Внимание: длительность видео не совпадает с субтитрами': 'toast.videoDurationMismatch',
+    'MP3 не получился — скачайте «Как записано» (WebM/M4A)': 'toast.mp3FailedUseWebm',
+    'Не удалось (попробуйте фрагмент внутри одного абзаца)': 'toast.highlightTryOneParagraph',
+    'Эту запись можно скрыть, удалив файл из public/books': 'toast.hideDemoBookHint',
+    'Сеть недоступна: загружена офлайн-копия субтитров': 'toast.networkOfflineSubtitles',
+    'Нажмите «Ввести ссылку…» или обновите страницу': 'toast.clickEnterLinkOrRefresh',
+    'Ошибка кнопки записи — обновите страницу': 'toast.recordButtonError',
+    'Не удалось сохранить словарь на сервере': 'toast.vocabServerSaveFailed',
+    'Прокси заблокирован настройкой сервера': 'toast.proxyBlockedByServer',
+    'Копирование фраз отключено в профиле': 'toast.phraseCopyDisabled',
+    'Сначала введите слово или фразу (PT)': 'toast.enterWordOrPhrasePt',
+    'Сначала загрузите ролик с субтитрами': 'toast.loadVideoWithSubtitles',
+    'Отметьте строки галочкой в колонке №': 'toast.checkRowsInColumn',
+    'Сначала скачайте видео в Downloads': 'toast.downloadVideoFirst',
+    'Пустой ответ — попробуйте ещё раз': 'toast.emptyTranslationRetry',
+    'Не удалось сохранить офлайн-копию': 'toast.offlineCopySaveFailed',
+    'Откройте книгу и дождитесь текста': 'toast.openBookWaitText',
+    'Нет субтитров — загрузите дорожку': 'toast.noSubtitlesLoadTrack',
+    'Видео скачано и сохранено офлайн': 'toast.videoSavedOffline',
+    'Проверь поля и нажми «Добавить»': 'toast.checkFieldsAndAdd',
+    'Сначала откройте ролик YouTube': 'toast.openYoutubeVideoFirst',
+    'Не удалось собрать файл записи': 'toast.recordFileBuildFailed',
+    'Сначала выберите тип «Глагол»': 'toast.selectVerbTypeFirst',
+    'Для глагола укажите инфинитив': 'toast.verbNeedsInfinitive',
+    'Выделите фрагмент в субтитрах': 'toast.selectFragmentInSubtitles',
+    'Не удалось переключить прокси': 'toast.proxyToggleFailed',
+    'Отметьте фрагменты галочками': 'toast.checkFragments',
+    'Текст добавлен в комментарий': 'toast.textAddedToComment',
+    'Нет слов по текущему фильтру': 'toast.noWordsForFilter',
+    'Перевод не может быть пустым': 'toast.translationEmpty',
+    'Удерживайте поле → Вставить': 'toast.holdFieldToPaste',
+    'Введите не менее 2 символов': 'toast.minTwoChars',
+    'Выделите фразу в субтитрах': 'toast.selectPhraseInSubtitles',
+    'Выделение вне текста книги': 'toast.selectionOutsideBook',
+    'Слово не может быть пустым': 'toast.wordEmpty',
+    'Не удалось сохранить видео': 'toast.videoSaveFailed',
+    'Субтитры сохранены офлайн': 'toast.subtitlesSavedOffline',
+    'Выбери хотя бы одно слово': 'toast.pickAtLeastOneWord',
+    'Заполни слово и перевод!': 'vocab.needWordTranslation',
+    'Не удалось начать запись': 'toast.recordStartFailed',
+    'Не удалось сгенерировать': 'toast.generateFailed',
+    'Вставьте ссылку YouTube': 'toast.pasteYoutubeLink',
+    'История роликов очищена': 'toast.historyCleared',
+    'Укажите слово и перевод': 'vocab.needWordTranslation',
+    'Ошибка сохранения файла': 'toast.fileSaveError',
+    'Нет строк для экспорта': 'toast.noRowsToExport',
+    'Сначала запишите звук': 'toast.recordSoundFirst',
+    'Файл заметки сохранён': 'toast.noteFileSaved',
+    'Картинка сохранена': 'toast.imageSaved',
+    'Войдите в аккаунт': 'sync.signInFirst',
+    'Аудиофайл скачан': 'toast.audioDownloaded',
+    'Нечего добавлять': 'toast.nothingToAdd',
+    'Комментарий пуст': 'toast.commentEmpty',
+    'Слово добавлено': 'toast.wordAdded',
+    'Фраза сохранена': 'toast.phraseSaved',
+    'Ошибка перевода': 'toast.translationError',
+    'Выделите текст': 'toast.selectText',
+    'Ошибка записи': 'toast.recordError',
+    'Уже в словаре': 'toast.alreadyInDictionary',
+    'Список очищен': 'toast.listCleared',
+    'MP3 сохранён': 'toast.mp3Saved',
+    'Подчёркнуто': 'toast.highlighted',
+    'Скопировано': 'toast.copied',
+    'Сеть': 'toast.networkError',
+  };
+})();
+
+function translateToastLiteral(msg) {
+  if (!msg || typeof msg !== 'string') return msg;
+  try {
+    if (window.TOAST_BY_RU && window.TOAST_BY_RU[msg]) return t(window.TOAST_BY_RU[msg]);
+  } catch (e) {}
+  return msg;
+}
 function showToast(msg) {
+  if (typeof msg === 'string') msg = translateToastLiteral(msg);
   const t = document.createElement('div');
   t.textContent = msg;
   Object.assign(t.style, { position: 'fixed', bottom: '24px', right: '24px', background: 'var(--color-primary)', color: '#fff', padding: '10px 20px', borderRadius: 'var(--radius-full)', fontSize: 'var(--text-sm)', boxShadow: 'var(--shadow-lg)', zIndex: 9999, opacity: '0', transform: 'translateY(8px)', transition: 'all .3s' });
@@ -16130,8 +17833,11 @@ function logoAlignArrowWhenReady() {
 }
 
 // ─── Init ───
-void (async function initApp() {
+async function startAppAfterAuth() {
+  syncUpdatePrimaryUi();
   logoAlignArrowWhenReady();
+  await syncPullAll();
+  installSyncInterceptor();
   // Route to correct view based on URL on first load
   var initialViewId = routeToViewId(window.location.pathname);
   if (initialViewId && initialViewId !== 'vocab') {
@@ -16180,6 +17886,32 @@ void (async function initApp() {
   refreshVideoDeckChips();
   try { renderYtHistory(); } catch (e) {}
   applyYoutubeUrlFromQuery();
+  applyUiLanguage();
+}
+
+void (async function initApp() {
+  var path = window.location.pathname;
+  var sp = null;
+  try { sp = new URLSearchParams(window.location.search); } catch (e) {}
+  if (path === '/reset' && sp) __authResetToken = sp.get('token');
+  var verified = sp ? sp.get('verified') : null;
+
+  window.__authUser = await authMe();
+  if (!window.__authUser) {
+    if (path === '/reset' && __authResetToken) {
+      showAuthScreen('reset');
+    } else {
+      showAuthScreen('login');
+      if (verified === '1') authSetMsg(t('auth.msgVerified'), 'ok');
+      else if (verified === '0') authSetMsg(t('auth.msgVerifyFail'), 'error');
+    }
+    return;
+  }
+  hideAuthScreen();
+  if (path === '/login' || path === '/reset' || path === '/register' || path === '/forgot') {
+    try { history.replaceState({}, '', '/'); } catch (e) {}
+  }
+  await startAppAfterAuth();
 })();
 </script>
 <script src="/verbos.js"></script>

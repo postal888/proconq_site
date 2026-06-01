@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profconq Admin</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --surface: #121b2e;
+      --border: #243049;
+      --text: #e8eef8;
+      --muted: #93a4bf;
+      --primary: #00c2d1;
+      --danger: #ff6b6b;
+      --ok: #86e04a;
+      --radius: 12px;
+      --space: 16px;
+      --font: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px 16px 48px;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; }
+    .brand { margin-bottom: 24px; }
+    .brand h1 { margin: 0; font-size: 28px; letter-spacing: -.02em; }
+    .brand h1 .p { color: #00c2d1; }
+    .brand h1 .q { color: #86e04a; }
+    .brand p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .field { margin-bottom: 14px; }
+    input[type=text], input[type=password], input[type=number] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0d1526;
+      color: var(--text);
+      font: inherit;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: #042028; }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn:disabled { opacity: .6; cursor: default; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .msg { min-height: 20px; font-size: 13px; margin-top: 10px; }
+    .msg.ok { color: var(--ok); }
+    .msg.error { color: var(--danger); }
+    .login-box { max-width: 420px; margin: 10vh auto 0; }
+    .hidden { display: none !important; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+    .note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .switch { display: flex; align-items: center; gap: 10px; }
+    .switch input { width: 18px; height: 18px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .user { color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="login-screen" class="login-box">
+      <div class="brand">
+        <h1><span class="p">p</span>rofcon<span class="q">q</span> Admin</h1>
+        <p>Промокоды · отдельный вход</p>
+      </div>
+      <div class="card">
+        <form id="login-form">
+          <div class="field">
+            <label for="login-user">Логин</label>
+            <input id="login-user" type="text" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="login-pass">Пароль</label>
+            <input id="login-pass" type="password" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn-primary" type="submit" id="login-btn">Войти</button>
+          <div class="msg" id="login-msg"></div>
+        </form>
+      </div>
+    </div>
+
+    <div id="admin-screen" class="hidden">
+      <div class="topbar">
+        <div class="brand" style="margin:0">
+          <h1><span class="p">p</span>rofcon<span class="q">q</span> Admin</h1>
+          <p>Промокоды</p>
+        </div>
+        <div class="row">
+          <span class="user" id="admin-user"></span>
+          <button class="btn btn-ghost" type="button" id="logout-btn">Выйти</button>
+        </div>
+      </div>
+
+      <div class="section-title">Создать промокод</div>
+      <div class="card">
+        <form id="promo-form" class="grid">
+          <div class="field" style="grid-column:1/-1">
+            <label class="switch">
+              <input type="checkbox" id="promo-generate" checked>
+              <span>Сгенерировать случайный код</span>
+            </label>
+          </div>
+          <div class="field" id="prefix-wrap">
+            <label for="promo-prefix">Префикс</label>
+            <input id="promo-prefix" type="text" value="PQ" maxlength="8">
+          </div>
+          <div class="field hidden" id="code-wrap">
+            <label for="promo-code">Код</label>
+            <input id="promo-code" type="text" maxlength="32" placeholder="IVAN2026">
+          </div>
+          <div class="field">
+            <label for="promo-limit">Лимит слов</label>
+            <input id="promo-limit" type="number" min="1" value="100" required>
+          </div>
+          <div class="field">
+            <label for="promo-max">Макс. активаций</label>
+            <input id="promo-max" type="number" min="1" placeholder="∞">
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label for="promo-label">Заметка</label>
+            <input id="promo-label" type="text" placeholder="Для кого">
+          </div>
+          <div class="row" style="grid-column:1/-1">
+            <button class="btn btn-primary" type="submit" id="create-btn">Создать</button>
+            <button class="btn btn-ghost" type="button" id="refresh-btn">Обновить</button>
+          </div>
+        </form>
+        <div class="msg" id="promo-msg"></div>
+      </div>
+
+      <div class="section-title">Все промокоды</div>
+      <div class="card" style="overflow:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Код</th>
+              <th>Лимит</th>
+              <th>Макс.</th>
+              <th>Исп.</th>
+              <th>Статус</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="promo-table"><tr><td colspan="6" class="note">Загрузка…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function adminApi(path, opts) {
+      opts = opts || {};
+      opts.credentials = 'include';
+      opts.headers = Object.assign({ 'Accept': 'application/json' }, opts.headers || {});
+      if (opts.body && !opts.headers['Content-Type']) {
+        opts.headers['Content-Type'] = 'application/json';
+      }
+      return fetch(path, opts);
+    }
+
+    function setMsg(el, text, kind) {
+      el.textContent = text || '';
+      el.className = 'msg' + (kind ? (' ' + kind) : '');
+    }
+
+    function syncGenerateUi() {
+      var generate = document.getElementById('promo-generate').checked;
+      document.getElementById('code-wrap').classList.toggle('hidden', generate);
+      document.getElementById('prefix-wrap').classList.toggle('hidden', !generate);
+    }
+
+    function renderTable(codes) {
+      var body = document.getElementById('promo-table');
+      if (!codes.length) {
+        body.innerHTML = '<tr><td colspan="6" class="note">Промокодов пока нет</td></tr>';
+        return;
+      }
+      body.innerHTML = codes.map(function(row) {
+        var max = row.maxRedemptions == null ? '∞' : row.maxRedemptions;
+        var status = row.active ? 'Активен' : 'Выключен';
+        var btn = row.active ? 'Выключить' : 'Включить';
+        var note = row.label ? '<div class="note">' + esc(row.label) + '</div>' : '';
+        return '<tr>' +
+          '<td><strong>' + esc(row.code) + '</strong>' + note + '</td>' +
+          '<td>' + row.wordLimit + '</td>' +
+          '<td>' + max + '</td>' +
+          '<td>' + row.redemptionCount + '</td>' +
+          '<td>' + status + '</td>' +
+          '<td><button class="btn btn-ghost" type="button" data-code="' + esc(row.code) + '" data-active="' + (!row.active) + '">' + btn + '</button></td>' +
+          '</tr>';
+      }).join('');
+      body.querySelectorAll('button[data-code]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          toggleCode(btn.getAttribute('data-code'), btn.getAttribute('data-active') === 'true');
+        });
+      });
+    }
+
+    async function loadPromoCodes() {
+      var msg = document.getElementById('promo-msg');
+      setMsg(msg, 'Загрузка…', '');
+      try {
+        var r = await adminApi('/api/admin/promo-codes');
+        if (r.status === 401) { showLogin(); return; }
+        if (!r.ok) throw new Error('load');
+        var data = await r.json();
+        renderTable(data.codes || []);
+        setMsg(msg, '', '');
+      } catch (e) {
+        setMsg(msg, 'Не удалось загрузить список', 'error');
+      }
+    }
+
+    async function toggleCode(code, active) {
+      var msg = document.getElementById('promo-msg');
+      try {
+        var r = await adminApi('/api/admin/promo-codes/' + encodeURIComponent(code) + '/toggle', {
+          method: 'POST',
+          body: JSON.stringify({ active: !!active }),
+        });
+        if (!r.ok) throw new Error('toggle');
+        await loadPromoCodes();
+      } catch (e) {
+        setMsg(msg, 'Не удалось изменить статус', 'error');
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('login-screen').classList.remove('hidden');
+      document.getElementById('admin-screen').classList.add('hidden');
+    }
+
+    function showAdmin(username) {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('admin-screen').classList.remove('hidden');
+      document.getElementById('admin-user').textContent = username || 'admin';
+      syncGenerateUi();
+      loadPromoCodes();
+    }
+
+    async function checkSession() {
+      try {
+        var r = await adminApi('/api/admin/me');
+        if (!r.ok) return showLogin();
+        var data = await r.json();
+        showAdmin(data.username);
+      } catch (e) {
+        showLogin();
+      }
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async function(ev) {
+      ev.preventDefault();
+      var msg = document.getElementById('login-msg');
+      var btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      setMsg(msg, 'Вход…', '');
+      try {
+        var r = await adminApi('/api/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: document.getElementById('login-user').value.trim(),
+            password: document.getElementById('login-pass').value,
+          }),
+        });
+        if (!r.ok) {
+          setMsg(msg, 'Неверный логин или пароль', 'error');
+          return;
+        }
+        var data = await r.json();
+        document.getElementById('login-pass').value = '';
+        setMsg(msg, '', '');
+        showAdmin(data.username);
+      } catch (e) {
+        setMsg(msg, 'Ошибка входа', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async function() {
+      try { await adminApi('/api/admin/logout', { method: 'POST' }); } catch (e) {}
+      showLogin();
+    });
+
+    document.getElementById('promo-generate').addEventListener('change', syncGenerateUi);
+
+    document.getElementById('promo-form').addEventListener('submit', async function(ev) {
+      ev.preventDefault();
+      var msg = document.getElementById('promo-msg');
+      var generate = document.getElementById('promo-generate').checked;
+      var code = document.getElementById('promo-code').value.trim();
+      var wordLimit = Number(document.getElementById('promo-limit').value);
+      var maxRaw = document.getElementById('promo-max').value;
+      var label = document.getElementById('promo-label').value.trim();
+      var prefix = document.getElementById('promo-prefix').value.trim();
+      if (!wordLimit || wordLimit <= 0) {
+        setMsg(msg, 'Укажите лимит слов', 'error');
+        return;
+      }
+      if (!generate && !code) {
+        setMsg(msg, 'Введите код или включите генерацию', 'error');
+        return;
+      }
+      setMsg(msg, 'Создаём…', '');
+      var payload = { wordLimit: wordLimit, generate: generate, prefix: prefix, label: label || null };
+      if (!generate) payload.code = code;
+      if (maxRaw !== '') payload.maxRedemptions = Number(maxRaw);
+      try {
+        var r = await adminApi('/api/admin/promo-codes', { method: 'POST', body: JSON.stringify(payload) });
+        var data = await r.json().catch(function() { return {}; });
+        if (!r.ok) {
+          setMsg(msg, data.message || 'Не удалось создать промокод', 'error');
+          return;
+        }
+        setMsg(msg, 'Создан код ' + (data.code || ''), 'ok');
+        document.getElementById('promo-code').value = '';
+        document.getElementById('promo-label').value = '';
+        await loadPromoCodes();
+      } catch (e) {
+        setMsg(msg, 'Не удалось создать промокод', 'error');
+      }
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', loadPromoCodes);
+
+    checkSession();
+  </script>
+</body>
+</html>

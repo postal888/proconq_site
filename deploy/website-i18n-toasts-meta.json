@@ -1,0 +1,61 @@
+{
+  "static_count": 71,
+  "dynamic_replacements": [
+    [
+      "showToast('Папка создана: ' + name)",
+      "showToast(tf('toast.folderCreated', { name: name }))"
+    ],
+    [
+      "showToast('Переименовано: ' + newTitle)",
+      "showToast(tf('toast.renamed', { title: newTitle }))"
+    ],
+    [
+      "showToast('Слово перемещено в «' + (newVideoTitle || t('vocab.noFolder')) + '»')",
+      "showToast(tf('toast.wordMoved', { folder: newVideoTitle || t('vocab.noFolder') }))"
+    ],
+    [
+      "showToast('«' + popupWord + '» добавлено в словарь')",
+      "showToast(tf('toast.wordAddedToDictionary', { word: popupWord }))"
+    ],
+    [
+      "showToast('Сохранено прокси: ' + (d.poolSize || d.count || '?'))",
+      "showToast(tf('toast.proxySaved', { info: d.poolSize || d.count || '?' }))"
+    ],
+    [
+      "showToast(__ytWebshareProxyEnabled ? 'Прокси Webshare включён' : 'Прокси Webshare выключен')",
+      "showToast(tf('toast.proxyWebshare', { state: __ytWebshareProxyEnabled ? t('toast.proxyOn') : t('toast.proxyOff') }))"
+    ],
+    [
+      "showToast(toastMsg + ' (откройте в Excel)')",
+      "showToast(tf('toast.exportExcel', { msg: toastMsg }))"
+    ],
+    [
+      "showToast('Уже есть в словаре (' + skippedDup + ')')",
+      "showToast(tf('toast.alreadyInDictionaryCount', { count: skippedDup }))"
+    ],
+    [
+      "showToast((e && e.message) ? e.message : 'Ошибка перевода')",
+      "showToast((e && e.message) ? translateToastLiteral(e.message) : t('toast.translationError'))"
+    ],
+    [
+      "showToast(e && e.message ? e.message : 'Сеть')",
+      "showToast(e && e.message ? translateToastLiteral(e.message) : t('toast.networkError'))"
+    ],
+    [
+      "showToast(e && e.message ? e.message : 'Не удалось сохранить видео')",
+      "showToast(e && e.message ? translateToastLiteral(e.message) : t('toast.videoSaveFailed'))"
+    ],
+    [
+      "showToast(e && e.message ? String(e.message) : 'Не удалось сгенерировать')",
+      "showToast(e && e.message ? translateToastLiteral(String(e.message)) : t('toast.generateFailed'))"
+    ],
+    [
+      "showToast('Ошибка выбора карточки: ' + e.message)",
+      "showToast(tf('toast.cardPickError', { message: e.message || '' }))"
+    ],
+    [
+      "showToast('Ошибка: ' + e.message)",
+      "showToast(tf('toast.errorWithMessage', { message: e.message || '' }))"
+    ]
+  ]
+}

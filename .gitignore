@@ -1,3 +1,13 @@
 .DS_Store
 Thumbs.db
 *.log
+.env
+.env.*
+*.pem
+*.key
+passwords.txt
+**/passwords.txt
+**/serviceAccountKey.json
+**/google-services.json
+**/google-services*.json
+node_modules/

@@ -1,4 +1,4 @@
-# proficonq
+# profconq.com
 
 Portuguese learning SPA (vocabulary, reader, programs, review, dictionary, profile).
 
@@ -11,29 +11,39 @@ Portuguese learning SPA (vocabulary, reader, programs, review, dictionary, profi
 | `/reader` | Books reader |
 | `/programs` | Study programs |
 | `/review` | Review hub |
-| `/review/flashcards` | Flashcards |
-| `/review/tests` | Tests |
 | `/progress` | Progress |
 | `/dictionary` | Big dictionary |
-| `/dictionary/verbs` | Verbs |
-| `/grammar` | Grammar |
 | `/profile` | Profile |
+| `/admin/` | **Admin panel** (separate login, not linked from site) |
 
-## Local static preview
+## Admin
 
-```bash
-cd E:\GIT\Proficonq
+- URL: https://profconq.com/admin/
+- Credentials: `E:\GIT\passwords.txt` (not in git)
+- Sync password to server: `python deploy/sync-admin-password.py`
+- Full admin deploy: `python deploy/deploy-admin-standalone.py`
+
+## Deploy site (static)
+
+```powershell
+.\deploy.ps1
+```
+
+## Deploy API + admin (server)
+
+```powershell
+python deploy/deploy-admin-standalone.py
+python deploy/sync-admin-password.py
+```
+
+## Local preview
+
+```powershell
 python -m http.server 3456
 ```
 
-Open http://localhost:3456 — UI and routing work; `/api/*` needs the backend (see Portuprep `tutor-app`).
+Open http://localhost:3456 — UI works; `/api/*` needs backend on server.
 
-## Production (nginx)
+## Production nginx
 
-Use `nginx.conf`: `try_files $uri $uri/ /index.html` and proxy `/api/` to the Node/Vite API if used.
-
-## Deploy to server (example)
-
-```powershell
-scp -r index.html favicon.svg icons.svg verbos.js verbos-data.json vocab-images books course nginx.conf tsc-server:/var/www/proficonq/
-```
+See `nginx.conf` — copy to server and reload nginx after edits.

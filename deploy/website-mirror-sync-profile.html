@@ -1,0 +1,13 @@
+
+          <div class="profile-section-title" data-i18n="sync.section">Sync</div>
+          <div class="profile-card sync-mirror-card">
+            <p class="profile-setting-desc" style="margin:0" data-i18n="sync.mirrorHint">Mirror: vocabulary and programs copy from the selected source.</p>
+            <div class="sync-primary-toggle" role="group" data-i18n-aria="sync.primaryAria" aria-label="Sync source">
+              <button type="button" class="sync-primary-btn is-active" id="sync-primary-app" onclick="syncSetPrimary('app')" data-i18n="sync.primaryApp">Source: app</button>
+              <button type="button" class="sync-primary-btn" id="sync-primary-site" onclick="syncSetPrimary('site')" data-i18n="sync.primarySite">Source: website</button>
+            </div>
+            <p class="profile-setting-desc sync-primary-hint" id="sync-primary-hint"></p>
+            <button type="button" class="btn btn-primary btn-sm sync-mirror-btn" onclick="syncMirrorNow()">
+              <i data-lucide="refresh-cw"></i> <span data-i18n="sync.mirrorBtn">Sync</span>
+            </button>
+          </div>
