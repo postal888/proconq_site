@@ -1,7 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>
 (function(){try{var w=window.innerWidth;if(window.visualViewport&&visualViewport.width>0)w=Math.min(w,visualViewport.width);var narrow=w<=768;document.documentElement.classList.toggle('narrow-drawer',narrow);if(narrow)document.documentElement.classList.add('mobile-nav-collapsed');}catch(e){}})();
@@ -71,7 +73,7 @@ a,button,[role="button"],input,textarea,select{transition:color var(--transition
 .sidebar{width:232px;flex-shrink:0;background:var(--color-surface);border-right:1px solid var(--color-border);display:flex;flex-direction:column;overflow-y:auto;transition:width var(--transition)}
 .sidebar-header{padding:var(--space-5) var(--space-3);display:flex;align-items:center;gap:var(--space-3);border-bottom:1px solid var(--color-border);min-width:0;background:var(--color-surface)}
 .logo-wrap{display:flex;flex-direction:column;gap:var(--space-2);min-width:0;flex:1;width:100%}
-.logo-wordmark{display:block;height:48px;width:auto;max-width:100%;aspect-ratio:360/52;background:transparent}
+.logo-wordmark{display:block;height:48px;width:auto;max-width:min(100%,240px);background:transparent;flex-shrink:0}
 .logo-wordmark .logo-mid{fill:#0D1B4D}
 [data-theme="dark"] .logo-wordmark .logo-mid{fill:#e4ebf5}
 .logo-sub{font-size:var(--text-xs);color:var(--color-text-muted);padding-left:1px;line-height:1.2}
@@ -85,6 +87,7 @@ a,button,[role="button"],input,textarea,select{transition:color var(--transition
 .nav-item.active{background:var(--color-primary-highlight);color:var(--color-primary)}
 .nav-item.active i{opacity:1}
 .nav-item-main{font-weight:600}
+.nav-item[hidden]{display:none!important}
 .hub-page{max-width:880px}
 .hub-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-2)}
 .hub-desc{color:var(--color-text-muted);margin-bottom:var(--space-6);font-size:var(--text-sm);line-height:1.5}
@@ -158,6 +161,16 @@ a,button,[role="button"],input,textarea,select{transition:color var(--transition
 .programs-day-date{font-size:var(--text-xs);color:var(--color-text-muted)}
 .programs-day-body{padding:var(--space-3) var(--space-4) var(--space-4)}
 .programs-day-chips{display:flex;flex-wrap:wrap;gap:6px}
+.programs-run-dots{display:inline-flex;gap:4px;align-items:center;margin-top:4px}
+.programs-run-dot{width:8px;height:8px;border-radius:50%;background:var(--color-border)}
+.programs-run-dot.is-done{background:var(--color-success)}
+.programs-run-dot.is-active{box-shadow:0 0 0 2px var(--color-primary)}
+.fc-program-banner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;text-align:center;font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-3);padding:var(--space-2) var(--space-3);background:color-mix(in oklch,var(--color-primary) 8%,var(--color-surface));border-radius:var(--radius-md);border:1px solid var(--color-border)}
+.fc-program-banner strong{color:var(--color-text)}
+.fc-program-info{min-width:0;flex:1;text-align:left}
+.fc-dir-toggle{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;padding:5px 12px;border-radius:var(--radius-full);border:1px solid color-mix(in oklch,var(--color-primary) 40%,var(--color-border));background:var(--color-surface);color:var(--color-primary);font-size:var(--text-xs);font-weight:600;cursor:pointer;transition:background var(--transition)}
+.fc-dir-toggle:hover{background:var(--color-primary-highlight)}
+.fc-dir-toggle svg{width:15px;height:15px}
 .programs-word-chip{font-size:11px;padding:4px 8px;border-radius:var(--radius-full);background:var(--color-surface-offset);color:var(--color-text);border:1px solid var(--color-border)}
 .programs-word-chip.is-frase{background:color-mix(in oklch,var(--color-gold) 12%,var(--color-surface-offset));border-color:color-mix(in oklch,var(--color-gold) 35%,var(--color-border))}
 .programs-picker{max-height:min(52vh,420px);overflow-y:auto;border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-2);background:var(--color-surface-offset)}
@@ -174,15 +187,21 @@ a,button,[role="button"],input,textarea,select{transition:color var(--transition
 .programs-picker-count{font-size:11px;color:var(--color-text-muted);margin-left:auto}
 .programs-picker-group{margin-bottom:var(--space-3)}
 .programs-picker-group:last-child{margin-bottom:0}
-.programs-picker-group-head{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-md);background:color-mix(in oklch,var(--color-primary) 10%,var(--color-surface));border:1px solid var(--color-border);font-size:12px;font-weight:600;color:var(--color-text);cursor:pointer;user-select:none}
+.programs-picker-group-head{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-md);background:color-mix(in oklch,var(--color-primary) 10%,var(--color-surface));border:1px solid var(--color-border);font-size:12px;font-weight:600;color:var(--color-text);cursor:pointer;user-select:none;margin:0}
 .programs-picker-group-head input{accent-color:var(--color-primary);flex-shrink:0}
 .programs-picker-group-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .programs-picker-group-meta{font-size:10px;font-weight:500;color:var(--color-text-muted);flex-shrink:0}
 .programs-picker-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;padding:8px 4px 4px}
-.programs-picker-card{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);cursor:pointer;font-size:11px;line-height:1.35}
+.programs-picker-check{width:1.125rem;height:1.125rem;min-width:1.125rem;border:2px solid var(--color-border);border-radius:4px;background:var(--color-surface);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:border-box;pointer-events:none}
+.programs-picker-card.is-selected .programs-picker-check,.programs-picker-group-head.is-selected .programs-picker-check,.programs-picker-row.is-selected .programs-picker-check{border-color:var(--color-primary);background:var(--color-primary)}
+.programs-picker-group-head.is-partial .programs-picker-check{background:color-mix(in oklch,var(--color-primary) 40%,var(--color-surface));border-color:var(--color-primary)}
+.is-selected .programs-picker-check::after{content:'';display:block;width:0.3rem;height:0.55rem;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px)}
+.programs-picker-card{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);font-size:11px;line-height:1.35;cursor:pointer;touch-action:manipulation;user-select:none}
 .programs-picker-card:hover{border-color:color-mix(in oklch,var(--color-primary) 40%,var(--color-border))}
 .programs-picker-card.is-selected{border-color:var(--color-primary);background:color-mix(in oklch,var(--color-primary) 8%,var(--color-surface))}
-.programs-picker-card input{accent-color:var(--color-primary);margin-top:2px;flex-shrink:0}
+.programs-picker-card-text{flex:1;min-width:0}
+.programs-picker-row{cursor:pointer;touch-action:manipulation}
+.programs-picker-row.is-selected{background:color-mix(in oklch,var(--color-primary) 6%,var(--color-surface-offset))}
 .programs-picker-card-pt{font-weight:600;color:var(--color-text);word-break:break-word}
 .programs-picker-card-ru{color:var(--color-text-muted);word-break:break-word}
 .programs-picker-card-tag{font-size:9px;color:var(--color-text-faint);margin-top:2px}
@@ -413,7 +432,11 @@ textarea.vocab-table-editable{resize:vertical;min-height:2.6em;font-size:11px}
 .word-card.word-card--drop-before{box-shadow:inset 0 3px 0 0 var(--color-primary)}
 .word-card.word-card--drop-after{box-shadow:inset 0 -3px 0 0 var(--color-primary)}
 .vocab-detail-overlay{z-index:920}
-.programs-create-modal{z-index:940}
+.programs-create-modal{z-index:11050}
+.programs-create-modal.open{pointer-events:auto!important}
+.programs-create-modal.open .modal{pointer-events:auto;position:relative;z-index:1}
+.programs-create-modal .programs-picker{position:relative;z-index:2;pointer-events:auto!important}
+.programs-create-modal .programs-vocab-toolbar button{pointer-events:auto}
 .vocab-detail-modal-cluster{position:relative;width:min(640px,94vw);flex-shrink:0;pointer-events:none;display:flex;align-items:stretch;justify-content:center}
 .vocab-detail-modal-cluster .vocab-detail-modal{pointer-events:auto;width:100%}
 .vocab-detail-nav{position:absolute;top:44%;transform:translateY(-50%);pointer-events:auto;z-index:3;width:44px;height:44px;padding:0;border-radius:var(--radius-full);background:color-mix(in oklch,var(--color-surface) 94%,transparent);border:1px solid var(--color-border);box-shadow:var(--shadow-md);color:var(--color-text);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -539,7 +562,7 @@ textarea.vocab-table-editable{resize:vertical;min-height:2.6em;font-size:11px}
 .flashcard.flipped{transform:rotateY(180deg)}
 .flashcard-face{position:absolute;inset:0;border-radius:var(--radius-xl);padding:var(--space-8);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:var(--shadow-md);overflow:hidden;min-height:0}
 .fc-front{background:var(--color-surface);border:1px solid var(--color-border);overflow:hidden;min-height:0;gap:var(--space-2)}
-.fc-back{background:var(--color-primary);transform:rotateY(180deg);border:none;justify-content:flex-start;align-items:stretch;text-align:left;gap:var(--space-2);padding:var(--space-5) var(--space-5) var(--space-4)}
+.fc-back{background:color-mix(in oklch,var(--color-primary) 16%,var(--color-surface));transform:rotateY(180deg);border:1px solid color-mix(in oklch,var(--color-primary) 38%,var(--color-border));justify-content:flex-start;align-items:center;text-align:center;gap:var(--space-2);padding:var(--space-5) var(--space-5) var(--space-4)}
 .fc-word{font-family:var(--font-display);font-size:clamp(0.95rem,3.8vw,var(--text-xl));color:var(--color-text);line-height:1.35;word-break:break-word;overflow-wrap:anywhere;max-height:min(58%,11.5em);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;width:100%;flex-shrink:1;min-height:0}
 .fc-front-main{display:flex;align-items:center;justify-content:center;gap:var(--space-3);flex-wrap:wrap;width:100%;min-height:0;flex:0 1 auto;max-height:min(82%,calc(100% - 3.25rem))}
 .fc-tts-btn{width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface-offset);color:var(--color-primary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background var(--transition),transform var(--transition)}
@@ -547,9 +570,9 @@ textarea.vocab-table-editable{resize:vertical;min-height:2.6em;font-size:11px}
 .fc-back-tts{display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;margin-bottom:0;flex-shrink:0}
 .fc-tts-btn.fc-tts-wide{width:auto;padding:0 var(--space-3);border-radius:var(--radius-md);gap:var(--space-2);font-size:var(--text-xs);font-weight:600}
 .fc-hint{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-3);flex-shrink:0}
-.fc-back-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;width:100%;padding-right:2px;margin-top:var(--space-1)}
-.fc-translation{font-size:clamp(0.8rem,2.6vw,1.15rem);color:#fff;font-weight:600;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
-.fc-example{font-size:clamp(0.75rem,2.2vw,var(--text-sm));color:rgba(255,255,255,.82);margin-top:var(--space-3);font-style:italic;line-height:1.45;word-break:break-word;overflow-wrap:anywhere}
+.fc-back-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;width:100%;padding-right:2px;margin-top:var(--space-1);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.fc-translation{font-size:clamp(0.8rem,2.6vw,1.15rem);color:var(--color-text);font-weight:600;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
+.fc-example{font-size:clamp(0.75rem,2.2vw,var(--text-sm));color:var(--color-text-muted);margin-top:var(--space-3);font-style:italic;line-height:1.45;word-break:break-word;overflow-wrap:anywhere}
 .fc-img{width:80px;height:80px;border-radius:var(--radius-lg);object-fit:cover;margin-bottom:var(--space-4);opacity:.9}
 .flashcard-controls{display:flex;justify-content:center;gap:var(--space-4)}
 .fc-btn{width:56px;height:56px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;font-size:1.25rem;border:2px solid var(--color-border);background:var(--color-surface);color:var(--color-text);transition:all var(--transition)}
@@ -559,6 +582,8 @@ textarea.vocab-table-editable{resize:vertical;min-height:2.6em;font-size:11px}
 .fc-btn.ok:hover{background:var(--color-gold);color:#fff}
 .fc-btn.pass{border-color:var(--color-success);color:var(--color-success)}
 .fc-btn.pass:hover{background:var(--color-success);color:#fff}
+#fc-controls-program .fc-btn{width:auto;height:auto;min-height:52px;padding:0 var(--space-5);gap:var(--space-2);font-size:var(--text-base);font-weight:600;white-space:nowrap;line-height:1.2}
+#fc-controls-program .fc-btn svg{width:20px;height:20px}
 .fc-progress{height:4px;background:var(--color-surface-offset);border-radius:var(--radius-full);margin-bottom:var(--space-5);overflow:hidden}
 .fc-progress-bar{height:100%;background:var(--color-primary);border-radius:var(--radius-full);transition:width .4s var(--transition)}
 .deck-selector{display:flex;gap:var(--space-3);margin-bottom:var(--space-6);flex-wrap:wrap}
@@ -898,6 +923,7 @@ textarea.vocab-table-editable{resize:vertical;min-height:2.6em;font-size:11px}
 .modal-overlay{position:fixed;inset:0;background:oklch(0 0 0/.5);z-index:900;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity var(--transition)}
 #yt-url-modal-overlay{z-index:1105}
 .modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-overlay:not(.open),.modal-overlay:not(.open) *{pointer-events:none!important}
 .modal{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);width:min(520px,90vw);box-shadow:var(--shadow-lg);transform:translateY(12px);transition:transform var(--transition)}
 .modal-overlay.open .modal{transform:translateY(0)}
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-5)}
@@ -1225,15 +1251,15 @@ html.narrow-drawer.mobile-modal-open .topbar{
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header" id="sidebar-header" onclick="onSidebarHeaderClick(event)" role="button" tabindex="0" aria-label="Меню profconq">
       <div class="logo-wrap">
-        <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 52" fill="none" role="img" aria-label="profconq">
+        <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 52" fill="none" role="img" aria-label="profconq" preserveAspectRatio="xMinYMid meet">
           <text y="36" font-family="'Nunito','Varela Round','Segoe UI Rounded','Helvetica Rounded','Arial Rounded MT Bold',sans-serif" font-size="38" font-weight="700" letter-spacing="-0.5">
             <tspan fill="#00C2D1">p</tspan><tspan class="logo-mid">rofcon</tspan><tspan fill="#86E04A">q</tspan>
           </text>
-          <circle cx="16" cy="44" r="2.8" fill="#00C2D1"/>
-          <path d="M21 44 H328" stroke="url(#profconq-arrow)" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M328 41.2 L334.5 44 L328 46.8 Z" fill="#86E04A"/>
+          <circle class="logo-arrow-dot" cx="11" cy="44" r="2.8" fill="#00C2D1"/>
+          <path class="logo-arrow-line" d="M16 44 H186" stroke="url(#profconq-arrow)" stroke-width="2.2" stroke-linecap="round"/>
+          <path class="logo-arrow-head" d="M186 41.2 L192.5 44 L186 46.8 Z" fill="#86E04A"/>
           <defs>
-            <linearGradient id="profconq-arrow" x1="21" y1="44" x2="328" y2="44" gradientUnits="userSpaceOnUse">
+            <linearGradient id="profconq-arrow" x1="11" y1="44" x2="192.5" y2="44" gradientUnits="userSpaceOnUse">
               <stop stop-color="#00C2D1"/>
               <stop offset="1" stop-color="#86E04A"/>
             </linearGradient>
@@ -1247,7 +1273,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
         <button class="nav-item nav-item-main active" data-view="vocab" onclick="navigate('vocab',this)">
           <i data-lucide="book-open"></i> <span data-i18n="nav.vocabulary">Vocabulary</span>
         </button>
-        <button class="nav-item nav-item-main" data-view="books" onclick="navigate('books',this)">
+        <button class="nav-item nav-item-main" data-view="books" onclick="navigate('books',this)" hidden>
           <i data-lucide="book-marked"></i> <span data-i18n="nav.reader">Reader</span>
         </button>
         <button class="nav-item nav-item-main" data-view="programs" onclick="navigate('programs',this)">
@@ -1259,7 +1285,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
         <button class="nav-item nav-item-main" data-view="progress" onclick="navigate('progress',this)">
           <i data-lucide="bar-chart-2"></i> <span data-i18n="nav.progress">Progress</span>
         </button>
-        <button class="nav-item nav-item-main" data-view="big-dict" onclick="navigate('big-dict',this)">
+        <button class="nav-item nav-item-main" data-view="big-dict" onclick="navigate('big-dict',this)" hidden>
           <i data-lucide="languages"></i> <span data-i18n="nav.dictionary">Dictionary</span>
         </button>
         <button class="nav-item nav-item-main" data-view="profile" onclick="navigate('profile',this)">
@@ -1622,6 +1648,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
           </div>
           <div id="fc-card-area" style="display:none">
             <div id="fc-play-wrap">
+            <div class="fc-program-banner" id="fc-program-banner" style="display:none"></div>
             <div class="fc-progress"><div class="fc-progress-bar" id="fc-prog-bar" style="width:0%"></div></div>
             <div class="flashcard-wrap">
               <div class="flashcard" id="fc-card" onclick="flipCard()">
@@ -1629,7 +1656,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
                   <img class="fc-img" id="fc-img-front" src="" alt="" style="display:none">
                   <div class="fc-front-main">
                     <div class="fc-word" id="fc-word"></div>
-                    <button type="button" class="fc-tts-btn" id="fc-tts-front" title="Произнести слово (PT)" onclick="event.stopPropagation(); speakFlashcardPortuguese('word')"><i data-lucide="volume-2"></i></button>
+                    <button type="button" class="fc-tts-btn" id="fc-tts-front" title="Произнести слово" onclick="event.stopPropagation(); fcSpeakFront()"><i data-lucide="volume-2"></i></button>
                   </div>
                   <div class="fc-hint">Нажми на карточку, чтобы увидеть перевод</div>
                 </div>
@@ -1645,10 +1672,14 @@ html.narrow-drawer.mobile-modal-open .topbar{
                 </div>
               </div>
             </div>
-            <div class="flashcard-controls">
+            <div class="flashcard-controls" id="fc-controls-sm2">
               <button class="fc-btn fail" onclick="rateCard(1)" title="Сложно"><i data-lucide="x"></i></button>
               <button class="fc-btn ok" onclick="rateCard(3)" title="Нормально"><i data-lucide="minus"></i></button>
               <button class="fc-btn pass" onclick="rateCard(5)" title="Легко"><i data-lucide="check"></i></button>
+            </div>
+            <div class="flashcard-controls" id="fc-controls-program" style="display:none">
+              <button type="button" class="fc-btn fail" onclick="programsStudyAnswer(false)" style="min-width:120px"><i data-lucide="x"></i> <span data-i18n="programs.dontKnow">Не знаю</span></button>
+              <button type="button" class="fc-btn pass" onclick="programsStudyAnswer(true)" style="min-width:120px"><i data-lucide="check"></i> <span data-i18n="programs.know">Знаю</span></button>
             </div>
             <div style="text-align:center;margin-top:var(--space-4);font-size:var(--text-xs);color:var(--color-text-faint)">
               <span id="fc-counter"></span>
@@ -1906,9 +1937,10 @@ html.narrow-drawer.mobile-modal-open .topbar{
               <div class="books-side-h">Библиотека</div>
               <button type="button" class="btn btn-ghost btn-sm books-side-collapse" id="books-lib-hide-header" onclick="booksToggleLibrary()" title="Скрыть библиотеку" aria-expanded="true"><i data-lucide="panel-left-close"></i></button>
             </div>
-            <div class="books-toolbar" style="margin-bottom:var(--space-3)">
-              <input type="file" id="books-file-input" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
-              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('books-file-input').click()"><i data-lucide="plus"></i> PDF / Word</button>
+            <div class="books-toolbar" style="margin-bottom:var(--space-3);flex-wrap:wrap">
+              <input type="file" id="books-file-input" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" style="display:none">
+              <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('books-file-input').click()"><i data-lucide="plus"></i> <span data-i18n="books.addFile">PDF / Word / TXT</span></button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="booksOpenPasteModal()"><i data-lucide="clipboard-paste"></i> <span data-i18n="books.pasteText">Paste text</span></button>
             </div>
             <div id="books-catalog"></div>
           </aside>
@@ -2154,6 +2186,31 @@ html.narrow-drawer.mobile-modal-open .topbar{
   </div>
 </div>
 
+<!-- BOOKS: paste text -->
+<div class="modal-overlay" id="books-paste-overlay" onclick="if(event.target===this)booksClosePasteModal()">
+  <div class="modal" style="max-width:min(640px,96vw)" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="books.pasteTitle">Paste text for reading</div>
+      <button type="button" class="btn-icon" onclick="booksClosePasteModal()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+      <div class="form-group" style="margin:0">
+        <label class="form-label" for="books-paste-title" data-i18n="books.pasteName">Title</label>
+        <input class="form-input" id="books-paste-title" type="text" placeholder="My text">
+      </div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label" for="books-paste-body" data-i18n="books.pasteBody">Text</label>
+        <textarea class="form-input" id="books-paste-body" rows="14" style="resize:vertical;min-height:200px;font-family:inherit;line-height:1.45" data-i18n-placeholder="books.pastePlaceholder" placeholder="Paste or type text here (Ctrl+V)…"></textarea>
+      </div>
+      <p class="profile-setting-desc" style="margin:0" data-i18n="books.pasteHint">Text is saved in your library and opens in the reader with selection and translation.</p>
+      <div style="display:flex;gap:var(--space-3);justify-content:flex-end;flex-wrap:wrap">
+        <button type="button" class="btn btn-ghost" onclick="booksClosePasteModal()" data-i18n="books.pasteCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="booksSubmitPasteText()"><i data-lucide="book-open"></i> <span data-i18n="books.pasteOpen">Open in reader</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- DIFFICULTY ANALYSIS -->
 <div class="modal-overlay" id="difficulty-modal-overlay" onclick="if(event.target===this)closeDifficultyModal()">
   <div class="modal difficulty-modal-inner" onclick="event.stopPropagation()">
@@ -2179,7 +2236,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
         <label class="form-label" for="programs-create-name" data-i18n="programs.name">Name</label>
         <input class="form-input" id="programs-create-name" type="text" placeholder="Week 1 · travel phrases">
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-3)">
         <div class="form-group" style="margin:0">
           <label class="form-label" for="programs-create-start" data-i18n="programs.startDate">Start date</label>
           <input class="form-input" id="programs-create-start" type="date">
@@ -2187,6 +2244,10 @@ html.narrow-drawer.mobile-modal-open .topbar{
         <div class="form-group" style="margin:0">
           <label class="form-label" for="programs-create-days" data-i18n="programs.days">Days</label>
           <input class="form-input" id="programs-create-days" type="number" min="1" max="365" value="7">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" for="programs-create-runs" data-i18n="programs.runsPerDay">Runs per day</label>
+          <input class="form-input" id="programs-create-runs" type="number" min="1" max="20" value="3">
         </div>
       </div>
       <div class="form-group" style="margin:0">
@@ -2206,7 +2267,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
         </div>
         <input class="form-input" id="programs-picker-filter" type="search" placeholder="Search…" oninput="programsRenderPicker()" style="margin-bottom:var(--space-2)">
         <div class="programs-picker" id="programs-picker"></div>
-        <p class="profile-setting-desc" style="margin-top:var(--space-2)" data-i18n="programs.distributeHint">Selected cards are spread evenly across days.</p>
+        <p class="profile-setting-desc" style="margin-top:var(--space-2)" data-i18n="programs.distributeHint">Each day you study all selected cards. Runs per day = how many full passes through the deck.</p>
       </div>
       <div style="display:flex;gap:var(--space-3);justify-content:flex-end;flex-shrink:0">
         <button type="button" class="btn btn-ghost" onclick="programsCloseCreateModal()" data-i18n="programs.cancel">Cancel</button>
@@ -2367,6 +2428,7 @@ html.narrow-drawer.mobile-modal-open .topbar{
 </div>
 
 <script>
+window.__PROFICONQ_BUILD = 'picker-v6-overlay-fix';
 // ═══════════════════════════════════════════════════════
 // DATA STORE — словарь: файл tutor-app/vocabulary/words.json (через GET/PUT /api/vocabulary)
 // ═══════════════════════════════════════════════════════
@@ -2700,6 +2762,11 @@ function initVocabTopbarFontControls() {
 let fcQueue = [];
 let fcIndex = 0;
 let fcFlipped = false;
+var FC_DIR_KEY = 'proficonq_fc_dir_v1';
+window.__fcDir = (function () {
+  try { var v = localStorage.getItem(FC_DIR_KEY); if (v === 'ru2pt' || v === 'pt2ru') return v; } catch (e) {}
+  return 'pt2ru';
+})();
 let popupWord = '', popupTranslation = '', popupExample = '';
 /** Режим: следующее выделение в субтитрах подставится в «Пример» в меню слова. */
 let __pickingExampleForPopup = false;
@@ -4243,12 +4310,101 @@ function booksShowEmptyMain() {
   host.appendChild(p);
 }
 
+async function booksAddTextContent(text, title) {
+  var t = String(text || '').trim();
+  if (!t) {
+    showToast(t('books.pasteEmpty') || 'Paste some text first');
+    return null;
+  }
+  var finalTitle = String(title || '').trim();
+  if (!finalTitle) {
+    finalTitle = t.slice(0, 60).replace(/\s+/g, ' ').trim();
+    if (finalTitle.length > 57) finalTitle = finalTitle.slice(0, 57) + '…';
+  }
+  if (!finalTitle) finalTitle = t('books.pasteDefaultTitle') || 'Pasted text';
+  var id = booksGenId();
+  await booksIdbPut({ id: id, title: finalTitle, fileType: 'text', text: t });
+  var cat = booksReadCatalog();
+  cat.push({ id: id, title: finalTitle, kind: 'idb', type: 'text' });
+  booksWriteCatalog(cat);
+  booksRenderCatalog();
+  return id;
+}
+
+function booksRenderTextFromString(text) {
+  var host = booksMainBody() || document.getElementById('books-main');
+  if (!host) return;
+  booksClearMainContent();
+  var wrap = document.createElement('div');
+  wrap.className = 'books-text-flow';
+  var block = document.createElement('div');
+  block.className = 'books-text-page';
+  block.setAttribute('data-page', '1');
+  var raw = String(text || '').trim();
+  var paras = raw.split(/\n{2,}/).map(function (s) { return s.trim(); }).filter(Boolean);
+  if (!paras.length) paras = [raw];
+  var pHtml = paras.map(function (s) {
+    return '<p>' + booksEsc(s.replace(/\n/g, ' ')) + '</p>';
+  }).join('');
+  block.innerHTML = '<div class="books-page-content">' + pHtml + '</div>';
+  wrap.appendChild(block);
+  host.appendChild(wrap);
+  booksSetupReadRoot(wrap);
+}
+
+function booksOpenPasteModal() {
+  var ov = document.getElementById('books-paste-overlay');
+  if (!ov) return;
+  ov.classList.add('open');
+  var titleEl = document.getElementById('books-paste-title');
+  var bodyEl = document.getElementById('books-paste-body');
+  if (titleEl && !titleEl.value) titleEl.value = '';
+  if (bodyEl && !bodyEl.value.trim()) {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(function (clip) {
+        if (clip && String(clip).trim() && bodyEl && !bodyEl.value.trim()) bodyEl.value = clip;
+      }).catch(function () {});
+    }
+  }
+  applyUiLanguage();
+  try { lucide.createIcons(); } catch (e) {}
+  if (bodyEl) setTimeout(function () { bodyEl.focus(); }, 80);
+}
+
+function booksClosePasteModal() {
+  var ov = document.getElementById('books-paste-overlay');
+  if (ov) ov.classList.remove('open');
+}
+
+async function booksSubmitPasteText() {
+  var bodyEl = document.getElementById('books-paste-body');
+  var titleEl = document.getElementById('books-paste-title');
+  var text = bodyEl ? bodyEl.value : '';
+  var title = titleEl ? titleEl.value : '';
+  var id = await booksAddTextContent(text, title);
+  if (!id) return;
+  booksClosePasteModal();
+  if (bodyEl) bodyEl.value = '';
+  if (titleEl) titleEl.value = '';
+  await booksOpenById(id);
+  showToast(t('books.pasteSaved') || 'Text added to library');
+}
+
 async function booksAddFile(file) {
   var name = String(file.name || 'book');
   var lower = name.toLowerCase();
+  if (lower.endsWith('.txt')) {
+    var txt = await file.text();
+    var id = await booksAddTextContent(txt, name.replace(/\.txt$/i, ''));
+    if (id) {
+      await booksOpenById(id);
+      showToast(t('books.added') || 'Added to library');
+    }
+    return;
+  }
   var type = lower.endsWith('.pdf') ? 'pdf' : lower.endsWith('.docx') ? 'docx' : '';
   if (!type) {
-    showToast('Нужен файл .pdf или .docx');
+    showToast(t('books.fileTypeError') || 'Use .pdf, .docx or .txt');
     return;
   }
   var buf = await file.arrayBuffer();
@@ -4260,7 +4416,7 @@ async function booksAddFile(file) {
   booksWriteCatalog(cat);
   booksRenderCatalog();
   await booksOpenById(id);
-  showToast('Книга добавлена');
+  showToast(t('books.added') || 'Added to library');
 }
 
 function booksRemoveFromCatalog(id) {
@@ -4439,7 +4595,14 @@ async function booksOpenById(id) {
     } else {
       var rec = await booksIdbGet(id);
       if (!rec || !rec.data) throw new Error('Файл не найден в хранилище браузера');
-      if (rec.fileType === 'pdf') await booksRenderPdfFromData(rec.data);
+      if (rec.fileType === 'text') {
+        var txt = rec.text;
+        if (!txt && rec.data) {
+          try { txt = new TextDecoder('utf-8').decode(rec.data); } catch (eDec) { txt = ''; }
+        }
+        if (!txt) throw new Error('Empty text');
+        booksRenderTextFromString(txt);
+      } else if (rec.fileType === 'pdf') await booksRenderPdfFromData(rec.data);
       else await booksRenderDocxFromData(rec.data);
     }
     if (status) status.textContent = meta.title;
@@ -4754,6 +4917,15 @@ function initBooksView() {
       if (f) void booksAddFile(f);
     });
   }
+  var pasteBody = document.getElementById('books-paste-body');
+  if (pasteBody && !__booksViewInited) {
+    pasteBody.addEventListener('keydown', function (ev) {
+      if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') {
+        ev.preventDefault();
+        void booksSubmitPasteText();
+      }
+    });
+  }
   var main = document.getElementById('books-main');
   var bodyScroll = document.getElementById('books-main-body');
   if (main && !__booksViewInited) {
@@ -4876,7 +5048,7 @@ const NAV_MAIN_MAP = {
 };
 var UI_LANG_KEY = 'profconq_ui_lang_v1';
 var UI_THEME_KEY = 'profconq_ui_theme_v1';
-var __uiLang = 'ru';
+var __uiLang = 'en';
 var __uiTheme = 'dark';
 var UI_STRINGS = {
   ru: {
@@ -4899,6 +5071,13 @@ var UI_STRINGS = {
     'profile.theme': 'Тема', 'profile.themeDesc': 'Светлое или тёмное оформление.',
     'profile.theme.dark': 'Тёмная', 'profile.theme.light': 'Светлая',
     'page.vocab': 'Словарь', 'page.books': 'Читалка', 'page.programs': 'Программы', 'page.review': 'Повторение',
+    'books.addFile': 'PDF / Word / TXT', 'books.pasteText': 'Вставить текст',
+    'books.pasteTitle': 'Вставить текст для чтения', 'books.pasteName': 'Название', 'books.pasteBody': 'Текст',
+    'books.pastePlaceholder': 'Вставьте или введите текст (Ctrl+V)…',
+    'books.pasteHint': 'Текст сохранится в библиотеке и откроется в читалке с выделением и переводом.',
+    'books.pasteCancel': 'Отмена', 'books.pasteOpen': 'Открыть в читалке', 'books.pasteEmpty': 'Вставьте текст',
+    'books.pasteSaved': 'Текст добавлен в библиотеку', 'books.pasteDefaultTitle': 'Вставленный текст',
+    'books.added': 'Добавлено в библиотеку', 'books.fileTypeError': 'Нужен файл .pdf, .docx или .txt',
     'page.progress': 'Прогресс', 'page.big-dict': 'Большой словарь', 'page.profile': 'Профиль',
     'page.youtube': 'YouTube + субтитры', 'page.flashcards': 'Карточки', 'page.tests': 'Тесты',
     'page.verbos': 'Глаголы', 'page.grammar': 'Грамматика', 'page.textgen': 'Текст по словам',
@@ -4912,7 +5091,14 @@ var UI_STRINGS = {
     'programs.pickFromVocab': 'Выберите папки и карточки из словаря.',
     'programs.viewCards': 'Карточки', 'programs.viewTable': 'Таблица',
     'programs.selectedCount': 'Выбрано: {n}',
-    'programs.distributeHint': 'Выбранные карточки равномерно распределяются по дням.',
+    'programs.distributeHint': 'Каждый день — все выбранные карточки. Прогонов в день — сколько раз пройти весь набор за день.',
+    'programs.runsPerDay': 'Прогонов в день', 'programs.runsShort': 'прог./день', 'programs.run': 'Прогон',
+    'programs.know': 'Знаю', 'programs.dontKnow': 'Не знаю', 'programs.study': 'Учить', 'programs.repeat': 'Повторить',
+    'programs.dirPtRu': 'PT → RU', 'programs.dirRuPt': 'RU → PT', 'programs.dirToggleHint': 'Сменить направление перевода',
+    'programs.markDone': 'Отметить день', 'programs.needsReview': 'нужно повторить',
+    'programs.allRunsDone': 'Все прогоны за день выполнены', 'programs.runDone': 'Прогон {r} завершён',
+    'programs.unknownCarry': '«Не знаю»: {n}', 'programs.nextRun': 'следующий прогон', 'programs.dayDone': 'День завершён',
+    'programs.runComplete': 'Прогон завершён',
     'programs.cancel': 'Отмена', 'programs.create': 'Создать',
     'programs.day': 'День', 'programs.done': 'Готово', 'programs.undo': 'Снять', 'programs.today': 'Сегодня',
     'programs.cards': 'карточек', 'programs.completed': 'дней выполнено', 'programs.review': 'Повторить',
@@ -4969,6 +5155,13 @@ var UI_STRINGS = {
     'profile.theme': 'Theme', 'profile.themeDesc': 'Light or dark appearance.',
     'profile.theme.dark': 'Dark', 'profile.theme.light': 'Light',
     'page.vocab': 'Vocabulary', 'page.books': 'Reader', 'page.programs': 'Programs', 'page.review': 'Review',
+    'books.addFile': 'PDF / Word / TXT', 'books.pasteText': 'Paste text',
+    'books.pasteTitle': 'Paste text for reading', 'books.pasteName': 'Title', 'books.pasteBody': 'Text',
+    'books.pastePlaceholder': 'Paste or type text here (Ctrl+V)…',
+    'books.pasteHint': 'Text is saved in your library and opens in the reader with selection and translation.',
+    'books.pasteCancel': 'Cancel', 'books.pasteOpen': 'Open in reader', 'books.pasteEmpty': 'Paste some text first',
+    'books.pasteSaved': 'Text added to library', 'books.pasteDefaultTitle': 'Pasted text',
+    'books.added': 'Added to library', 'books.fileTypeError': 'Use .pdf, .docx or .txt',
     'page.progress': 'Progress', 'page.big-dict': 'Dictionary', 'page.profile': 'Profile',
     'page.youtube': 'YouTube + subtitles', 'page.flashcards': 'Flashcards', 'page.tests': 'Tests',
     'page.verbos': 'Verbs', 'page.grammar': 'Grammar', 'page.textgen': 'Text from words',
@@ -4982,7 +5175,14 @@ var UI_STRINGS = {
     'programs.pickFromVocab': 'Choose folders and cards from your vocabulary.',
     'programs.viewCards': 'Cards', 'programs.viewTable': 'Table',
     'programs.selectedCount': '{n} selected',
-    'programs.distributeHint': 'Selected cards are spread evenly across days.',
+    'programs.distributeHint': 'Each day: all selected cards. Runs per day = full passes through the deck.',
+    'programs.runsPerDay': 'Runs per day', 'programs.runsShort': 'runs/day', 'programs.run': 'Run',
+    'programs.know': 'Know', 'programs.dontKnow': "Don't know", 'programs.study': 'Study', 'programs.repeat': 'Repeat',
+    'programs.dirPtRu': 'PT → RU', 'programs.dirRuPt': 'RU → PT', 'programs.dirToggleHint': 'Switch translation direction',
+    'programs.markDone': 'Mark day done', 'programs.needsReview': 'needs review',
+    'programs.allRunsDone': 'All runs for this day are done', 'programs.runDone': 'Run {r} complete',
+    'programs.unknownCarry': "Don't know: {n}", 'programs.nextRun': 'next run', 'programs.dayDone': 'Day complete',
+    'programs.runComplete': 'Run complete',
     'programs.cancel': 'Cancel', 'programs.create': 'Create',
     'programs.day': 'Day', 'programs.done': 'Done', 'programs.undo': 'Undo', 'programs.today': 'Today',
     'programs.cards': 'cards', 'programs.completed': 'days completed', 'programs.review': 'Review',
@@ -5039,6 +5239,13 @@ var UI_STRINGS = {
     'profile.theme': 'Tema', 'profile.themeDesc': 'Aparência clara ou escura.',
     'profile.theme.dark': 'Escuro', 'profile.theme.light': 'Claro',
     'page.vocab': 'Vocabulário', 'page.books': 'Leitor', 'page.programs': 'Programas', 'page.review': 'Revisão',
+    'books.addFile': 'PDF / Word / TXT', 'books.pasteText': 'Colar texto',
+    'books.pasteTitle': 'Colar texto para leitura', 'books.pasteName': 'Título', 'books.pasteBody': 'Texto',
+    'books.pastePlaceholder': 'Cole ou digite o texto (Ctrl+V)…',
+    'books.pasteHint': 'O texto é guardado na biblioteca e abre no leitor com seleção e tradução.',
+    'books.pasteCancel': 'Cancelar', 'books.pasteOpen': 'Abrir no leitor', 'books.pasteEmpty': 'Cole algum texto',
+    'books.pasteSaved': 'Texto adicionado à biblioteca', 'books.pasteDefaultTitle': 'Texto colado',
+    'books.added': 'Adicionado à biblioteca', 'books.fileTypeError': 'Use .pdf, .docx ou .txt',
     'page.progress': 'Progresso', 'page.big-dict': 'Dicionário', 'page.profile': 'Perfil',
     'page.youtube': 'YouTube + legendas', 'page.flashcards': 'Flashcards', 'page.tests': 'Testes',
     'page.verbos': 'Verbos', 'page.grammar': 'Gramática', 'page.textgen': 'Texto com palavras',
@@ -5052,7 +5259,14 @@ var UI_STRINGS = {
     'programs.pickFromVocab': 'Escolha pastas e cartões do vocabulário.',
     'programs.viewCards': 'Cartões', 'programs.viewTable': 'Tabela',
     'programs.selectedCount': '{n} selecionados',
-    'programs.distributeHint': 'Os cartões selecionados são distribuídos uniformemente pelos dias.',
+    'programs.distributeHint': 'Cada dia: todos os cartões. Passagens por dia = quantas vezes percorrer o baralho.',
+    'programs.runsPerDay': 'Passagens por dia', 'programs.runsShort': 'pass./dia', 'programs.run': 'Passagem',
+    'programs.know': 'Sei', 'programs.dontKnow': 'Não sei', 'programs.study': 'Estudar', 'programs.repeat': 'Repetir',
+    'programs.dirPtRu': 'PT → RU', 'programs.dirRuPt': 'RU → PT', 'programs.dirToggleHint': 'Mudar direção da tradução',
+    'programs.markDone': 'Marcar dia', 'programs.needsReview': 'revisar',
+    'programs.allRunsDone': 'Todas as passagens do dia concluídas', 'programs.runDone': 'Passagem {r} concluída',
+    'programs.unknownCarry': 'Não sei: {n}', 'programs.nextRun': 'próxima passagem', 'programs.dayDone': 'Dia concluído',
+    'programs.runComplete': 'Passagem concluída',
     'programs.cancel': 'Cancelar', 'programs.create': 'Criar',
     'programs.day': 'Dia', 'programs.done': 'Feito', 'programs.undo': 'Desfazer', 'programs.today': 'Hoje',
     'programs.cards': 'cartões', 'programs.completed': 'dias concluídos', 'programs.review': 'Revisar',
@@ -5091,8 +5305,8 @@ var UI_STRINGS = {
   },
 };
 function t(key) {
-  var pack = UI_STRINGS[__uiLang] || UI_STRINGS.ru;
-  return (pack && pack[key]) || (UI_STRINGS.ru && UI_STRINGS.ru[key]) || key;
+  var pack = UI_STRINGS[__uiLang] || UI_STRINGS.en;
+  return (pack && pack[key]) || (UI_STRINGS.en && UI_STRINGS.en[key]) || key;
 }
 function pageTitleFor(viewId) {
   return t('page.' + viewId) || pageTitles[viewId] || viewId;
@@ -5228,7 +5442,7 @@ function profileSetTheme(theme) {
 }
 
 function profileSetUiLang(lang) {
-  __uiLang = UI_STRINGS[lang] ? lang : 'ru';
+  __uiLang = UI_STRINGS[lang] ? lang : 'en';
   try { localStorage.setItem(UI_LANG_KEY, __uiLang); } catch (e) {}
   applyUiLanguage();
   profileSyncSettingsUi();
@@ -6063,7 +6277,7 @@ function programsPickerBuildGroups(list) {
 function programsPickerGroupSelection(ids) {
   var n = 0;
   for (var i = 0; i < ids.length; i++) {
-    if (__programsPickerSel.has(ids[i])) n++;
+    if (__programsPickerSel.has(programsPickerNormId(ids[i]))) n++;
   }
   if (!ids.length || n === 0) return { all: false, none: true, partial: false, count: 0 };
   if (n === ids.length) return { all: true, none: false, partial: false, count: n };
@@ -6084,17 +6298,107 @@ function programsPickerToggleGroup(gkey, on) {
   for (var i = 0; i < groups.length; i++) {
     if (groups[i].key !== gkey) continue;
     groups[i].items.forEach(function (w) {
-      if (on) __programsPickerSel.add(w.id);
-      else __programsPickerSel.delete(w.id);
+      var nid = programsPickerNormId(w.id);
+      if (on) __programsPickerSel.add(nid);
+      else __programsPickerSel.delete(nid);
     });
     break;
   }
-  programsRenderPicker();
+  programsPickerSyncDom();
 }
 
-function programsPickerToggleGroupFromEl(cb) {
-  if (!cb) return;
-  programsPickerToggleGroup(cb.getAttribute('data-gk'), cb.checked);
+function programsPickerNormId(id) {
+  var n = Number(id);
+  return isNaN(n) ? id : n;
+}
+
+function programsPickerSyncDom() {
+  var box = document.getElementById('programs-picker');
+  if (!box) return;
+  box.querySelectorAll('[data-pick-wid]').forEach(function (el) {
+    var id = programsPickerNormId(el.getAttribute('data-pick-wid'));
+    el.classList.toggle('is-selected', __programsPickerSel.has(id));
+    el.setAttribute('aria-pressed', __programsPickerSel.has(id) ? 'true' : 'false');
+  });
+  box.querySelectorAll('[data-pick-gk]').forEach(function (head) {
+    var ids = [];
+    var grp = head.closest('.programs-picker-group');
+    if (grp) {
+      grp.querySelectorAll('[data-pick-wid]').forEach(function (el) {
+        ids.push(programsPickerNormId(el.getAttribute('data-pick-wid')));
+      });
+    } else {
+      var row = head.nextElementSibling;
+      while (row && row.getAttribute('data-pick-wid')) {
+        ids.push(programsPickerNormId(row.getAttribute('data-pick-wid')));
+        row = row.nextElementSibling;
+      }
+    }
+    var st = programsPickerGroupSelection(ids);
+    head.classList.toggle('is-selected', st.all);
+    head.classList.toggle('is-partial', st.partial);
+    head.setAttribute('aria-pressed', st.all ? 'true' : st.partial ? 'mixed' : 'false');
+    var meta = head.querySelector('.programs-picker-group-meta');
+    if (meta) meta.textContent = (grp ? '' : '(') + st.count + '/' + ids.length + (grp ? '' : ')');
+  });
+  programsPickerUpdateCount();
+}
+
+function programsPickerHandleActivate(target) {
+  var card = target.closest('[data-pick-wid]');
+  if (card) {
+    var wid = programsPickerNormId(card.getAttribute('data-pick-wid'));
+    programsPickerToggle(wid, !__programsPickerSel.has(wid));
+    return true;
+  }
+  var head = target.closest('[data-pick-gk]');
+  if (!head) return false;
+  var gk = head.getAttribute('data-pick-gk');
+  var grp = head.closest('.programs-picker-group');
+  var ids = [];
+  if (grp) {
+    grp.querySelectorAll('[data-pick-wid]').forEach(function (el) {
+      ids.push(programsPickerNormId(el.getAttribute('data-pick-wid')));
+    });
+  } else {
+    var row = head.nextElementSibling;
+    while (row && row.getAttribute('data-pick-wid')) {
+      ids.push(programsPickerNormId(row.getAttribute('data-pick-wid')));
+      row = row.nextElementSibling;
+    }
+  }
+  var st = programsPickerGroupSelection(ids);
+  programsPickerToggleGroup(gk, !st.all);
+  return true;
+}
+
+function programsInitPickerEvents() {
+  var box = document.getElementById('programs-picker');
+  if (!box || box.dataset.pickerEventsBound === '1') return;
+  box.dataset.pickerEventsBound = '1';
+  var downX = 0, downY = 0, downTarget = null;
+  box.addEventListener('pointerdown', function (ev) {
+    if (ev.button != null && ev.button !== 0) return;
+    downX = ev.clientX; downY = ev.clientY;
+    downTarget = ev.target.closest('[data-pick-wid],[data-pick-gk]');
+  });
+  box.addEventListener('pointerup', function (ev) {
+    if (!downTarget) return;
+    var moved = Math.abs(ev.clientX - downX) > 8 || Math.abs(ev.clientY - downY) > 8;
+    var sameTarget = ev.target.closest('[data-pick-wid],[data-pick-gk]') === downTarget;
+    var dt = downTarget;
+    downTarget = null;
+    if (moved || !sameTarget) return;
+    ev.preventDefault();
+    programsPickerHandleActivate(dt);
+  });
+  box.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    var t = ev.target.closest('[data-pick-wid],[data-pick-gk]');
+    if (!t) return;
+    ev.preventDefault();
+    programsPickerHandleActivate(t);
+  });
 }
 
 function programsPickerRenderCards(groups) {
@@ -6106,26 +6410,25 @@ function programsPickerRenderCards(groups) {
     var gkEsc = escapeHtml(g.key);
     parts.push('<div class="programs-picker-group">');
     parts.push(
-      '<label class="programs-picker-group-head">' +
-        '<input type="checkbox" data-gk="' + gkEsc + '"' +
-        (st.all ? ' checked' : '') +
-        (st.partial ? ' data-indeterminate="1"' : '') +
-        ' onchange="programsPickerToggleGroupFromEl(this)">' +
+      '<div class="programs-picker-group-head' + (st.all ? ' is-selected' : '') + (st.partial ? ' is-partial' : '') + '" data-pick-gk="' + gkEsc + '" role="button" tabindex="0" aria-pressed="' + (st.all ? 'true' : st.partial ? 'mixed' : 'false') + '">' +
+        '<span class="programs-picker-check" aria-hidden="true"></span>' +
         '<span class="programs-picker-group-title">' + escapeHtml(g.title) + '</span>' +
         '<span class="programs-picker-group-meta">' + st.count + '/' + g.items.length + '</span>' +
-      '</label>',
+      '</div>',
     );
     parts.push('<div class="programs-picker-cards">');
     for (var j = 0; j < g.items.length; j++) {
       var w = g.items[j];
-      var on = __programsPickerSel.has(w.id);
+      var wid = programsPickerNormId(w.id);
+      var on = __programsPickerSel.has(wid);
       parts.push(
-        '<label class="programs-picker-card' + (on ? ' is-selected' : '') + '">' +
-          '<input type="checkbox" data-wid="' + w.id + '"' + (on ? ' checked' : '') + ' onchange="programsPickerToggle(' + w.id + ',this.checked)">' +
-          '<div><div class="programs-picker-card-pt">' + escapeHtml(w.word) + '</div>' +
+        '<div class="programs-picker-card' + (on ? ' is-selected' : '') + '" data-pick-wid="' + w.id + '" role="button" tabindex="0" aria-pressed="' + (on ? 'true' : 'false') + '">' +
+          '<span class="programs-picker-check" aria-hidden="true"></span>' +
+          '<div class="programs-picker-card-text">' +
+          '<div class="programs-picker-card-pt">' + escapeHtml(w.word) + '</div>' +
           '<div class="programs-picker-card-ru">' + escapeHtml(w.translation || '') + '</div>' +
           (w.tag ? '<div class="programs-picker-card-tag">' + escapeHtml(vocabTagLabel(w.tag)) + '</div>' : '') +
-          '</div></label>',
+          '</div></div>',
       );
     }
     parts.push('</div></div>');
@@ -6142,22 +6445,19 @@ function programsPickerRenderTable(groups) {
     var st = programsPickerGroupSelection(ids);
     var gkEsc = escapeHtml(g.key);
     parts.push(
-      '<tr class="programs-picker-group-row"><td colspan="4">' +
-        '<label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;margin:0">' +
-        '<input type="checkbox" data-gk="' + gkEsc + '"' +
-        (st.all ? ' checked' : '') +
-        (st.partial ? ' data-indeterminate="1"' : '') +
-        ' onchange="programsPickerToggleGroupFromEl(this)">' +
+      '<tr class="programs-picker-group-row programs-picker-group-head' + (st.all ? ' is-selected' : '') + (st.partial ? ' is-partial' : '') + '" data-pick-gk="' + gkEsc + '" role="button" tabindex="0"><td colspan="4">' +
+        '<span style="display:inline-flex;align-items:center;gap:8px">' +
+        '<span class="programs-picker-check" aria-hidden="true"></span>' +
         '<span>' + escapeHtml(g.title) + '</span>' +
         '<span class="programs-picker-group-meta">(' + st.count + '/' + g.items.length + ')</span>' +
-        '</label></td></tr>',
+        '</span></td></tr>',
     );
     for (var j = 0; j < g.items.length; j++) {
       var w = g.items[j];
-      var on = __programsPickerSel.has(w.id);
+      var on = __programsPickerSel.has(programsPickerNormId(w.id));
       parts.push(
-        '<tr><td><input type="checkbox" data-wid="' + w.id + '"' + (on ? ' checked' : '') +
-        ' onchange="programsPickerToggle(' + w.id + ',this.checked)"></td>' +
+        '<tr class="programs-picker-row' + (on ? ' is-selected' : '') + '" data-pick-wid="' + w.id + '" role="button" tabindex="0">' +
+        '<td><span class="programs-picker-check" aria-hidden="true"></span></td>' +
         '<td class="programs-picker-pt">' + escapeHtml(w.word) + '</td>' +
         '<td class="programs-picker-ru">' + escapeHtml(w.translation || '') + '</td>' +
         '<td>' + escapeHtml(vocabTagLabel(w.tag)) + '</td></tr>',
@@ -6169,12 +6469,40 @@ function programsPickerRenderTable(groups) {
 }
 
 function programsPickerApplyIndeterminate() {
-  var box = document.getElementById('programs-picker');
-  if (!box) return;
-  box.querySelectorAll('input[data-indeterminate="1"]').forEach(function (cb) {
-    cb.indeterminate = true;
-    cb.removeAttribute('data-indeterminate');
-  });
+  /* group partial state via .is-partial in programsPickerSyncDom */
+}
+
+function programsGetWordIds(prog) {
+  if (!prog) return [];
+  if (Array.isArray(prog.wordIds) && prog.wordIds.length) return prog.wordIds.slice();
+  var ids = [];
+  var seen = {};
+  if (prog.schedule) {
+    Object.keys(prog.schedule).forEach(function (k) {
+      (prog.schedule[k] || []).forEach(function (id) {
+        if (!seen[id]) { seen[id] = true; ids.push(id); }
+      });
+    });
+  }
+  return ids;
+}
+
+function programsBuildSchedule(wordIds, dayCount) {
+  var schedule = {};
+  var n = Math.max(1, dayCount | 0);
+  var list = wordIds.slice();
+  for (var d = 1; d <= n; d++) schedule[String(d)] = list.slice();
+  return schedule;
+}
+
+function programsNormalizeProgram(p) {
+  if (!p) return p;
+  p.wordIds = programsGetWordIds(p);
+  if (!p.runsPerDay || p.runsPerDay < 1) p.runsPerDay = 3;
+  if (p.runsPerDay > 20) p.runsPerDay = 20;
+  p.schedule = programsBuildSchedule(p.wordIds, p.dayCount);
+  p.wordCount = p.wordIds.length;
+  return p;
 }
 
 function programsLoad() {
@@ -6182,7 +6510,10 @@ function programsLoad() {
     var raw = localStorage.getItem(PROGRAMS_KEY);
     if (raw) {
       var arr = JSON.parse(raw);
-      if (Array.isArray(arr)) __programs = arr;
+      if (Array.isArray(arr)) {
+        __programs = arr.map(function (p) { return programsNormalizeProgram(p); });
+        programsSave();
+      }
     }
   } catch (e) {}
   try {
@@ -6237,15 +6568,249 @@ function programsTodayIso() {
 }
 
 function programsDistributeWords(wordIds, dayCount) {
-  var schedule = {};
-  var n = Math.max(1, dayCount | 0);
-  for (var d = 1; d <= n; d++) schedule[String(d)] = [];
-  if (!wordIds.length) return schedule;
-  var per = Math.ceil(wordIds.length / n);
-  for (var d = 0; d < n; d++) {
-    schedule[String(d + 1)] = wordIds.slice(d * per, (d + 1) * per);
+  return programsBuildSchedule(wordIds, dayCount);
+}
+
+function programsDayProgress(progId, dayNum) {
+  var pr = programsProgressFor(progId);
+  var key = String(dayNum);
+  if (!pr.days[key]) pr.days[key] = { runs: {} };
+  if (!Array.isArray(pr.days[key].known)) pr.days[key].known = [];
+  return pr.days[key];
+}
+
+function programsRunDone(progId, dayNum, runNum) {
+  var day = programsDayProgress(progId, dayNum);
+  var rk = String(runNum);
+  return !!(day.runs[rk] && day.runs[rk].done);
+}
+
+function programsGetNextRun(progId, dayNum) {
+  var prog = programsFind(progId);
+  if (!prog) return 0;
+  var runs = prog.runsPerDay || 3;
+  for (var r = 1; r <= runs; r++) {
+    if (!programsRunDone(progId, dayNum, r)) return r;
   }
-  return schedule;
+  return 0;
+}
+
+function programsCarryUnknown(progId) {
+  var pr = programsProgressFor(progId);
+  if (!Array.isArray(pr.carryUnknown)) pr.carryUnknown = [];
+  return pr.carryUnknown;
+}
+
+function programsUnknownForDayRun(progId, dayNum, runNum) {
+  var prog = programsFind(progId);
+  if (!prog) return [];
+  var allIds = programsGetWordIds(prog);
+  var set = {};
+  var pr = programsProgressFor(progId);
+  programsCarryUnknown(progId).forEach(function (id) { set[id] = true; });
+  var day = pr.days[String(dayNum)];
+  // Карточки, отмеченные «Знаю» в предыдущих прогонах этого дня — больше не показываем сегодня.
+  var known = {};
+  if (day && Array.isArray(day.known)) day.known.forEach(function (id) { known[id] = true; });
+  if (day && day.runs) {
+    for (var r = 1; r < runNum; r++) {
+      var rd = day.runs[String(r)];
+      if (rd && rd.unknown) rd.unknown.forEach(function (id) { set[id] = true; });
+    }
+  }
+  var candidates = allIds.filter(function (id) { return !known[id]; });
+  var priority = candidates.filter(function (id) { return set[id]; });
+  var rest = candidates.filter(function (id) { return !set[id]; });
+  return priority.concat(rest);
+}
+
+function programsBuildStudyQueue(progId, dayNum, runNum) {
+  return programsUnknownForDayRun(progId, dayNum, runNum);
+}
+
+function programsDayFullyDone(progId, dayNum) {
+  var prog = programsFind(progId);
+  if (!prog) return false;
+  var runs = prog.runsPerDay || 3;
+  for (var r = 1; r <= runs; r++) {
+    if (!programsRunDone(progId, dayNum, r)) return false;
+  }
+  return true;
+}
+
+function programsSyncDayDoneFlag(progId, dayNum) {
+  var day = programsDayProgress(progId, dayNum);
+  day.done = programsDayFullyDone(progId, dayNum);
+  if (day.done) day.at = Date.now();
+  programsProgressSave();
+}
+
+function programsStudySyncUi() {
+  var sm2 = document.getElementById('fc-controls-sm2');
+  var prg = document.getElementById('fc-controls-program');
+  var banner = document.getElementById('fc-program-banner');
+  var decks = document.querySelector('#view-flashcards .deck-selector');
+  var decksV = document.getElementById('fc-video-decks');
+  var decksL = document.getElementById('fc-video-decks-label');
+  var stats = document.getElementById('fc-stats-row');
+  var active = !!window.__programStudy;
+  if (sm2) sm2.style.display = active ? 'none' : '';
+  if (prg) prg.style.display = active ? 'flex' : 'none';
+  if (decks) decks.style.display = active ? 'none' : '';
+  if (decksV) decksV.style.display = active ? 'none' : decksV.style.display;
+  if (decksL) decksL.style.display = active ? 'none' : decksL.style.display;
+  if (stats) stats.style.display = active ? 'none' : '';
+  if (banner) {
+    if (!active) {
+      banner.style.display = 'none';
+      return;
+    }
+    var st = window.__programStudy;
+    var prog = programsFind(st.progId);
+    var reversed = window.__fcDir === 'ru2pt';
+    var dirLabel = reversed
+      ? (t('programs.dirRuPt') || 'RU → PT')
+      : (t('programs.dirPtRu') || 'PT → RU');
+    banner.style.display = 'flex';
+    banner.innerHTML =
+      '<span class="fc-program-info"><strong>' + escapeHtml(prog ? prog.name : '') + '</strong> · ' +
+      t('programs.day') + ' ' + st.dayNum + ' · ' +
+      t('programs.run') + ' ' + st.runNum + '/' + (prog ? prog.runsPerDay : 3) + ' · ' +
+      (st.index + 1) + '/' + (st.queue ? st.queue.length : 0) + '</span>' +
+      '<button type="button" class="fc-dir-toggle" onclick="fcToggleDir()" title="' +
+      escapeHtml(t('programs.dirToggleHint') || 'Сменить направление перевода') + '">' +
+      '<i data-lucide="arrow-left-right"></i> <span>' + dirLabel + '</span></button>';
+    try { lucide.createIcons(); } catch (e) {}
+  }
+}
+
+function fcToggleDir() {
+  window.__fcDir = window.__fcDir === 'ru2pt' ? 'pt2ru' : 'ru2pt';
+  try { localStorage.setItem(FC_DIR_KEY, window.__fcDir); } catch (e) {}
+  stopFlashcardSpeech();
+  programsStudySyncUi();
+  renderFcCard();
+}
+
+function fcSpeakFront() {
+  if (window.__fcDir === 'ru2pt') speakFlashcardRussian();
+  else speakFlashcardPortuguese('word');
+}
+
+function programsRestartDayStudy(progId, dayNum) {
+  var day = programsDayProgress(progId, dayNum);
+  day.runs = {};
+  day.known = [];
+  day.done = false;
+  delete day.at;
+  programsProgressSave();
+  programsStartStudy(progId, dayNum, 1);
+}
+
+function programsStartStudy(progId, dayNum, runNum) {
+  var prog = programsFind(progId);
+  if (!prog) return;
+  var ids = programsGetWordIds(prog);
+  if (!ids.length) { showToast(t('programs.needWords')); return; }
+  var run = runNum || programsGetNextRun(progId, dayNum);
+  if (!run) {
+    showToast(t('programs.allRunsDone') || 'Все прогоны за этот день выполнены');
+    return;
+  }
+  var queue = programsBuildStudyQueue(progId, dayNum, run);
+  // Все карточки уже отмечены «Знаю» в этот день — закрываем оставшиеся прогоны.
+  if (!queue.length) {
+    var prog2 = programsFind(progId);
+    var totalRuns = prog2 ? (prog2.runsPerDay || 3) : 3;
+    var dayP = programsDayProgress(progId, dayNum);
+    for (var r = run; r <= totalRuns; r++) {
+      if (!dayP.runs[String(r)] || !dayP.runs[String(r)].done) {
+        dayP.runs[String(r)] = { done: true, unknown: [], at: Date.now() };
+      }
+    }
+    programsSyncDayDoneFlag(progId, dayNum);
+    if (__programsSelectedId === progId) programsRenderDetail();
+    programsRenderList();
+    showToast(t('programs.dayDone') || 'День завершён — все карточки выучены');
+    navigate('programs');
+    return;
+  }
+  window.__programStudy = {
+    progId: progId,
+    dayNum: dayNum,
+    runNum: run,
+    queue: queue,
+    index: 0,
+    flipped: false,
+    unknownThisRun: [],
+  };
+  window.__fcProgramWordIds = null;
+  navigate('flashcards');
+}
+
+function programsStudyAnswer(know) {
+  var st = window.__programStudy;
+  if (!st) return;
+  if (st.index >= st.queue.length) return;
+  var wid = st.queue[st.index];
+  var pr = programsProgressFor(st.progId);
+  var day = programsDayProgress(st.progId, st.dayNum);
+  if (!know) {
+    if (st.unknownThisRun.indexOf(wid) < 0) st.unknownThisRun.push(wid);
+    var carry = programsCarryUnknown(st.progId);
+    if (carry.indexOf(wid) < 0) carry.push(wid);
+    var ki = day.known.indexOf(wid);
+    if (ki >= 0) day.known.splice(ki, 1);
+  } else {
+    var carry2 = programsCarryUnknown(st.progId);
+    var ci = carry2.indexOf(wid);
+    if (ci >= 0) carry2.splice(ci, 1);
+    if (day.known.indexOf(wid) < 0) day.known.push(wid);
+  }
+  programsProgressSave();
+  st.index++;
+  fcIndex = st.index;
+  fcFlipped = false;
+  if (st.index >= st.queue.length) {
+    programsStudyFinishRun();
+    return;
+  }
+  programsStudySyncUi();
+  renderFcCard();
+}
+
+function programsStudyFinishRun() {
+  var st = window.__programStudy;
+  if (!st) return;
+  var day = programsDayProgress(st.progId, st.dayNum);
+  var rk = String(st.runNum);
+  day.runs[rk] = { done: true, unknown: st.unknownThisRun.slice(), at: Date.now() };
+  programsSyncDayDoneFlag(st.progId, st.dayNum);
+  var prog = programsFind(st.progId);
+  var nextRun = programsGetNextRun(st.progId, st.dayNum);
+  var nUnk = st.unknownThisRun.length;
+  window.__programStudy = null;
+  programsStudySyncUi();
+  buildFcQueue();
+  renderFcCard();
+  if (__programsSelectedId === st.progId) programsRenderDetail();
+  programsRenderList();
+  if (nextRun) {
+    var msg = (t('programs.runDone') || 'Прогон {r} завершён').replace('{r}', String(st.runNum));
+    if (nUnk) msg += '. ' + (t('programs.unknownCarry') || '«Не знаю»: {n}').replace('{n}', String(nUnk));
+    showToast(msg + ' — ' + (t('programs.nextRun') || 'следующий прогон'));
+    setTimeout(function () { programsStartStudy(st.progId, st.dayNum, nextRun); }, 600);
+  } else {
+    showToast(t('programs.dayDone') || 'День завершён — все прогоны пройдены');
+    navigate('programs');
+  }
+}
+
+function programsExitStudy() {
+  window.__programStudy = null;
+  programsStudySyncUi();
+  buildFcQueue();
+  renderFcCard();
 }
 
 function programsProgressFor(progId) {
@@ -6254,10 +6819,9 @@ function programsProgressFor(progId) {
 }
 
 function programsCompletedCount(prog) {
-  var pr = programsProgressFor(prog.id);
   var n = 0;
   for (var d = 1; d <= prog.dayCount; d++) {
-    if (pr.days[String(d)] && pr.days[String(d)].done) n++;
+    if (programsDayFullyDone(prog.id, d)) n++;
   }
   return n;
 }
@@ -6285,7 +6849,7 @@ function programsRenderList() {
     card.onclick = function () { programsOpenDetail(prog.id); };
     card.innerHTML =
       '<div class="programs-card-title">' + escapeHtml(prog.name) + '</div>' +
-      '<div class="programs-card-meta">' + programsFormatDate(prog.startDate) + ' · ' + prog.dayCount + ' ' + t('programs.days').toLowerCase() + ' · ' + (prog.wordCount || 0) + ' ' + t('programs.cards') + '</div>' +
+      '<div class="programs-card-meta">' + programsFormatDate(prog.startDate) + ' · ' + prog.dayCount + ' ' + t('programs.days').toLowerCase() + ' · ' + (prog.wordCount || 0) + ' ' + t('programs.cards') + ' · ' + (prog.runsPerDay || 3) + ' ' + (t('programs.runsShort') || 'прог./день') + '</div>' +
       '<div class="programs-progress-bar"><div class="programs-progress-fill" style="width:' + pct + '%"></div></div>' +
       '<div class="programs-card-meta" style="margin-top:6px">' + done + '/' + prog.dayCount + ' ' + t('programs.completed') + ' (' + pct + '%)</div>';
     listEl.appendChild(card);
@@ -6319,32 +6883,45 @@ function programsRenderDetail() {
   statsEl.innerHTML =
     '<div class="programs-stat"><div class="programs-stat-num">' + prog.dayCount + '</div><div class="programs-stat-label">' + t('programs.days') + '</div></div>' +
     '<div class="programs-stat"><div class="programs-stat-num">' + (prog.wordCount || 0) + '</div><div class="programs-stat-label">' + t('programs.cards') + '</div></div>' +
+    '<div class="programs-stat"><div class="programs-stat-num">' + (prog.runsPerDay || 3) + '</div><div class="programs-stat-label">' + t('programs.runsPerDay') + '</div></div>' +
     '<div class="programs-stat"><div class="programs-stat-num">' + done + '/' + prog.dayCount + '</div><div class="programs-stat-label">' + t('programs.completed') + '</div></div>';
   var daysEl = document.getElementById('programs-days');
   daysEl.innerHTML = '';
   var pr = programsProgressFor(prog.id);
   for (var d = 1; d <= prog.dayCount; d++) {
     var dayKey = String(d);
-    var ids = (prog.schedule && prog.schedule[dayKey]) || [];
+    var ids = programsGetWordIds(prog);
     var dateIso = programsDayDate(prog, d);
-    var isDone = !!(pr.days[dayKey] && pr.days[dayKey].done);
+    var isDone = programsDayFullyDone(prog.id, d);
     var isToday = dateIso === today;
+    var nextRun = programsGetNextRun(prog.id, d);
+    var runsTotal = prog.runsPerDay || 3;
+    var runDots = '';
+    for (var ri = 1; ri <= runsTotal; ri++) {
+      var rd = programsRunDone(prog.id, d, ri);
+      var act = nextRun === ri && !isDone;
+      runDots += '<span class="programs-run-dot' + (rd ? ' is-done' : '') + (act ? ' is-active' : '') + '" title="' + t('programs.run') + ' ' + ri + '"></span>';
+    }
     var dayEl = document.createElement('div');
     dayEl.className = 'programs-day' + (isDone ? ' is-done' : '') + (isToday ? ' is-today' : '');
     var chips = ids.map(function (wid) {
       var w = programsWordById(wid);
       if (!w) return '';
       var fr = w.tag === 'frase' ? ' is-frase' : '';
-      return '<span class="programs-word-chip' + fr + '" title="' + escapeHtml(w.translation || '') + '">' + escapeHtml(w.word) + '</span>';
+      var unk = programsCarryUnknown(prog.id).indexOf(wid) >= 0;
+      var unkSt = unk ? ' style="outline:1px solid var(--color-warning)"' : '';
+      return '<span class="programs-word-chip' + fr + '"' + unkSt + ' title="' + escapeHtml(w.translation || '') + (unk ? ' · ' + t('programs.needsReview') : '') + '">' + escapeHtml(w.word) + '</span>';
     }).join('');
+    var studyLabel = isDone ? t('programs.repeat') : (nextRun ? t('programs.study') : t('programs.allRunsDone'));
     dayEl.innerHTML =
       '<div class="programs-day-head">' +
         '<div><div class="programs-day-title">' + t('programs.day') + ' ' + d + (isToday ? ' · ' + t('programs.today') : '') + '</div>' +
-        '<div class="programs-day-date">' + programsFormatDate(dateIso) + ' · ' + ids.length + ' ' + t('programs.cards') + '</div></div>' +
+        '<div class="programs-day-date">' + programsFormatDate(dateIso) + ' · ' + ids.length + ' ' + t('programs.cards') + ' · ' + runsTotal + ' ' + (t('programs.runsShort') || 'прог.') + '</div>' +
+        '<div class="programs-run-dots" aria-label="' + t('programs.runsPerDay') + '">' + runDots + '</div></div>' +
         '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
-          (ids.length ? '<button type="button" class="btn btn-secondary btn-sm" onclick="programsReviewDay(' + prog.id + ',' + d + ')"><i data-lucide="layers"></i> ' + t('programs.review') + '</button>' : '') +
-          '<button type="button" class="btn btn-sm ' + (isDone ? 'btn-ghost' : 'btn-primary') + '" onclick="programsToggleDayDone(' + prog.id + ',' + d + ')">' +
-            (isDone ? t('programs.undo') : t('programs.done')) + '</button>' +
+          (ids.length && (nextRun || isDone) ? '<button type="button" class="btn btn-primary btn-sm" onclick="' + (isDone ? 'programsRestartDayStudy(' + prog.id + ',' + d + ')' : 'programsStartStudy(' + prog.id + ',' + d + ',' + nextRun + ')') + '"><i data-lucide="play"></i> ' + studyLabel + '</button>' : '') +
+          '<button type="button" class="btn btn-sm ' + (isDone ? 'btn-ghost' : 'btn-secondary') + '" onclick="programsToggleDayDone(' + prog.id + ',' + d + ')">' +
+            (isDone ? t('programs.undo') : t('programs.markDone')) + '</button>' +
         '</div></div>' +
       '<div class="programs-day-body"><div class="programs-day-chips">' + (chips || '—') + '</div></div>';
     daysEl.appendChild(dayEl);
@@ -6355,23 +6932,26 @@ function programsRenderDetail() {
 function programsToggleDayDone(progId, dayNum) {
   var pr = programsProgressFor(progId);
   var key = String(dayNum);
-  if (!pr.days[key]) pr.days[key] = {};
-  pr.days[key].done = !pr.days[key].done;
-  if (pr.days[key].done) pr.days[key].at = Date.now();
-  else delete pr.days[key].at;
+  var day = programsDayProgress(progId, dayNum);
+  if (day.done) {
+    day.done = false;
+    delete day.at;
+  } else {
+    var prog = programsFind(progId);
+    var runs = prog ? prog.runsPerDay || 3 : 3;
+    for (var r = 1; r <= runs; r++) {
+      day.runs[String(r)] = { done: true, unknown: [], at: Date.now() };
+    }
+    day.done = true;
+    day.at = Date.now();
+  }
   programsProgressSave();
   programsRenderDetail();
   programsRenderList();
 }
 
 function programsReviewDay(progId, dayNum) {
-  var prog = programsFind(progId);
-  if (!prog) return;
-  var ids = (prog.schedule && prog.schedule[String(dayNum)]) || [];
-  if (!ids.length) return;
-  window.__fcProgramWordIds = ids.slice();
-  currentDeck = 'all';
-  navigate('flashcards');
+  programsStartStudy(progId, dayNum);
 }
 
 function programsDeleteCurrent() {
@@ -6386,6 +6966,7 @@ function programsDeleteCurrent() {
 
 function programsOpenCreateModal() {
   programsLoad();
+  vocabCloseMovePanel();
   __programsPickerSel = new Set();
   __programsPickerMode = 'cards';
   var startEl = document.getElementById('programs-create-start');
@@ -6394,8 +6975,13 @@ function programsOpenCreateModal() {
   if (nameEl) nameEl.value = '';
   var filterEl = document.getElementById('programs-picker-filter');
   if (filterEl) filterEl.value = '';
+  programsInitPickerEvents();
   programsPickerSetMode('cards');
-  document.getElementById('programs-create-overlay').classList.add('open');
+  var ov = document.getElementById('programs-create-overlay');
+  if (ov) {
+    if (ov.parentNode !== document.body) document.body.appendChild(ov);
+    ov.classList.add('open');
+  }
   applyUiLanguage();
   try { lucide.createIcons(); } catch (e) {}
 }
@@ -6418,14 +7004,15 @@ function programsRenderPicker() {
     ? programsPickerRenderTable(groups)
     : programsPickerRenderCards(groups);
   programsPickerApplyIndeterminate();
-  programsPickerUpdateCount();
+  programsPickerSyncDom();
 }
 
 function programsPickerToggle(id, on) {
   try {
-    if (on) __programsPickerSel.add(id);
-    else __programsPickerSel.delete(id);
-    programsRenderPicker();
+    var nid = programsPickerNormId(id);
+    if (on) __programsPickerSel.add(nid);
+    else __programsPickerSel.delete(nid);
+    programsPickerSyncDom();
   } catch (e) {
     console.error('programsPickerToggle', e);
     showToast('Ошибка выбора карточки: ' + e.message);
@@ -6435,9 +7022,12 @@ function programsPickerToggle(id, on) {
 function programsPickerSelectAll(on) {
   try {
     var list = programsPickerFilteredWords();
-    if (on) list.forEach(function (w) { __programsPickerSel.add(w.id); });
-    else list.forEach(function (w) { __programsPickerSel.delete(w.id); });
-    programsRenderPicker();
+    list.forEach(function (w) {
+      var nid = programsPickerNormId(w.id);
+      if (on) __programsPickerSel.add(nid);
+      else __programsPickerSel.delete(nid);
+    });
+    programsPickerSyncDom();
   } catch (e) {
     console.error('programsPickerSelectAll', e);
     showToast('Ошибка: ' + e.message);
@@ -6447,10 +7037,11 @@ function programsPickerSelectAll(on) {
 function programsPickerSelectTag(tag) {
   var list = programsPickerFilteredWords();
   list.forEach(function (w) {
-    if (w.tag === tag) __programsPickerSel.add(w.id);
-    else __programsPickerSel.delete(w.id);
+    var nid = programsPickerNormId(w.id);
+    if (w.tag === tag) __programsPickerSel.add(nid);
+    else __programsPickerSel.delete(nid);
   });
-  programsRenderPicker();
+  programsPickerSyncDom();
 }
 
 function programsSubmitCreate() {
@@ -6458,15 +7049,19 @@ function programsSubmitCreate() {
   var startDate = document.getElementById('programs-create-start').value || programsTodayIso();
   var dayCount = parseInt(document.getElementById('programs-create-days').value, 10) || 7;
   dayCount = Math.max(1, Math.min(365, dayCount));
+  var runsPerDay = parseInt(document.getElementById('programs-create-runs').value, 10) || 3;
+  runsPerDay = Math.max(1, Math.min(20, runsPerDay));
   var wordIds = Array.from(__programsPickerSel);
   if (!name) { showToast(t('programs.needName') || 'Enter a name'); return; }
   if (!wordIds.length) { showToast(t('programs.needWords') || 'Select at least one card'); return; }
-  var schedule = programsDistributeWords(wordIds, dayCount);
+  var schedule = programsBuildSchedule(wordIds, dayCount);
   var prog = {
     id: programsNextId(),
     name: name,
     startDate: startDate,
     dayCount: dayCount,
+    runsPerDay: runsPerDay,
+    wordIds: wordIds.slice(),
     schedule: schedule,
     wordCount: wordIds.length,
     createdAt: Date.now(),
@@ -6479,6 +7074,7 @@ function programsSubmitCreate() {
 }
 
 function initProgramsView() {
+  programsInitPickerEvents();
   programsLoad();
   if (__programsSelectedId && programsFind(__programsSelectedId)) {
     document.getElementById('programs-list-view').hidden = true;
@@ -6610,7 +7206,10 @@ function navigate(viewId, el, fromRouter) {
     try { lucide.createIcons(); } catch (e) {}
   }
   if (viewId === 'profile') initProfileView();
-  if (viewId !== 'flashcards') window.__fcProgramWordIds = null;
+  if (viewId !== 'flashcards') {
+    window.__fcProgramWordIds = null;
+    if (window.__programStudy) programsExitStudy();
+  }
   updateSidebarCounts();
   syncVocabTopbarToolsVisibility();
   if (isSidebarDrawerMode()) {
@@ -12989,7 +13588,7 @@ function selectDeckVideo(el) {
   renderFcCard();
 }
 
-function initFlashcards() { updateFcStats(); refreshVideoDeckChips(); buildFcQueue(); renderFcCard(); }
+function initFlashcards() { programsStudySyncUi(); updateFcStats(); refreshVideoDeckChips(); buildFcQueue(); renderFcCard(); }
 
 function updateFcStats() {
   document.getElementById('fc-stat-total').textContent = words.length;
@@ -13000,7 +13599,13 @@ function updateFcStats() {
 
 function buildFcQueue() {
   let pool;
-  if (window.__fcProgramWordIds && window.__fcProgramWordIds.length) {
+  if (window.__programStudy && window.__programStudy.queue && window.__programStudy.queue.length) {
+    var st = window.__programStudy;
+    var order = st.queue;
+    pool = order.map(function (id) { return words.find(function (w) { return w.id === id; }); }).filter(Boolean);
+    fcIndex = st.index || 0;
+    fcFlipped = !!st.flipped;
+  } else if (window.__fcProgramWordIds && window.__fcProgramWordIds.length) {
     var idSet = new Set(window.__fcProgramWordIds);
     pool = words.filter(function (w) { return idSet.has(w.id); });
   } else if (currentDeck === 'all') pool = [...words];
@@ -13009,11 +13614,18 @@ function buildFcQueue() {
     const vid = currentDeck.slice('video:'.length);
     pool = words.filter(w => w.videoId === vid);
   } else pool = words.filter(w => w.tag === currentDeck);
-  fcQueue = [...pool].sort((a, b) => a.nextReview - b.nextReview);
-  fcIndex = 0; fcFlipped = false;
+  if (!window.__programStudy) {
+    fcQueue = [...pool].sort((a, b) => a.nextReview - b.nextReview);
+    fcIndex = 0;
+    fcFlipped = false;
+  } else {
+    fcQueue = pool;
+  }
 }
 
 function renderFcCard() {
+  programsStudySyncUi();
+  if (window.__programStudy) window.__programStudy.flipped = fcFlipped;
   updateFcStats();
   var hintEl = document.getElementById('fc-video-hint');
   if (!fcQueue.length) {
@@ -13032,7 +13644,11 @@ function renderFcCard() {
     var msg = document.getElementById('fc-session-complete-msg');
     if (play) play.style.display = 'none';
     if (done) done.style.display = 'flex';
-    if (msg) msg.textContent = 'Ты повторил ' + fcQueue.length + ' слов. Отличная работа!';
+    if (msg) {
+      msg.textContent = window.__programStudy
+        ? (t('programs.runComplete') || 'Прогон завершён')
+        : 'Ты повторил ' + fcQueue.length + ' слов. Отличная работа!';
+    }
     lucide.createIcons();
     if (hintEl) { hintEl.textContent = ''; hintEl.style.display = 'none'; }
     return;
@@ -13057,8 +13673,9 @@ function renderFcCard() {
   }
   const card = document.getElementById('fc-card');
   card.classList.remove('flipped'); fcFlipped = false;
-  document.getElementById('fc-word').textContent = w.word;
-  document.getElementById('fc-translation').textContent = w.translation;
+  var reversed = !!window.__programStudy && window.__fcDir === 'ru2pt';
+  document.getElementById('fc-word').textContent = reversed ? (w.translation || '') : w.word;
+  document.getElementById('fc-translation').textContent = reversed ? w.word : w.translation;
   document.getElementById('fc-example').textContent = w.example || '';
   const img = document.getElementById('fc-img-front');
   if (w.img) { img.src = w.img; img.style.display = 'block'; } else img.style.display = 'none';
@@ -13066,9 +13683,13 @@ function renderFcCard() {
 }
 
 function flipCard() {
-  if (!fcFlipped) { document.getElementById('fc-card').classList.add('flipped'); fcFlipped = true; }
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc-card').classList.toggle('flipped', fcFlipped);
+  if (window.__programStudy) window.__programStudy.flipped = fcFlipped;
+  if (!fcFlipped) stopFlashcardSpeech();
 }
 function rateCard(q) {
+  if (window.__programStudy) return;
   if (!fcFlipped) { flipCard(); return; }
   stopFlashcardSpeech();
   if (fcIndex >= fcQueue.length) return;
@@ -15473,8 +16094,44 @@ function showToast(msg) {
   });
 })();
 
+/** Подгоняет стрелку логотипа под фактическую ширину слова profconq (без растягивания). */
+function logoAlignArrow() {
+  var svg = document.querySelector('svg.logo-wordmark');
+  if (!svg) return;
+  var text = svg.querySelector('text');
+  if (!text || typeof text.getBBox !== 'function') return;
+  var bb;
+  try { bb = text.getBBox(); } catch (e) { return; }
+  if (!bb.width || bb.width < 24) return;
+  var y = 44;
+  var xDot = Math.round(bb.x + 5);
+  var xLineStart = xDot + 5;
+  var xLineEnd = Math.round(bb.x + bb.width - 3);
+  var xHeadTip = xLineEnd + 6.5;
+  var dot = svg.querySelector('.logo-arrow-dot');
+  var line = svg.querySelector('.logo-arrow-line');
+  var head = svg.querySelector('.logo-arrow-head');
+  var grad = svg.querySelector('#profconq-arrow');
+  if (dot) { dot.setAttribute('cx', String(xDot)); dot.setAttribute('cy', String(y)); }
+  if (line) line.setAttribute('d', 'M' + xLineStart + ' ' + y + ' H' + xLineEnd);
+  if (head) head.setAttribute('d', 'M' + xLineEnd + ' ' + (y - 2.8) + ' L' + xHeadTip + ' ' + y + ' L' + xLineEnd + ' ' + (y + 2.8) + ' Z');
+  if (grad) { grad.setAttribute('x1', String(xDot)); grad.setAttribute('x2', String(xHeadTip)); }
+  var vbW = Math.ceil(bb.x + bb.width + 14);
+  svg.setAttribute('viewBox', '0 0 ' + vbW + ' 52');
+}
+
+function logoAlignArrowWhenReady() {
+  logoAlignArrow();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(logoAlignArrow).catch(function () {});
+  }
+  setTimeout(logoAlignArrow, 120);
+  setTimeout(logoAlignArrow, 600);
+}
+
 // ─── Init ───
 void (async function initApp() {
+  logoAlignArrowWhenReady();
   // Route to correct view based on URL on first load
   var initialViewId = routeToViewId(window.location.pathname);
   if (initialViewId && initialViewId !== 'vocab') {
